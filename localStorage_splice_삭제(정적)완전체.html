@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로컬스토리지 array 저장, 불러오기 예제</title>
+</head>
+<body>
+  <!-- 
+    **삭제버튼을 붙여서 각 항목별 삭제기능도 추가 가능 (((localStorage splice 삭제 실전 파일에서 재정리)))**
+      - 배열에서 splice() 등으로 항목 제거 후 다시 저장 및 렌더링
+      - 렌더링은 renderList() 함수 재호출  !
+      
+  -->
+  <div class="container">
+    <input type="text" id="itemInput" placeholder="값 입력">
+    <button id="addBtn">추가</button>
+
+    <ul id="list">
+      <!-- 동적으로 생성 안 하고, HTML에 미리 li와 버튼을 박아두는 경우 -->
+      <li>
+        <span class="text"></span>
+        <button class="delBtn">삭제</button>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <!-- 
+    **스크립트 동작구조**
+      + end. 코파일럿 정리분
+      - loadList(): localStorage 에서 배열 불러오기 (없으면 빈 배열 반환)
+      - saveList(arr): 배열을 localStorage 에 저장
+      - renderList(arr): 화면에 배열 항목들을 렌더링
+      - removeItem(index): 특정 index 항목 삭제 후 다시 저장 및 렌더링
+      - 추가 버튼 클릭 시: 입력값을 배열에 추가, 저장, 렌더링
+      - 페이지 로드 시: 저장된 배열 불러와서 렌더링
+      + end. 코파일럿 정리분
+      
+      + start. GPT 정리분 : 삭제버튼 클릭 시 
+        - removeItem(index) 호출
+        - 로컬스토리지의 배열 불러오기 : loadList()
+        - splice(index, 1)로 해당 index 항목 삭제
+        - 변경된 배열을 다시 로컬스토리지에 저장 : saveList()
+        - 화면에 다시 렌더링 : renderList()
+      + end. GPT 정리분
+
+      **삭제버튼이 이미 HTML에 고정되어있고 storage 기능만 구현된 예시임**
+      **리스트를 렌더링 할때, 각 li요소에서 .text 영역만 바꿔줌**
+      **삭제버튼 기능적 부분만 JS로 처리함**
+  -->
+
+  <!-- 
+    🎯 언제 어떤 방식이 좋은가?
+    ✔ HTML에 삭제 버튼을 미리 넣는 방식이 좋은 경우
+      -리스트 개수가 고정(예: 5개만 표기)
+      -디자인이 정적인 UI
+      -동적 렌더링 코드를 단순화하고 싶을 때
+      -퍼블리셔 작업에서 HTML 마크업 구조가 이미 확정된 경우
+
+    ✔ JS로 삭제 버튼을 동적 생성하는 방식이 좋은 경우
+      -항목 개수가 계속 늘어남 / 줄어듦
+      -검색어 목록, 태그 목록 등 변화하는 리스트
+      -서버나 API 없이 로컬에서 UI만 조작하는 경우
+      -li 개수가 예측 불가능할 때
+  -->
+
+  <script>
+    const STORAGE_KEY = 'myList';
+
+    // 저장된 배열 불러오기
+    function loadList() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    // 배열 저장
+    function saveList(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    // li 목록 렌더링 (HTML 고정 구조 사용)
+    function renderList(arr) {
+      const items = document.querySelectorAll('#list li');
+
+      items.forEach((li, index) => {
+        const textEl = li.querySelector('.text');
+        const delBtn = li.querySelector('.delBtn');
+
+        if (arr[index]) {
+          textEl.textContent = arr[index];
+          li.style.display = 'flex';
+        } else {
+          li.style.display = 'none'; // 빈 라인 감추기
+        }
+
+        // 삭제 이벤트 부여
+        delBtn.onclick = function () {
+          const list = loadList();
+          list.splice(index, 1); // 배열에서 제거
+          saveList(list);
+          renderList(list); // 화면 갱신
+        };
+      });
+    }
+
+    // 추가 버튼 기능
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const input = document.getElementById('itemInput');
+      const value = input.value.trim();
+      if (!value) return;
+
+      const list = loadList();
+      list.push(value);
+      saveList(list);
+      renderList(list);
+
+      input.value = '';
+    });
+
+    // 초기 실행
+    window.addEventListener('DOMContentLoaded', () => {
+      renderList(loadList());
+    });
+
+  </script>
+</body>
+</html>

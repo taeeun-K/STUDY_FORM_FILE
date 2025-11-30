@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>단위변환 계산기</title>
+
+
+  <style>
+    * { padding: 0; margin: 0;box-sizing: border-box;}
+    
+    .container {
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+      max-width: 900px;
+      margin: 40px auto;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #222;
+    }
+    .converter {
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      font-family: sans-serif;
+    }
+    .converter input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .converter>button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #4A60F6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /*#result button 스타일 */
+    #result button.copy {
+      display: inline-block;
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      margin-left: 10px;
+      font-size: 12px;
+      background-color: #6f95ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="converter">
+    <h1>CSS 단위 변환 계산기</h1>
+  
+    <!-- 필수값. 디자인에서 폰트가 24px이면 24, 박스의 width가 300px 이면 300 으로 입력 -->
+    <label>값(px 기준)</label>
+    <input id="pxInput" type="number" placeholder="예: 24">
+  
+    <!-- rem 계산에 필요한 html의 font-size -->
+    <!-- 예시로 html{ font-size: 62.5%;} 라고 되어있으면 font-size: 10px 임 -->
+    <label>root font-size (기본 16px)</label>
+    <input id="rootInput" type="number" value="16">
+  
+    <!-- em 계산에 필요한 부모 요소의 font-size -->
+    <!-- 변환할 요소가 들어있는 부모의 font-size가 몇 px인지 -->
+    <label>부모 font-size (em 변환용)</label>
+    <input id="parentInput" type="number" value="16">
+  
+    <!-- 화면너비가 1920px일때 24px을 vw로 변환시킨값은 1.25vw -->
+    <label>화면 너비(px) - vw 변환용</label>
+    <input id="viewportWidth" type="number" value="1920">
+  
+    <!-- vh를 계산할 때 기준으로 잡을 세로 높이 -->
+    <!-- 
+      배너 높이 540px을 vh로 바꾸고 싶다 →
+      px 값: 540 / 화면 높이: 1080 → 50vh
+    -->
+    <label>화면 높이(px) - vh 변환용</label>
+    <input id="viewportHeight" type="number" value="1080">
+  
+  
+    <label>부모 width(px) - % 변환용</label>
+    <input id="parentWidth" type="number" value="1200">
+  
+    <button onclick="convert()">변환하기</button>
+  
+    <div id="result"></div>
+  </div>
+
+  <div class="guide">
+    <h2>사용가이드</h2>
+    24px을
+    rem, em, vw, vh, %로 보고 싶다. <br /><br />
+    html font-size: 16px <br />
+    부모 font-size: 16px <br />
+    시안 사이즈: 1920 × 1080 <br />
+    컨텐츠 영역: 1200px <br />
+    이라고 하면, <br /><br />
+    입력: <br />
+
+    값(px 기준): 24 <br />
+
+    root font-size: 16 <br />
+
+    부모 font-size: 16 <br />
+
+    화면 너비: 1920 <br />
+
+    화면 높이: 1080 <br />
+
+    부모 width: 1200 <br /><br />
+
+    [변환하기] 버튼 클릭 <br />
+
+    그러면 결과 영역에: <br /><br />
+
+    24px → 몇 rem <br />
+
+    24px → 몇 em <br />
+
+    24px → 몇 vw <br />
+
+    24px → 몇 vh <br />
+
+    24px → 부모 1200px 기준 몇 % <br />
+  </div>
+</div>
+
+  
+<script>
+  function convert() {
+    const px = parseFloat(document.getElementById("pxInput").value);
+    const root = parseFloat(document.getElementById("rootInput").value);
+    const parent = parseFloat(document.getElementById("parentInput").value);
+    const vwBase = parseFloat(document.getElementById("viewportWidth").value);
+    const vhBase = parseFloat(document.getElementById("viewportHeight").value);
+    const parentWidth = parseFloat(document.getElementById("parentWidth").value);
+
+    if (isNaN(px)) {
+      alert("px 값을 입력해주세요.");
+      return;
+    }
+
+    const rem = (px / root).toFixed(4);
+    const em = (px / parent).toFixed(4);
+    const vw = ((px / vwBase) * 100).toFixed(4);
+    const vh = ((px / vhBase) * 100).toFixed(4);
+    const percent = ((px / parentWidth) * 100).toFixed(4);
+
+    document.getElementById("result").innerHTML = `
+      <strong>${px}px 변환 결과</strong>
+      <ul style="list-style: none; padding: 0; margin-top: 15px;">
+        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>rem → <b>${rem}rem</b></span>
+          <button type="button" class="copy remCopy">복사</button>
+        </li>
+        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>em → <b>${em}em</b></span>
+          <button type="button" class="copy emCopy">복사</button>
+        </li>
+        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>vw → <b>${vw}vw</b></span>
+          <button type="button" class="copy vwCopy">복사</button>
+        </li>
+        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>vh → <b>${vh}vh</b></span>
+          <button type="button" class="copy vhCopy">복사</button>
+        </li>
+        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>% → <b>${percent}%</b></span>
+          <button type="button" class="copy percentCopy">복사</button>
+        </li>
+      </ul>
+    `;
+  }
+
+  // 모든 input에 엔터키 이벤트 등록
+  window.addEventListener("load", function() {
+    const inputs = document.querySelectorAll("input");
+    inputs.forEach(input => {
+      input.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          convert();
+        }
+      });
+    });
+  });
+
+  // 복사버튼 클릭시 해당 값 복사
+  document.getElementById("result").addEventListener("click", function(event) {
+    if (event.target.classList.contains("copy")) {
+      const valueToCopy = event.target.previousElementSibling.querySelector("b").innerText;
+      navigator.clipboard.writeText(valueToCopy).then(() => {
+        alert(`${valueToCopy} 가 복사되었습니다.`);
+      });
+    }
+  });
+
+</script>
+</body>
+</html>

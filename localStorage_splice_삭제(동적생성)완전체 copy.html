@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로컬스토리지 array 저장, 불러오기 예제</title>
+</head>
+<body>
+  <!-- 
+    **삭제버튼을 붙여서 각 항목별 삭제기능도 추가 가능 (((localStorage splice 삭제 실전 파일에서 재정리)))**
+      - 배열에서 splice() 등으로 항목 제거 후 다시 저장 및 렌더링
+      - 렌더링은 renderList() 함수 재호출  !
+      
+  -->
+  <div class="container">
+    <input type="text" id="itemInput" placeholder="값 입력">
+    <button id="addBtn">추가</button>
+
+    <ul id="list"></ul>
+
+  </div>
+
+
+  <!-- 
+    **스크립트 동작구조**
+      + end. 코파일럿 정리분
+      - loadList(): localStorage 에서 배열 불러오기 (없으면 빈 배열 반환)
+      - saveList(arr): 배열을 localStorage 에 저장
+      - renderList(arr): 화면에 배열 항목들을 렌더링
+      - removeItem(index): 특정 index 항목 삭제 후 다시 저장 및 렌더링
+      - 추가 버튼 클릭 시: 입력값을 배열에 추가, 저장, 렌더링
+      - 페이지 로드 시: 저장된 배열 불러와서 렌더링
+      + end. 코파일럿 정리분
+      
+      + start. GPT 정리분 : 삭제버튼 클릭 시 
+        - removeItem(index) 호출
+        - 로컬스토리지의 배열 불러오기 : loadList()
+        - splice(index, 1)로 해당 index 항목 삭제
+        - 변경된 배열을 다시 로컬스토리지에 저장 : saveList()
+        - 화면에 다시 렌더링 : renderList()
+      + end. GPT 정리분
+
+
+      **삭제 버튼 동적생성 포함한 쉬운 흐름 예시**
+      -배열 불러오기 → 화면에 그릴 때
+      arr.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '삭제';
+        
+        delBtn.addEventListener('click', () => {
+          removeItem(index);
+        });
+
+        li.appendChild(delBtn);
+        listEl.appendChild(li);
+      });
+      -위 스크립트의 시점에서 HTML에 없던 삭제버튼이 동적 생성(createElement) 되고, 
+      -appendChild로 li에 추가된다. 
+  -->
+
+  <script>
+    const STORAGE_KEY = 'myList';
+
+    // 저장된 배열 불러오기 (없으면 빈 배열 반환)
+    function loadList() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    // 배열 저장
+    function saveList(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    // 화면에 목록 렌더링
+    function renderList(arr) {
+      const listEl = document.getElementById('list');
+      listEl.innerHTML = '';
+
+      arr.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+
+        // 삭제 버튼 생성
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '삭제';
+        delBtn.style.marginLeft = '8px';
+
+        // 삭제 버튼 클릭 이벤트
+        delBtn.addEventListener('click', () => {
+          removeItem(index);
+        });
+
+        li.appendChild(delBtn);
+        listEl.appendChild(li);
+      });
+    }
+
+    // 특정 index 삭제
+    function removeItem(index) {
+      const list = loadList();   // 기존 배열 불러오기
+      list.splice(index, 1);     // index 에 해당하는 요소 삭제
+      saveList(list);            // 로컬스토리지 다시 저장
+      renderList(list);          // 화면 다시 그리기
+    }
+
+    // 추가 버튼
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const input = document.getElementById('itemInput');
+      const value = input.value.trim();
+      if (!value) return;
+
+      const list = loadList();
+      list.push(value);        // 값 추가
+      saveList(list);          // 저장
+      renderList(list);        // 화면 업데이트
+
+      input.value = '';
+    });
+
+    // 페이지 로드 시 저장된 목록 불러오기
+    window.addEventListener('DOMContentLoaded', () => {
+      renderList(loadList());
+    });
+
+  </script>
+</body>
+</html>

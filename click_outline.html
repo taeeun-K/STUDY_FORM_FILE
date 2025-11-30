@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클릭영역 점선테두리 처리</title>
+</head>
+<body>
+  
+  <!-- 클릭시 클릭영역 테두리 투명하게 관련 정리 -->
+<!-- 아래  outline:none 안먹혀서 a 태그에 opacity 0 처리 -->
+  <style> 
+    #evt_kitchenfit .tab-box a {outline: none;} 
+    #evt_kitchenfit .tab-box a:focus {outline: none;} 
+    #evt_kitchenfit .tab-box {position: absolute; left: 0; top:568px; display: flex; justify-content: center; gap:0; width: 100%; z-index: 10;} 
+    #evt_kitchenfit .tab-box a.sec_move {display: block; width: 222px; height: 78px; border-radius: 6px; text-decoration: none; background: tranparent; opacity: 0; cursor: pointer; } 
+  </style>
+
+  <div class="tab-box">
+    <a href="#sec_1" class="sec_move"><span class="hidden">후기 이벤트</span></a>
+    <a href="#sec_2" class="sec_move"><span class="hidden">공유 이벤트</span></a>
+  </div>
+
+
+
+  <!-- GPT 답변 정리본 -->
+  <style>
+    #evt_kitchenfit .tab-box {
+      position: absolute;
+      left: 0;
+      top: 568px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    #evt_kitchenfit .tab-box a.sec_move {
+      display: block;
+      width: 222px;
+      height: 78px;
+      border-radius: 6px;
+      background: transparent;
+      opacity: 0; /* 시각적으로 숨김 */
+      cursor: pointer;
+      text-decoration: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* 🔹 클릭 시(마우스 포커스) outline 제거 */
+    #evt_kitchenfit .tab-box a.sec_move:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* 🔹 키보드 탭 이동 시만 커스텀 포커스 표시 */
+    /* :focus-visible 이 마우스클릭이 아닌 다른 접근방식 (키보드의 탭 등)에 적용할 수 있는 속성이다. */
+    #evt_kitchenfit .tab-box a.sec_move:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.8);
+      outline-offset: 4px;
+      opacity: 1; /* 포커스될 때만 보이게 */
+      transition: opacity 0.2s ease;
+    } 
+
+  </style>
+
+</body>
+</html>

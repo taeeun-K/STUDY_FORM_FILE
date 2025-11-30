@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>복잡한 테이블 예시</title>
+<style>
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  color: #222;
+  margin: 40px;
+  background: #fff;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.6;
+}
+thead th {
+  background: #f5f6f7;
+  padding: 10px 12px;
+}
+th, td {
+  padding: 10px 12px;
+  vertical-align: top;
+}
+th[rowspan] {
+  background: #fafbfc;
+  text-align: center;
+  font-weight: 700;
+}
+td ul {
+  margin: 0;
+  padding-left: 18px;
+}
+td ul li {
+  margin-bottom: 4px;
+}
+</style>
+</head>
+<body>
+
+<table border="1px">
+  <thead>
+    <tr>
+      <th>직무</th>
+      <th>수행업무</th>
+      <th>지원자격</th>
+      <th>우대사항</th>
+      <th>참고사항</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 첫 번째 큰 그룹 -->
+    <tr>
+      <th rowspan="2">객실서비스</th>
+      <td>
+        <ul>
+          <li>객실 예약 응대</li>
+          <li>고객 상담 및 고객 서비스 제공</li>
+          <li>Booking System 예약 및 판매량 관리</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>
+        <ul>
+          <li>학력 제한 없음</li>
+          <li>외국어 능통자 우대</li>
+        </ul>
+      </td>
+      <td>근무지역: 서울</td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li>프론트, 리셉션, 컨시어지 서비스</li>
+          <li>체크인 / 체크아웃 및 고객 응대</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>관련 자격증 소지자</td>
+      <td>근무형태: 교대근무</td>
+    </tr>
+
+    <!-- 두 번째 그룹 -->
+    <tr>
+      <th rowspan="2">벨/도어</th>
+      <td>
+        <ul>
+          <li>벨/도어 고객 안내 서비스</li>
+          <li>Rooming 서비스, 짐 이동</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>서비스 마인드 보유자</td>
+      <td>근무지역: 서울</td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li>고객 이동 동선 안내 및 VIP 고객 응대</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>밝은 성격, 용모 단정</td>
+      <td>근무형태: 교대근무</td>
+    </tr>
+
+    <!-- 세 번째 그룹 -->
+    <tr>
+      <th rowspan="2">하우스키핑</th>
+      <td>
+        <ul>
+          <li>객실 정비 및 침구 정리</li>
+          <li>어메니티 보충 및 청소</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>세부사항에 꼼꼼한 성격</td>
+      <td>근무지역: 서울</td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li>SBS(Service by Shilla) 운영</li>
+        </ul>
+      </td>
+      <td>신입 가능</td>
+      <td>서비스 유경험자 우대</td>
+      <td>근무형태: 교대근무</td>
+    </tr>
+
+    <!-- 네 번째 그룹 -->
+    <tr>
+      <th rowspan="1">GAO</th>
+      <td>
+        <ul>
+          <li>헬스장 및 피트니스 운영 관리</li>
+          <li>Fitness Center 관리 및 응대</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>서비스 마인드 보유자</td>
+      <td>근무지역: 제주</td>
+    </tr>
+
+    <!-- 다섯 번째 그룹 -->
+    <tr>
+      <th rowspan="2">조리</th>
+      <td>
+        <ul>
+          <li>양식 / 한식 조리 및 식음 서비스</li>
+          <li>메뉴 개발 및 식자재 관리</li>
+        </ul>
+      </td>
+      <td>조리기능사 자격 소지자</td>
+      <td>조리경력자 우대</td>
+      <td>근무지역: 전국</td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li>식자재 발주 및 구매 관리</li>
+        </ul>
+      </td>
+      <td>전공무관</td>
+      <td>관련 경력자 우대</td>
+      <td>정규직 전환 가능</td>
+    </tr>
+
+    <!-- 여섯 번째 그룹 -->
+    <tr>
+      <th rowspan="2">서빙</th>
+      <td>
+        <ul>
+          <li>연회 및 식음 서비스</li>
+          <li>고객 안내 및 서빙</li>
+        </ul>
+      </td>
+      <td>서비스업 경험자</td>
+      <td>식음 서비스 경력자 우대</td>
+      <td>근무지역: 서울, 부산</td>
+    </tr>
+    <tr>
+      <td>
+        <ul>
+          <li>행사 및 케이터링 지원</li>
+        </ul>
+      </td>
+      <td>신입 가능</td>
+      <td>서비스 마인드 보유자</td>
+      <td>근무복 지급</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

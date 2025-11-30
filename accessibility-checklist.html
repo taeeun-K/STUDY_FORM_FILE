@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>웹접근성 체크리스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "맑은 고딕", sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+    }
+
+    header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header h1 {
+      font-size: 26px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title span.badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: #3b5bdb;
+    }
+
+    .check-list {
+      list-style: none;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .check-item:last-child {
+      border-bottom: none;
+    }
+
+    .check-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .check-label {
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .check-desc {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .section-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999;
+      text-align: right;
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 16px 14px 28px;
+      }
+      header h1 {
+        font-size: 22px;
+      }
+      .section {
+        padding: 16px 14px;
+      }
+      .section-title {
+        font-size: 16px;
+      }
+      .check-label {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>웹접근성 체크리스트</h1>
+      <p>퍼블리셔용 점검 템플릿 · 페이지별/퍼블리싱 단위 점검용</p>
+    </header>
+
+    <!-- 1. 대체 텍스트 -->
+    <section class="section" aria-labelledby="sec1-title">
+      <h2 id="sec1-title" class="section-title">
+        1. 대체 텍스트(ALT / BLIND TEXT)
+        <span class="badge">이미지</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="alt-1">
+          <label for="alt-1" class="check-label">
+            의미 있는 이미지에 적절한 대체 텍스트가 제공되었는가?
+            <div class="check-desc">상품 이미지, 버튼 이미지 등 기능/내용 전달이 필요한 경우 alt 또는 blind 텍스트 필수</div>
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="alt-2">
+          <label for="alt-2" class="check-label">
+            장식용 이미지는 alt="" 또는 CSS background로 처리했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="alt-3">
+          <label for="alt-3" class="check-label">
+            통이미지(배너 등) 사용 시 별도 blind 영역에 전체 내용을 제공했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="alt-4">
+          <label for="alt-4" class="check-label">
+            아이콘 버튼(닫기, 메뉴 등)에 aria-label 또는 blind 텍스트가 제공되었는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 2. 키보드 접근성 -->
+    <section class="section" aria-labelledby="sec2-title">
+      <h2 id="sec2-title" class="section-title">
+        2. 키보드 접근성
+        <span class="badge">Tab / Focus</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="key-1">
+          <label for="key-1" class="check-label">
+            Tab 키로 모든 인터랙션 요소(링크, 버튼, 폼 등)에 접근이 가능한가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="key-2">
+          <label for="key-2" class="check-label">
+            포커스가 이동했을 때 현재 위치가 시각적으로 명확하게 보이는가?
+            <div class="check-desc">outline을 무조건 제거하지 않고, 대체 스타일 제공</div>
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="key-3">
+          <label for="key-3" class="check-label">
+            커스텀 컴포넌트(div, span 등)를 버튼/링크처럼 사용할 경우 키보드 포커스 및 Enter/Space 동작이 가능한가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="key-4">
+          <label for="key-4" class="check-label">
+            모달이 열릴 때 포커스가 모달 내부로 이동하고, 닫힐 때 원래 위치로 돌아오는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3. 구조와 시맨틱 -->
+    <section class="section" aria-labelledby="sec3-title">
+      <h2 id="sec3-title" class="section-title">
+        3. 구조와 시맨틱 요소
+        <span class="badge">HTML 구조</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="sem-1">
+          <label for="sem-1" class="check-label">
+            제목 태그(h1~h6)가 논리적인 계층 구조를 가지고 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="sem-2">
+          <label for="sem-2" class="check-label">
+            main, header, footer, nav, section, article, aside 등 시맨틱 태그를 적절히 사용했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="sem-3">
+          <label for="sem-3" class="check-label">
+            목록은 ul/li, ol/li, 정의 목록은 dl/dt/dd 구조로 올바르게 사용했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="sem-4">
+          <label for="sem-4" class="check-label">
+            테이블은 caption, th, scope, thead/tbody 등 시맨틱 구조를 갖추고 있는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4. ARIA 사용 -->
+    <section class="section" aria-labelledby="sec4-title">
+      <h2 id="sec4-title" class="section-title">
+        4. ARIA 속성 사용
+        <span class="badge">ARIA</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="aria-1">
+          <label for="aria-1" class="check-label">
+            aria-label, aria-labelledby, aria-describedby를 적절히 사용하여 이름/설명을 제공했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="aria-2">
+          <label for="aria-2" class="check-label">
+            아코디언/탭/드롭다운 등에 aria-controls, aria-expanded를 사용하여 상태를 전달했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="aria-3">
+          <label for="aria-3" class="check-label">
+            role="dialog", role="tablist", role="tab", role="tabpanel" 등 필요한 역할(role)을 적절히 부여했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="aria-4">
+          <label for="aria-4" class="check-label">
+            HTML 시맨틱 요소로 해결 가능한 부분에 ARIA를 과도하게 사용하지 않았는가?
+          </label>
+        </li>
+      </ul>
+      <p class="section-note">※ ARIA는 “추가 보조” 개념으로, 기본 HTML 구조가 우선.</p>
+    </section>
+
+    <!-- 5. 색 대비 -->
+    <section class="section" aria-labelledby="sec5-title">
+      <h2 id="sec5-title" class="section-title">
+        5. 색 대비 및 시각 디자인
+        <span class="badge">비주얼</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="color-1">
+          <label for="color-1" class="check-label">
+            본문 텍스트와 배경 간의 대비율이 4.5:1 이상(일반 텍스트 기준)인지 확인했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="color-2">
+          <label for="color-2" class="check-label">
+            링크/버튼 텍스트가 일반 텍스트와 색·형태로 명확히 구분되는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="color-3">
+          <label for="color-3" class="check-label">
+            포커스 상태에서 충분히 눈에 띄는 스타일(밑줄, 테두리 등)을 제공했는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 6. 미디어 -->
+    <section class="section" aria-labelledby="sec6-title">
+      <h2 id="sec6-title" class="section-title">
+        6. 미디어(동영상/오디오/롤링 배너)
+        <span class="badge">미디어</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="media-1">
+          <label for="media-1" class="check-label">
+            자동 재생되는 소리가 있으면 사용자가 재생/일시정지를 제어할 수 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="media-2">
+          <label for="media-2" class="check-label">
+            중요한 동영상 콘텐츠에는 캡션(자막) 또는 대체 수단을 제공했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="media-3">
+          <label for="media-3" class="check-label">
+            자동 롤링 배너/슬라이드에 정지/이동 버튼을 제공했는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 7. 애니메이션/인터랙션 -->
+    <section class="section" aria-labelledby="sec7-title">
+      <h2 id="sec7-title" class="section-title">
+        7. 애니메이션 및 인터랙션
+        <span class="badge">UI 동작</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="ani-1">
+          <label for="ani-1" class="check-label">
+            모달은 ESC 키로 닫을 수 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="ani-2">
+          <label for="ani-2" class="check-label">
+            아코디언/탭 등 상태가 변하는 UI는 스크린리더에 상태 변화(열림/닫힘 등)가 전달되는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="ani-3">
+          <label for="ani-3" class="check-label">
+            심하게 깜빡이는 콘텐츠(광과민성 발작 유발 가능)가 없는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 8. 스크린리더 테스트 -->
+    <section class="section" aria-labelledby="sec8-title">
+      <h2 id="sec8-title" class="section-title">
+        8. 스크린리더 테스트
+        <span class="badge">SR 테스트</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="sr-1">
+          <label for="sr-1" class="check-label">
+            NVDA/VoiceOver 등으로 주요 UI(메뉴, 탭, 모달, 아코디언)를 실제로 탐색해보았는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="sr-2">
+          <label for="sr-2" class="check-label">
+            버튼/링크의 이름과 목적이 스크린리더에서 명확히 인식되는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="sr-3">
+          <label for="sr-3" class="check-label">
+            숨김 텍스트(blind)가 불필요하게 중복 읽히지 않는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 9. 폼 -->
+    <section class="section" aria-labelledby="sec9-title">
+      <h2 id="sec9-title" class="section-title">
+        9. 폼(Form) 요소 접근성
+        <span class="badge">폼</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="form-1">
+          <label for="form-1" class="check-label">
+            각 입력 요소에 label for="id"가 올바르게 연결되어 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="form-2">
+          <label for="form-2" class="check-label">
+            라디오 버튼/체크박스 그룹은 fieldset + legend로 그룹의 의미를 제공하는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="form-3">
+          <label for="form-3" class="check-label">
+            에러 메시지는 aria-describedby 등으로 입력 요소와 연결되어 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="form-4">
+          <label for="form-4" class="check-label">
+            placeholder만으로 라벨을 대체하지 않고, 시각적으로도 label이 존재하는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 10. 기타 -->
+    <section class="section" aria-labelledby="sec10-title">
+      <h2 id="sec10-title" class="section-title">
+        10. 기타 기술적 점검
+        <span class="badge">기타</span>
+      </h2>
+      <ul class="check-list">
+        <li class="check-item">
+          <input type="checkbox" id="etc-1">
+          <label for="etc-1" class="check-label">
+            display:none / visibility:hidden 등으로 숨긴 요소가 접근성에 영향을 주지 않도록 처리했는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="etc-2">
+          <label for="etc-2" class="check-label">
+            주요 스크립트 오류가 없어 UI 제어(모달, 탭, 아코디언 등)가 정상 동작하는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="etc-3">
+          <label for="etc-3" class="check-label">
+            새 창으로 열리는 링크에 “(새 창)” 안내 텍스트 또는 적절한 대체 설명이 있는가?
+          </label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="etc-4">
+          <label for="etc-4" class="check-label">
+            키보드만으로 사용 시 빠져나올 수 없는 키보드 트랩이 없는가?
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      ※ 프로젝트별/페이지별 점검 후, 필요 시 이력/이슈를 별도 문서 또는 업무일지에 기록
+    </footer>
+  </div>
+</body>
+</html>

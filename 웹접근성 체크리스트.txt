@@ -1,0 +1,161 @@
+- 퍼블리셔 필수 웹접근성 체크리스트 (실무용)
+
+1. 이미지(IMG) 접근성
+✔  ALT 제공 여부
+정보 전달 이미지 → alt 필수
+장식용 이미지 → alt="" (비워둠)
+
+✔ CSS background-image
+중요한 정보면 background로 넣지 않기
+넣어야 한다면 대체텍스트 별도 제공(blind 영역 등)
+
+
+
+2. 버튼/링크 구분
+✔ 클릭 이벤트는 반드시 <button> 또는 <a> 사용
+div/span에 onclick 금지 (스크린리더 인식 안 됨)
+링크 이동 → <a>
+동작(trigger) → <button>
+
+✔ 링크는 href 비워두지 않기 (href="#" 또는 실제 URL)
+
+
+
+3. 포커스 이동 & 키보드 접근성
+✔ Tab으로 모든 인터랙션 요소 접근 가능해야 함
+숨겨진 버튼, display:none 상태인 요소에 tabindex 넣으면 안 됨
+
+✔ 클릭 가능한 요소는 Enter/Space로 실행 가능해야 함
+
+✔ 포커스가 사라지는 구간 없어야 함
+modal open → 포커스 모달 내부로
+modal close → 원래 버튼으로 포커스 복귀
+
+
+
+4. 모달/레이어 팝업 접근성
+(실무에서 제일 많이 틀리는 부분)
+✔ 필수 속성
+role="dialog"
+aria-labelledby="modalTitleID"
+aria-describedby="modalDescID"
+
+✔ 모달 오픈 시 포커스 이동
+→ 첫 요소로 넘어가야 함
+
+✔ 모달 닫기 시
+→ 원래 클릭한 버튼으로 포커스 돌아와야 함
+
+✔ 모달 뒤의 요소는 Tab 진입 불가해야 함
+(포커스 트랩 필요)
+
+
+
+5. Headings 구조(H1~H6)
+✔ 시맨틱 구조 지켜야 함
+페이지당 H1은 하나
+제목 순서 H2 → H3 → H4 자연스럽게
+
+✔ 단순히 크기 때문에 h 태그를 쓰지 않기
+→ 스타일은 CSS로
+
+
+
+6. 폼(Form) 접근성
+✔ label과 input 연계 필수
+<label for="email">이메일</label>
+<input id="email">
+
+✔ 에러 메시지는 aria-live로 읽히게 해야 함
+aria-live="polite" 또는 assertive
+role="alert" 가능
+
+✔ placeholder = label 대체 X
+placeholder만 있는 input은 접근성 위배
+
+
+
+7. 색 대비(Contrast)
+✔ 텍스트와 배경의 대비는 최소 4.5:1 이상
+버튼 텍스트
+본문 텍스트
+링크 텍스트 주의
+
+✔ 배경 이미지 위 텍스트는 반드시 대비 
+
+
+
+8. 자동 넘김 요소(auto carousel)
+✔ 자동 재생 슬라이더는 자동 넘김 막기 버튼 필요
+(일시정지/재생 버튼)
+
+✔ 슬라이드 변화는 스크린리더가 감지 가능해야 함
+aria-live="polite" 또는 aria-live="assertive"
+
+
+
+9. 비디오/오디오
+✔ 자막(on/off) 제공
+
+✔ 자동 재생 금지
+(혹은 mute 상태 mandatory)
+
+
+
+10. 숨김 텍스트 제공 방식
+✔ 중요한 정보는 .blind, .sr-only 방식으로 숨기기
+display:none / visibility:hidden 은 스크린리더도 읽지 못함
+접근성용 텍스트는 반드시 스크린리더가 읽을 수 있는 방식으로 숨기기
+
+
+
+11. 키보드 포커스 스타일
+✔ focus-visible 스타일이 반드시 있어야 함
+outline 제거 금지
+focus 시 사용자에게 시각적 표시 필요
+
+
+
+12. 자동 이동/시간 제한 요소
+✔ 일정 시간 지나면 자동 이동되는 UI 금지
+(팝업 닫힘, 페이지 이동 등)
+
+✔ 만약 꼭 필요하다면 사용자 제어권 제공
+
+
+
+13. 반복 링크 건너뛰기 (skip to content)
+페이지 상단에 아래 요소 필요:
+<a href="#main" class="skip-nav">본문 바로가기</a>
+키보드 사용자에게 매우 중요.
+
+
+
+14. role 사용 시 올바른 사용
+carousel → role="region" + aria-label
+dialog → role="dialog"
+navigation → <nav>
+잘못된 role은 접근성을 오히려 망침!
+
+
+
+15. 의미 없는 아이콘은 aria-hidden="true"
+예:
+<i class="icon" aria-hidden="true"></i>
+그러면 스크린리더가 “아이콘”이라고 읽지 않음.
+
+
+
+
+***결론: 퍼블리셔가 꼭 지켜야 하는 항목 TOP 7
+실무 기준으로 제일 중요하고, 검사에서 거의 항상 적발됨:
+
+1.alt 적절히 제공하기
+2.label-input 연결
+3.버튼/링크 시맨틱 태그 사용
+4.focus 스타일 지우지 않기
+5.modal 접근성(role/aria + 포커스 이동)
+6.키보드로 모든 요소 접근 가능하게 하기
+7.색 대비 기준 충족하기
+
+이 7가지만 제대로 지켜도 웹접근성 평가에서 80%는 통과 가능.

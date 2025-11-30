@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구인구직페이지 테이블 레이아웃</title>
+</head>
+<body>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+        }
+    </style>
+
+    <table border="1px">
+        <caption>
+            <span class="blind">[제주 신라호텔] 정보</span>
+        </caption>
+        <colgroup>
+            <col width="6%">
+            <col width="9%">
+            <col width="26%">
+            <col width="22%">
+            <col width="*">
+            <col width="13.4%">
+        </colgroup>
+        <thead class="tbpd10 font15">
+            <tr>
+                <th scope="col" class="cell_1" colspan="2">직무</th>
+                <th scope="col" class="cell_3">수행업무</th>
+                <th scope="col" class="cell_4">지원자격</th>
+                <th scope="col" class="cell_5">우대사항</th>
+                <th scope="col" class="cell_6">참고사항</th>
+            </tr>
+        </thead>
+        <!-- 테이블 내용이 많을경우 사용 tbody에 사용해주세요 tbpd10/tbpd5, font15(권장) font14 -->
+        <tbody class="tbpd5 font14">
+            <tr>
+                <td class="cell_1" rowspan="4">
+                    <strong>객실<span class="br"></span>서비스</strong>
+                </td>
+                <td class="cell_2">
+                    <strong>객실예약</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            객실 예약 담당
+                            <ul class="icnBul_2">
+                                <li>고객 전화 응대 및 고객 <span class="br"></span>서비스 제공</li>
+                                <li>Booking System 예약 및 <span class="br"></span>멤버십 관리</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>어학 자격 소지자 또는 외국어 <span class="br"></span>가능자</li>
+                    </ul>
+                </td>
+                <td class="cell_6 lt">
+                    <dl class="dlList icnBul_1">
+                        <dt><strong>근무지역</strong></dt>
+                        <dd>서울</dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_2">
+                    <strong>프론트<span class="br"></span>데스크</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            프론트 데스크 고객서비스
+                            <ul class="icnBul_2">
+                                <li>체크인/체크아웃, 컨시어지 <span class="br"></span>서비스 등</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            어학 자격소지자<span class="br"></span>(세부기준 하단 참고)
+                            <p class="desc">필수) 영어 : OPIc IM 이상 <span class="br"></span>또는 토익스피킹 6급 이상</p>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>
+                            제2외국어 어학 자격 소지자 <span class="br"></span>우대
+                            <ul class="icnBul_2">
+                                <li>중국어 : TSC 4급 이상 또는 <span class="br"></span>新HSK 5급 이상 또는 OPIc <span class="br"></span>IM 이상</li>
+                                <li>일본어 : JLPT N3 이상 또는<span class="br"></span> JPT 660점 이상</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_6 lt" rowspan="8">
+                    <dl class="dlList icnBul_1">
+                        <dt><strong>근무지역</strong></dt>
+                        <dd>제주</dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_2">
+                    <strong>벨/도어</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            벨/도어 데스크 고객서비스
+                            <ul class="icnBul_2">
+                                <li>도어서비스, 안내</li>
+                                <li>Rooming 서비스, 짐서비스 등</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>외국어 가능자</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_2">
+                    <strong>하우스키핑</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            하우스키핑
+                            <ul class="icnBul_2">
+                                <li>객실 점검 / 품질 관리 및 고객 <span class="br"></span>서비스 제공</li>
+                            </ul>
+                        </li>
+                        <li>
+                            SBS(Service by Shilla)
+                            <ul class="icnBul_2">
+                                <li>고객 전화 응대 및 서비스 제공</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>외국어 가능자</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_1" rowspan="2">
+                    <strong>고객<span class="br"></span>서비스</strong>
+                </td>
+                <td class="cell_2">
+                    <strong>식음</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            식음 및 연회 고객 식음료 서비스
+                            <ul class="icnBul_2">
+                                <li>식음 예약</li>
+                                <li>식음업장 운영 및 지원 업무</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>외국어 가능자</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_2">
+                    <strong>GAO</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>GAO 프로그램 진행 및 준비<span class="br"></span> (엑티비티 활동 및 어린이 프로그램 <span class="br"></span>진행 등)</li>
+                        <li>Fitness Center준비 및 운영<span class="br"></span> (고객서비스/ 품질관리 等)</li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>외국어 가능자</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_1" colspan="2">
+                    <strong>조리</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            음식 조리 /메뉴 개발 및 고객서비스
+                            <ul class="icnBul_2">
+                                <li>한식, 양식, 일식, 제과ㆍ제빵</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4">조리 기능사 자격 소지자</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                        <li>서비스 마인드 보유자</li>
+                        <li>외국어 가능자</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_1" colspan="2">
+                    <strong>시설</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            시설(설비)
+                            <ul class="icnBul_2">
+                                <li>
+                                    관내 시설 설비 관리, 유지보수
+                                    <ul class="icnBul_3">
+                                        <li>보일러 等 투자, 수선 공사 집행</li>
+                                        <li>공사 현장 안전, 품질, 공기 관리</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(공조)
+                            <ul class="icnBul_2">
+                                <li>
+                                    관내 시설 관리, 유지보수
+                                    <ul class="icnBul_3">
+                                        <li>히트펌프/공조/배관설비 업무</li>
+                                        <li>공사 현장 안전, 품질, 공기 관리</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(전기)
+                            <ul class="icnBul_2">
+                                <li>
+                                    관내 시설 관리, 유지보수
+                                    <ul class="icnBul_3">
+                                        <li>전기/약전/연회/음향 업무</li>
+                                        <li>공사 현장 안전, 품질, 공기 관리</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(소방)
+                            <ul class="icnBul_2">
+                                <li>
+                                    소방안전 업무
+                                    <ul class="icnBul_3">
+                                        <li>소방 시설물 관리, 훈련, 점검 등</li>
+                                        <li>대형 행사 사전 안전 검점, <span class="br"></span>공사장 안전 관리</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_4 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            시설(설비)
+                            <ul class="icnBul_2">
+                                <li>에너지관리기능사 이상 <span class="br"></span>자격 보유</li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(공조)
+                            <ul class="icnBul_2">
+                                <li>공조냉동기계 기능사 이상 <span class="br"></span>자격보유</li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(전기)
+                            <ul class="icnBul_2">
+                                <li>전기산업기사 이상 <span class="br"></span>자격보유</li>
+                            </ul>
+                        </li>
+                        <li>
+                            시설(소방)
+                            <ul class="icnBul_2">
+                                <li>소방설비 산업기사 이상 <span class="br"></span>자격 보유</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>
+                            시설(설비/공조/전기/소방)
+                            <ul class="icnBul_2">
+                                <li>직무 관련 업무 경험자</li>
+                                <p class="desc">소방의 경우, <span class="br"></span>소방관련 학과 우대<span class="br"></span>(소방, 화공, 전기, 안전 등)</p>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="cell_1" colspan="2">
+                    <strong>구매</strong>
+                </td>
+                <td class="cell_3 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>식자재 및 소모품 구매 업무</li>
+                        <li>식자재 및 일반자재 검수 업무</li>
+                        <li>납품업체 응대 및 관리</li>
+                    </ul>
+                </td>
+                <td class="cell_4">전공무관</td>
+                <td class="cell_5 lt">
+                    <ul class="ulList icnBul_1">
+                        <li>직무 관련 업무 경험자</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

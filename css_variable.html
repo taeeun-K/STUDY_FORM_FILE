@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 변수 컬러 예시</title>
+
+  <style>
+    /* ==============================
+       🎨 CSS 변수 (기본 시스템)
+       메인 사이트의 전역변수가 있을 경우 충돌 가능성이 있기 때문에 
+       변수명을 --color-big-btn, --color-event-title 등으로 구체적으로 명명하는 것이 좋다.
+    ============================== */
+    :root {
+      --color-primary: #3498db;
+      --color-secondary: #f1c40f;
+      --color-accent: #e74c3c;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-text: #333333;
+      --color-text-light: #777777;
+      --color-border: #e0e0e0;
+
+      --font-family-base: "Pretendard", "Noto Sans KR", sans-serif;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --radius-md: 8px;
+      --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ==============================
+       🧱 기본 스타일
+    ============================== */
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-family-base);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--color-primary);
+      color: #fff;
+      padding: var(--space-md) var(--space-lg);
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 var(--space-lg);
+    }
+
+    .card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h2 {
+      color: var(--color-primary);
+      margin-top: 0;
+    }
+
+    .card p {
+      color: var(--color-text-light);
+    }
+
+    .button {
+      background-color: var(--color-secondary);
+      color: #000;
+      padding: var(--space-sm) var(--space-md);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: var(--color-accent);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    퍼블리셔 컬러 시스템 예시 🌈
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>메인 컬러 카드</h2>
+      <p>
+        이 카드는 <strong>--color-primary</strong> 변수를 사용하여 메인 색상을 적용했습니다.
+      </p>
+      <button class="button">자세히 보기</button>
+    </div>
+
+    <div class="card">
+      <h2 style="color: var(--color-accent);">포인트 컬러 카드</h2>
+      <p>
+        포인트 컬러(--color-accent)를 이용해 시각적으로 강조한 예시입니다.
+      </p>
+      <button class="button">확인하기</button>
+    </div>
+  </main>
+</body>
+</html>

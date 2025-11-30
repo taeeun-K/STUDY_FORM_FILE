@@ -1,0 +1,150 @@
+role은 “스크린리더에게 이 요소가 어떤 역할을 하는지 알려주는 속성”
+즉, role 속성은 요소의 의미(역할)를 명확하게 전달해서
+스크린리더를 사용하는 사용자가 페이지 구조와 기능을 이해할 수 있도록 해주는 접근성 속성.
+
+예)
+<div role="button">열기</div>  => div 이지만 사용자에게 이건 버튼이야 라고 알려줌
+<nav role="navigation">  => 여기는 네비게이션 영역이다 라고 알려줌
+
+<div role="tablist">
+  <button role="tab">Tab1</button>
+  <button role="tab">Tab2</button>
+</div>
+<div role="tabpanel">내용1</div>
+==>
+tablist => “탭 목록입니다”
+tab => “탭 1 / 선택됨”
+tabpanel =>“탭 패널 내용 시작”
+
+→ 화면이 안 보여도 UI 구조를 완전히 파악 가능.
+
+
+!!!중요한 포인트
+● role은 “무조건 넣어야 하는 것”은 아님
+👉 HTML 기본 태그가 이미 의미를 갖고 있으면 role을 안 넣어도 됨.
+예:
+<button>은 role="button" 필요 없음
+<nav>는 role="navigation" 없어도 됨
+● role은 ‘보완’ 개념
+→ 의미를 명확히 해야 할 때만 사용!!!
+
+
+***role 사용 가이드 — 실무용 표 (정리본)  => role가이드_table.html 로 재정리함
+| 상황                                | role을 **써야 하는 경우**                                                            | role을 **쓰면 안 되는 경우**                                   |
+| --------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------ |
+| **1. div/span만으로 UI를 만들 때**       | 실제 의미를 부여하기 위해 필요<br>예: `<div role="button">`                                 | div인데 실제 버튼 기능도 없고 단순 레이아웃만 담당할 경우                     |
+| **2. HTML 시맨틱 태그가 없는 경우**         | 목록 UI인데 `<div>`로 만들었다면 `role="list"` / `role="listitem"`                      | 시맨틱 태그(`<ul>`, `<li>`)를 쓸 수 있는데도 div로 억지로 role만 붙임     |
+| **3. 모달/팝업 만들 때**                 | `<div role="dialog">` 필수<br>+ `aria-labelledby` `aria-describedby`            | modal인데 role=dialog 안 넣고 div만 사용하면 ❌                   |
+| **4. 탭/아코디언 같은 인터랙션 UI**          | tab, tablist, tabpanel 사용                                                     | HTML만으로 시맨틱 구조 만들 수 없다고 해도 role을 엉뚱하게 사용하는 경우          |
+| **5. Landmark 지정이 필요한 큰 영역**      | header → `role="banner"`<br>nav → `role="navigation"`<br>main → `role="main"` | 이미 `<nav>`, `<main>` 등 시맨틱 태그 쓰고 있으면 role 중복 필요 없음     |
+| **6. 스크린리더가 자동으로 읽어야 하는 영역**      | 에러 메시지, 알림 → `role="alert"`                                                   | 일반 텍스트나 설명문에 role="alert" 쓰면 스크린리더가 계속 끼어들어 혼란 발생      |
+| **7. section에 제목이 존재하고 영역 구분 필요** | section → `role="region"` + aria-label                                        | 제목이 없거나 의미 없는 구역인데 괜히 region 붙이면 안 됨                   |
+| **8. 단순 아이콘**                     | 시각적 장식 아이콘은 `aria-hidden="true"`                                              | 아이콘에 의미가 있는데 aria-hidden 넣어버리면 ❌ (예: 검색버튼 아이콘)         |
+| **9. table 요소**                   | div 기반 그리드 UI인데 스크린리더에서 테이블처럼 읽혀야 할 때 `role="table"`                          | 실제 `<table>` 쓰는 상황 + role 중복(필요 없음)                    |
+| **10. 입력 영역**                     | custom checkbox, switch 같은 UI → `role="checkbox"`, `role="switch"`            | 기본 `<input type="checkbox">`에는 role 넣으면 안 됨 (이미 의미 충분) |
+| **11. 메뉴 UI**                     | 드롭다운 메뉴 → `role="menu"` `role="menuitem"`                                     | 네비게이션 메뉴는 일반적으로 menu role 쓰지 않음 (오해의 소지 있음)            |
+| **12. 단순한 텍스트/레이아웃 요소**           | role="presentation" 또는 role="none"으로 의미 제거                                    | 의미 있는 요소(h1, h2)인데 presentation 넣으면 스크린리더가 인식 못함       |
+
+
+
+
+
+
+
+****************ARIA role 전체 리스트 (ARIA 1.2 기준)
+
+1)  Abstract Roles (추상 역할 — 직접 사용하지 않음)
+
+-   roletype
+-   structure
+-   widget
+-   command
+-   composite
+-   input
+-   range
+-   section
+-   sectionhead
+-   select
+-   window
+
+2)  Landmark Roles (랜드마크 역할)
+
+-   banner
+-   navigation
+-   main
+-   contentinfo
+-   complementary
+-   search
+-   form
+-   region
+-   none / presentation
+
+3)  Document Structure Roles
+
+-   article
+-   section
+-   note
+-   blockquote
+-   caption
+-   cell
+-   columnheader
+-   rowheader
+-   definition
+-   directory
+-   document
+-   feed
+-   figure
+-   group
+-   heading
+-   img
+-   list
+-   listitem
+-   math
+-   none / presentation
+-   paragraph
+-   separator
+-   table
+-   term
+-   toolbar
+
+4)  Widget Roles (상호작용 UI) [명령/버튼]
+
+-   button
+-   link
+-   menuitem
+-   menuitemcheckbox
+-   menuitemradio
+
+[입력 요소] - checkbox - radio - textbox - searchbox - spinbutton -
+slider - switch
+
+[선택/목록] - combobox - listbox - option - tree - treeitem - grid -
+gridcell
+
+[탭] - tab - tablist - tabpanel
+
+[메뉴] - menu - menubar
+
+[상태 표시] - progressbar - scrollbar - status
+
+[기타] - dialog - tooltip - alert - log - timer - toolbar - separator
+
+5)  Live Region Roles
+
+-   alert
+-   status
+-   log
+-   marquee
+-   timer
+
+6)  Window Roles
+
+-   dialog
+-   alertdialog
+
+퍼블리셔 실무에서 자주 쓰는 TOP 12 - main - navigation - banner -
+contentinfo - region - dialog - alert - button - tab - tabpanel -
+tablist - tooltip
+
+사용하면 안 되는 role - widget - sectionhead - range - window - input -
+command - structure - roletype

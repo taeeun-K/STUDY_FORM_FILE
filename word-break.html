@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>word-break 테스트</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    .box {
+        width: 180px;
+        border: 2px solid #333;
+        padding: 10px;
+        margin-bottom: 25px;
+        font-size: 15px;
+        background: #fafafa;
+    }
+    .label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h2>word-break 테스트 예제</h2>
+<p>아래 박스는 width 180px 안에 같은 문장을 넣고,<br>속성만 다르게 지정한 결과야.</p>
+
+<hr>
+
+<div class="label">1) word-break: normal (기본값)</div>
+<div class="box" style="word-break: normal;">
+    SuperLongWordThatDoesNotBreak  
+    한국어줄바꿈테스트입니다한국어줄바꿈테스트입니다
+</div>
+
+<div class="label">2) word-break: break-all (영단어/한글 전부 강제 줄바꿈)</div>
+<div class="box" style="word-break: break-all;">
+    SuperLongWordThatDoesNotBreak  
+    한국어줄바꿈테스트입니다한국어줄바꿈테스트입니다
+</div>
+
+<div class="label">3) word-break: keep-all (한국어 단어는 절대 안 깨짐)</div>
+<div class="box" style="word-break: keep-all;">
+    SuperLongWordThatDoesNotBreak  
+    한국어줄바꿈테스트입 니다한국어줄바꿈 테스트입니다
+</div>
+
+<div class="label">4) overflow-wrap: break-word (너무 길 때만 깨짐)</div>
+<div class="box" style="overflow-wrap: break-word;">
+    SuperLongWordThatDoesNotBreak  
+    한국어줄바꿈테스트입니다한국어줄바꿈테스트입니다
+</div>
+
+</body>
+</html>

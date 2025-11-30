@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로컬스토리지 실전 폼</title>
+</head>
+<body>
+  <input type="text" id="userName" placeholder="이름을 입력하세요">
+  <button type="button" id="saveBtn">저장</button>
+  <button type="button" id="loadBtn">불러오기</button>
+
+  <div class="result_txt_box">
+    <p class="result_txt"></p>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('userName');
+    const saveBtn = document.getElementById('saveBtn');
+    const STORAGE_KEY = 'userName';
+
+    // 1) 페이지 로드될 때 저장된 값 불러오기
+    const savedValue = localStorage.getItem(STORAGE_KEY);
+    if (savedValue) {
+      input.value = savedValue;
+      const resultTxt = document.querySelector('.result_txt');
+      resultTxt.textContent = `불러온 이름: ${savedValue}`;
+    }
+
+    // 2) 버튼 클릭 시 불러오기
+    const loadBtn = document.getElementById('loadBtn');
+    loadBtn.addEventListener('click', function () {
+      const savedValue = localStorage.getItem(STORAGE_KEY);
+      const resultTxt = document.querySelector('.result_txt');
+      if (savedValue) {
+        input.value = savedValue;
+        resultTxt.textContent = `불러온 이름: ${savedValue}`;
+      } else {
+        alert('저장된 값이 없습니다.');
+      }
+    });
+
+    // 3) 버튼 클릭 시 저장
+    saveBtn.addEventListener('click', function () {
+      const value = input.value.trim();
+      localStorage.setItem(STORAGE_KEY, value);
+      alert('저장되었습니다!');
+    });
+  });
+
+  </script>
+</body>
+</html>

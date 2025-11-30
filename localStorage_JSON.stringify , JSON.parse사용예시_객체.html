@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>LocalStorage 객체 저장 예시</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, "맑은 고딕", sans-serif;
+      padding: 30px;
+      background: #f5f5f5;
+    }
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .form-row {
+      margin-bottom: 12px;
+    }
+    .form-row label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .form-row input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .btn-area {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-area button {
+      flex: 1;
+      padding: 8px 0;
+      border: 0;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-save { background: #4caf50; color: #fff; }
+    .btn-load { background: #2196f3; color: #fff; }
+    .btn-clear { background: #f44336; color: #fff; }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>localStorage 객체 저장 / 불러오기 예시</h1>
+
+  <div class="form-row">
+    <label for="name">이름</label>
+    <input type="text" id="name" placeholder="예: 김태은">
+  </div>
+
+  <div class="form-row">
+    <label for="age">나이</label>
+    <input type="number" id="age" placeholder="예: 26">
+  </div>
+
+  <div class="form-row">
+    <label for="job">직업</label>
+    <input type="text" id="job" placeholder="예: 퍼블리셔">
+  </div>
+
+  <div class="btn-area">
+    <button type="button" class="btn-save" id="btnSave">저장하기</button>
+    <button type="button" class="btn-load" id="btnLoad">불러오기</button>
+    <button type="button" class="btn-clear" id="btnClear">삭제하기</button>
+  </div>
+
+  <div class="result" id="resultBox">
+    아직 저장된 데이터가 없습니다.
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'userData';
+
+  const $name = document.getElementById('name');
+  const $age = document.getElementById('age');
+  const $job = document.getElementById('job');
+  const $result = document.getElementById('resultBox');
+
+  const $btnSave = document.getElementById('btnSave');
+  const $btnLoad = document.getElementById('btnLoad');
+  const $btnClear = document.getElementById('btnClear');
+
+  // 👉 페이지 최초 로드 시 저장된 값이 있다면 자동으로 불러오기
+  window.addEventListener('DOMContentLoaded', function () {
+    loadUserData();
+  });
+
+  // 저장하기 버튼
+  $btnSave.addEventListener('click', function () {
+
+    // 입력값으로 object(객체) 생성. {key: value, ...} 형태는 객체형태이다!
+    const userData = {
+      name: $name.value.trim(),
+      age: $age.value.trim(),
+      job: $job.value.trim()
+    };
+
+    // JSON.stringify로 객체를 문자열로 변환해서 저장
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+
+    // JSON.stringify의 표준형태 => JSON.stringify(value, replacer, space)
+    // value: 변환할 값  // userData 객체
+    // replacer: (선택사항) 배열 또는 함수로, 변환할 속성을 지정  //  null  //  객체 전체를 문자열로 변환(추가 필터링 없음)
+    // space: (선택사항) 들여쓰기용 공백문자 수 지정  //  2
+    $result.textContent = '저장 완료!\n' + JSON.stringify(userData, null, 2);
+
+    // 위 처럼이 아니라 JSON.stringify(userData) 만 해도 동일하게 동작함!  //  그러나 {"name":"홍길동","age":"25","job":"퍼블리셔"} 처럼 한줄로 나옴!
+    // 가독성을 위해 들여쓰기 옵션을 추가한 것!
+    // **JSON.stringify()는 “자바스크립트 객체 → 문자열(String)로 변환해주는 메소드”**
+    // 왜 문자열로 저장하느냐??  // localStorage 에는 문자열 형태로만 저장 가능하기 때문!  따라서, 객체나 배열 저장시 반드시 JSON.stringify()로 문자열 변환 필요함!
+  });
+
+  // 불러오기 버튼
+  $btnLoad.addEventListener('click', function () {
+    loadUserData();
+  });
+
+  // 삭제하기 버튼
+  $btnClear.addEventListener('click', function () {
+    localStorage.removeItem(STORAGE_KEY);
+    $name.value = '';
+    $age.value = '';
+    $job.value = '';
+    $result.textContent = '데이터를 삭제했습니다.';
+  });
+
+  // 공통: 저장된 데이터 불러오는 함수
+  function loadUserData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) {
+      $result.textContent = '저장된 데이터가 없습니다.';
+      return;
+    }
+
+    // JSON.parse로 문자열 → 객체 변환
+    try {
+      const data = JSON.parse(saved);
+
+      // 인풋에 값 채우기
+      $name.value = data.name || '';
+      $age.value = data.age || '';
+      $job.value = data.job || '';
+
+      $result.textContent =
+        '불러온 데이터:\n' +
+        `이름: ${data.name}\n나이: ${data.age}\n직업: ${data.job}`;
+    } catch (e) {
+      console.error('JSON 파싱 오류:', e);
+      $result.textContent = '저장된 데이터 형식이 올바르지 않습니다.';
+    }
+  }
+</script>
+
+</body>
+</html>

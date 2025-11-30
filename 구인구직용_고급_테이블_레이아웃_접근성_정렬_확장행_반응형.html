@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>구인구직용 고급 테이블 레이아웃 데모</title>
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card: #111318;
+      --ink: #e8eaf0;
+      --muted: #9aa3b2;
+      --primary: #6ea8fe;
+      --accent: #8bd3dd;
+      --ok: #53d769;
+      --warn: #ffcc00;
+      --danger: #ff6b6b;
+      --chip: #1d2330;
+      --border: #232838;
+      --focus: 2px solid #8bd3dd;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0; padding: 24px; background: linear-gradient(180deg, #0b0c10, #0e1117);
+      color: var(--ink); font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .wrap { max-width: 1200px; margin: 0 auto; }
+
+    .panel {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: clip;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    header.panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; border-bottom: 1px solid var(--border); gap: 12px;
+    }
+    .title {
+      display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .2px;
+    }
+    .title small { color: var(--muted); font-weight: 500; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
+    .toolbar input[type="search"], .toolbar select {
+      background: #0f1219; border: 1px solid var(--border); color: var(--ink);
+      padding: 8px 10px; border-radius: 10px; min-width: 200px;
+    }
+    .toolbar .btn {
+      background: #182034; border: 1px solid var(--border); color: var(--ink); cursor: pointer;
+      padding: 8px 12px; border-radius: 10px; font-weight: 600;
+    }
+    .toolbar .btn.primary { background: #18304a; border-color: #284d73; color: #cfe2ff; }
+    .toolbar .btn:focus-visible { outline: var(--focus); outline-offset: 2px; }
+
+    /* Table wrapper */
+    .table-wrap { position: relative; overflow: auto; }
+
+    table.jobs {
+      width: 100%; border-collapse: separate; border-spacing: 0; min-width: 1100px; color: var(--ink);
+      background: #0f1219;
+    }
+    caption {
+      text-align: left; padding: 14px 18px; color: var(--muted); font-size: 13px;
+    }
+
+    colgroup col:nth-child(1) { width: 280px; }
+    colgroup col:nth-child(2) { width: 140px; }
+    colgroup col:nth-child(3) { width: 120px; }
+    colgroup col:nth-child(4) { width: 130px; }
+    colgroup col:nth-child(5) { width: 160px; }
+    colgroup col:nth-child(6) { width: 220px; }
+    colgroup col:nth-child(7) { width: 130px; }
+
+    thead th {
+      position: sticky; top: 0; z-index: 3; background: #0f141d; color: #c8d1e6; text-align: left;
+      border-bottom: 1px solid var(--border); padding: 12px 14px; font-size: 13px; letter-spacing: .2px;
+    }
+    thead tr:first-child th { border-bottom: none; background: #0d1320; }
+    thead tr:last-child th { border-bottom: 1px solid var(--border); }
+
+    tbody td, tbody th[scope="row"] {
+      padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; background: #0f1219;
+    }
+
+    /* Sticky first column */
+    .sticky-col { position: sticky; left: 0; z-index: 2; background: #101621; box-shadow: 6px 0 12px rgba(0,0,0,0.18); }
+    thead .sticky-col { z-index: 4; }
+
+    /* Hover */
+    tbody tr:hover td, tbody tr:hover th[scope="row"] { background: #111a29; }
+
+    /* Chips */
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; background: var(--chip); border: 1px solid var(--border); font-size: 12px; }
+    .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; }
+    .chip.ok .dot { background: var(--ok); }
+    .chip.warn .dot { background: var(--warn); }
+    .chip.danger .dot { background: var(--danger); }
+
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: #121824; color: #cfe2ff; font-size: 12px; }
+
+    /* Action buttons */
+    .btn-link { color: var(--primary); background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit; }
+    .btn-link:focus-visible { outline: var(--focus); }
+
+    /* Row detail */
+    .detail { display: none; }
+    tr[aria-expanded="true"] + tr.detail { display: table-row; background: #101722; }
+    .detail td { border-bottom: 1px solid var(--border); }
+    .detail .grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; }
+    .detail .box { background: #0f141f; border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+    .muted { color: var(--muted); }
+
+    /* Sort icons */
+    .sort { display: inline-flex; flex-direction: column; margin-left: 6px; opacity: .6; }
+    .sort svg { display: block; width: 10px; height: 10px; }
+
+    /* Footer/pagination */
+    tfoot td { padding: 12px 14px; background: #0f141d; position: sticky; bottom: 0; z-index: 2; border-top: 1px solid var(--border); }
+    .pager { display: flex; gap: 6px; align-items: center; }
+    .pager button { background: #182034; border: 1px solid var(--border); color: var(--ink); padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+
+    /* Responsive: card list under 768px */
+    @media (max-width: 768px) {
+      .table-wrap { display: none; }
+      .cards { display: grid; gap: 10px; }
+      .card { background: #0f1219; border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+      .card .head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+      .card .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; color: var(--muted); }
+      .card .meta b { color: var(--ink); font-weight: 600; }
+      .card .stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    }
+
+    /* Visually hidden utility */
+    .vh { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 1px, 1px); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel" role="region" aria-labelledby="jobsHeading">
+      <header class="panel-head">
+        <div class="title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="#8bd3dd" stroke-width="2" stroke-linecap="round"/></svg>
+          <h1 id="jobsHeading" style="margin:0">채용 공고 목록</h1>
+          <small>(샘플 데이터 · 정렬/확장/반응형)</small>
+        </div>
+        <div class="toolbar" role="group" aria-label="테이블 도구">
+          <input type="search" id="q" placeholder="회사, 포지션, 기술 스택…" aria-label="검색" />
+          <select id="filterType" aria-label="고용형태 필터">
+            <option value="">모든 고용형태</option>
+            <option>정규직</option>
+            <option>계약직</option>
+            <option>인턴</option>
+            <option>프리랜서</option>
+          </select>
+          <button class="btn" id="clear">필터 초기화</button>
+          <button class="btn primary" id="exportCsv">CSV 내보내기</button>
+        </div>
+      </header>
+
+      <!-- Desktop Table -->
+      <div class="table-wrap" tabindex="0" aria-label="가로 스크롤 테이블">
+        <table class="jobs" aria-describedby="tblDesc">
+          <caption id="tblDesc">구인구직 사이트에서 사용할 수 있는 고급 테이블. 다단 헤더, 고정 열, 정렬, 행 상세 보기, 반응형 카드 레이아웃 포함.</caption>
+          <colgroup>
+            <col /><col /><col /><col /><col /><col /><col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="sticky-col" rowspan="2" scope="col">포지션 / 회사</th>
+              <th colspan="2" scope="colgroup">근무조건</th>
+              <th colspan="2" scope="colgroup">채용 정보</th>
+              <th rowspan="2" scope="col">요구 기술</th>
+              <th rowspan="2" scope="col">상태</th>
+            </tr>
+            <tr>
+              <th scope="col" data-sort="location">지역
+                <span class="sort" aria-hidden="true">
+                  <svg viewBox="0 0 10 10"><path d="M1 6l4-4 4 4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                  <svg viewBox="0 0 10 10"><path d="M1 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                </span>
+              </th>
+              <th scope="col" data-sort="type">고용형태
+                <span class="sort" aria-hidden="true">
+                  <svg viewBox="0 0 10 10"><path d="M1 6l4-4 4 4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                  <svg viewBox="0 0 10 10"><path d="M1 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                </span>
+              </th>
+              <th scope="col" data-sort="salary">연봉(만원)
+                <span class="sort" aria-hidden="true">
+                  <svg viewBox="0 0 10 10"><path d="M1 6l4-4 4 4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                  <svg viewBox="0 0 10 10"><path d="M1 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                </span>
+              </th>
+              <th scope="col" data-sort="deadline">마감일
+                <span class="sort" aria-hidden="true">
+                  <svg viewBox="0 0 10 10"><path d="M1 6l4-4 4 4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                  <svg viewBox="0 0 10 10"><path d="M1 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <!-- JS에서 행 생성 -->
+          </tbody>
+          <tfoot>
+            <tr><td colspan="7">
+              <div class="pager" aria-label="페이지네이션">
+                <button id="prev">이전</button>
+                <span id="pageInfo" aria-live="polite">1 / 1</span>
+                <button id="next">다음</button>
+              </div>
+            </td></tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="cards" id="cards" aria-label="모바일 카드 목록" hidden></div>
+    </div>
+  </div>
+
+  <template id="rowTpl">
+    <tr class="row" aria-expanded="false">
+      <th class="sticky-col" scope="row">
+        <div style="display:flex; flex-direction:column; gap:4px">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong class="pos"></strong>
+            <span class="tag typeTag"></span>
+          </div>
+          <span class="muted company"></span>
+          <button class="btn-link toggle" aria-expanded="false" aria-controls="detail-">자세히 보기</button>
+        </div>
+      </th>
+      <td class="location"></td>
+      <td class="type"></td>
+      <td class="salary" data-value=""></td>
+      <td class="deadline" data-value=""></td>
+      <td class="skills"></td>
+      <td>
+        <span class="chip status">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="label"></span>
+        </span>
+      </td>
+    </tr>
+    <tr class="detail" role="region">
+      <td colspan="7" class="detail-td">
+        <div class="grid">
+          <div class="box">
+            <b>상세 소개</b>
+            <p class="desc" style="margin:.4rem 0 0 0"></p>
+          </div>
+          <div class="box">
+            <b>우대 사항</b>
+            <ul class="pref" style="margin:.4rem 0 0 1rem"></ul>
+          </div>
+          <div class="box">
+            <b>담당자</b>
+            <p class="contact" style="margin:.4rem 0 0 0"></p>
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+              <a href="#" class="btn" style="text-decoration:none;" data-action="apply">지원하기</a>
+              <button class="btn" data-action="bookmark">북마크</button>
+              <button class="btn" data-action="share">공유</button>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <template id="cardTpl">
+    <div class="card">
+      <div class="head">
+        <div>
+          <div class="tag typeTag"></div>
+          <h3 class="pos" style="margin:.2rem 0 0 0"></h3>
+          <div class="muted company"></div>
+        </div>
+        <span class="chip status" style="height:fit-content">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="label"></span>
+        </span>
+      </div>
+      <div class="meta">
+        <div>지역<br><b class="location"></b></div>
+        <div>연봉(만원)<br><b class="salary"></b></div>
+        <div>마감일<br><b class="deadline"></b></div>
+        <div>기술스택<br><b class="skills"></b></div>
+      </div>
+      <div class="stack"></div>
+      <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="#" class="btn" data-action="apply" style="text-decoration:none;">지원하기</a>
+        <button class="btn" data-action="bookmark">북마크</button>
+        <button class="btn" data-action="share">공유</button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // 샘플 데이터 생성
+    const sample = [
+      {
+        id: 'J-1001', position: '프론트엔드 엔지니어', company: '라이팅랩스', location: '서울·역삼', type: '정규직',
+        salary: 5200, deadline: '2025-12-10',
+        skills: ['JavaScript', 'Vue', 'TypeScript', 'Vite'],
+        status: '모집중',
+        desc: '대규모 B2C 프론트 성능 최적화 및 디자인 시스템 구축 경험자 우대.',
+        pref: ['웹 접근성 경험', 'CI/CD 경험', 'GraphQL 경험'],
+        contact: 'recruit@lightinglabs.co.kr / 02-123-4567'
+      },
+      {
+        id: 'J-1002', position: '백엔드 엔지니어', company: '글림소프트', location: '부산·센텀', type: '정규직',
+        salary: 6000, deadline: '2025-11-30',
+        skills: ['Java', 'Spring', 'MySQL', 'AWS'],
+        status: '서류접수',
+        desc: '도커/쿠버네티스 환경의 마이크로서비스 운영. 대용량 트래픽 경험 우대.',
+        pref: ['JPA 숙련', 'Kafka 경험', '성능 튜닝'],
+        contact: 'jobs@gleamsoft.com'
+      },
+      {
+        id: 'J-1003', position: 'UX/UI 디자이너', company: '네오픽셀', location: '대구', type: '계약직',
+        salary: 4200, deadline: '2025-12-31',
+        skills: ['Figma', 'Design System', 'ProtoPie'],
+        status: '모집중',
+        desc: '모바일 앱 온보딩 및 결제 플로우 개선 프로젝트 참여.',
+        pref: ['모션 디자인', 'AB 테스트 경험'],
+        contact: 'talent@neopixel.io'
+      },
+      {
+        id: 'J-1004', position: '데이터 엔지니어', company: '알파데이터', location: '판교', type: '정규직',
+        salary: 6800, deadline: '2025-11-25',
+        skills: ['Python', 'Airflow', 'Spark', 'BigQuery'],
+        status: '모집중',
+        desc: '데이터 파이프라인 설계 및 배치/스트리밍 처리. 품질 지표 자동화.',
+        pref: ['dbt 경험', 'Terraform'],
+        contact: 'recruit@alphadata.ai'
+      },
+      {
+        id: 'J-1005', position: 'QA 매니저', company: '스테빌', location: '원격', type: '프리랜서',
+        salary: 4800, deadline: '2025-12-05',
+        skills: ['Cypress', 'Playwright', 'Jest'],
+        status: '모집중',
+        desc: '엔드투엔드 자동화 테스트 설계 및 커버리지 확장.',
+        pref: ['접근성 테스트 경험', '보안 테스트'],
+        contact: 'qa@stabil.dev'
+      },
+      {
+        id: 'J-1006', position: '모바일 앱 개발자 (iOS)', company: '포레스트', location: '서울·을지로', type: '정규직',
+        salary: 7000, deadline: '2025-12-20',
+        skills: ['Swift', 'SwiftUI', 'Combine'],
+        status: '서류접수',
+        desc: '금융 앱 신규 기능 설계/구현. 반응형 아키텍처 지향.',
+        pref: ['금융 도메인 경험', '접근성 가이드 숙지'],
+        contact: 'ios@forest.app'
+      },
+      {
+        id: 'J-1007', position: '보안 엔지니어', company: '시큐어드', location: '대전', type: '정규직',
+        salary: 7500, deadline: '2025-11-28',
+        skills: ['Security', 'SIEM', 'AWS', 'Linux'],
+        status: '마감임박',
+        desc: '클라우드 네이티브 환경 보안 정책 수립 및 모니터링.',
+        pref: ['OSCP', 'CISSP'],
+        contact: 'security@secured.kr'
+      }
+    ];
+
+    const PAGE = { size: 5, page: 1, rows: [] };
+
+    const tbody = document.getElementById('tbody');
+    const cards = document.getElementById('cards');
+    const rowTpl = document.getElementById('rowTpl');
+    const cardTpl = document.getElementById('cardTpl');
+    const pageInfo = document.getElementById('pageInfo');
+
+    // 필터/검색
+    const q = document.getElementById('q');
+    const filterType = document.getElementById('filterType');
+    document.getElementById('clear').addEventListener('click', () => {
+      q.value=''; filterType.value=''; applyFilters();
+    });
+
+    function applyFilters() {
+      const term = q.value.trim().toLowerCase();
+      const t = filterType.value;
+      const filtered = sample.filter(x => {
+        const hit = (
+          x.position.toLowerCase().includes(term) ||
+          x.company.toLowerCase().includes(term) ||
+          x.skills.join(' ').toLowerCase().includes(term)
+        );
+        const typeOk = t ? x.type === t : true;
+        return hit && typeOk;
+      });
+      PAGE.page = 1; PAGE.rows = filtered; render();
+    }
+
+    q.addEventListener('input', applyFilters);
+    filterType.addEventListener('change', applyFilters);
+
+    // 정렬
+    let sortKey = null; let sortAsc = true;
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+      th.setAttribute('role', 'button');
+      th.tabIndex = 0;
+      th.addEventListener('click', () => { handleSort(th.dataset.sort); });
+      th.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSort(th.dataset.sort); }
+      });
+    });
+
+    function handleSort(key) {
+      if (sortKey === key) sortAsc = !sortAsc; else { sortKey = key; sortAsc = true; }
+      PAGE.rows.sort((a, b) => {
+        const get = (o) => key === 'deadline' ? new Date(o.deadline).getTime() : (key === 'salary' ? o.salary : (o[key] || '').toString());
+        const va = get(a), vb = get(b);
+        if (va < vb) return sortAsc ? -1 : 1; if (va > vb) return sortAsc ? 1 : -1; return 0;
+      });
+      PAGE.page = 1; render();
+    }
+
+    // 페이지네이션
+    document.getElementById('prev').addEventListener('click', () => { if (PAGE.page>1){PAGE.page--; render();}});
+    document.getElementById('next').addEventListener('click', () => { const max = Math.max(1, Math.ceil(PAGE.rows.length / PAGE.size)); if (PAGE.page<max){PAGE.page++; render();}});
+
+    // CSV 내보내기
+    document.getElementById('exportCsv').addEventListener('click', () => {
+      const rows = [['포지션','회사','지역','형태','연봉(만원)','마감일','기술','상태']].concat(
+        PAGE.rows.map(x => [x.position, x.company, x.location, x.type, x.salary, x.deadline, x.skills.join(' '), x.status])
+      );
+      const csv = rows.map(r => r.map(v => '"' + String(v).replaceAll('"', '""') + '"').join(',')).join('\n');
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'jobs.csv'; a.click();
+    });
+
+    // 행/카드 렌더링
+    function render() {
+      const max = Math.max(1, Math.ceil(PAGE.rows.length / PAGE.size));
+      pageInfo.textContent = `${PAGE.page} / ${max}`;
+
+      // 테이블
+      tbody.innerHTML = '';
+      const start = (PAGE.page - 1) * PAGE.size;
+      const rows = PAGE.rows.slice(start, start + PAGE.size);
+      rows.forEach((x, i) => {
+        const frag = rowTpl.content.cloneNode(true);
+        const rid = `${x.id}`;
+        const tr = frag.querySelector('tr.row');
+        const detail = frag.querySelector('tr.detail');
+        const toggle = frag.querySelector('.toggle');
+        detail.querySelector('.detail-td').id = `detail-${rid}`;
+        toggle.setAttribute('aria-controls', `detail-${rid}`);
+
+        frag.querySelector('.pos').textContent = x.position;
+        frag.querySelector('.company').textContent = x.company;
+        frag.querySelector('.location').textContent = x.location;
+        frag.querySelector('.type').textContent = x.type;
+        frag.querySelector('.typeTag').textContent = x.type;
+
+        const sal = frag.querySelector('.salary'); sal.textContent = x.salary.toLocaleString(); sal.dataset.value = x.salary;
+        const dl = frag.querySelector('.deadline'); dl.textContent = x.deadline; dl.dataset.value = new Date(x.deadline).getTime();
+        frag.querySelector('.skills').textContent = x.skills.join(', ');
+
+        const status = frag.querySelector('.status');
+        status.querySelector('.label').textContent = x.status;
+        if (x.status.includes('임박')) status.classList.add('warn');
+        else if (x.status.includes('마감')) status.classList.add('danger');
+        else status.classList.add('ok');
+
+        // detail
+        frag.querySelector('.desc').textContent = x.desc;
+        const pref = frag.querySelector('.pref');
+        x.pref.forEach(p => { const li = document.createElement('li'); li.textContent = p; pref.appendChild(li); });
+        frag.querySelector('.contact').textContent = x.contact;
+
+        // actions
+        frag.querySelector('[data-action="apply"]').href = `#apply-${rid}`;
+        frag.querySelector('[data-action="bookmark"]').addEventListener('click', () => alert('북마크했습니다.')); 
+        frag.querySelector('[data-action="share"]').addEventListener('click', async () => {
+          try { await navigator.share?.({ title: x.position, text: `${x.company} 채용`, url: location.href }); }
+          catch {}
+        });
+
+        // toggle detail (keyboard + aria)
+        toggle.addEventListener('click', () => toggleRow(tr));
+        toggle.addEventListener('keydown', (e) => { if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleRow(tr);} });
+
+        tbody.appendChild(frag);
+      });
+
+      // 카드
+      const isMobile = matchMedia('(max-width: 768px)').matches;
+      if (isMobile) {
+        cards.hidden = false; cards.innerHTML = '';
+        rows.forEach(x => {
+          const frag = cardTpl.content.cloneNode(true);
+          frag.querySelector('.pos').textContent = x.position;
+          frag.querySelector('.company').textContent = x.company;
+          frag.querySelector('.location').textContent = x.location;
+          frag.querySelector('.typeTag').textContent = x.type;
+          frag.querySelector('.salary').textContent = x.salary.toLocaleString();
+          frag.querySelector('.deadline').textContent = x.deadline;
+          frag.querySelector('.skills').textContent = x.skills.join(', ');
+          const stack = frag.querySelector('.stack');
+          x.skills.forEach(s => { const t = document.createElement('span'); t.className = 'tag'; t.textContent = s; stack.appendChild(t); });
+          const status = frag.querySelector('.status');
+          status.querySelector('.label').textContent = x.status;
+          if (x.status.includes('임박')) status.classList.add('warn');
+          else if (x.status.includes('마감')) status.classList.add('danger');
+          else status.classList.add('ok');
+          cards.appendChild(frag);
+        });
+      } else {
+        cards.hidden = true;
+      }
+    }
+
+    function toggleRow(tr) {
+      const expanded = tr.getAttribute('aria-expanded') === 'true';
+      tr.setAttribute('aria-expanded', String(!expanded));
+      const btn = tr.querySelector('.toggle');
+      btn.setAttribute('aria-expanded', String(!expanded));
+    }
+
+    // 초기화
+    PAGE.rows = [...sample];
+    render();
+
+    // 윈도우 리사이즈 시 카드/테이블 동기화
+    addEventListener('resize', () => render());
+
+  </script>
+</body>
+</html>

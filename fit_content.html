@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fit-content 예시</title>
+</head>
+<body>
+
+  <style>
+    .container {
+      margin: 0 auto;
+      border: 2px solid #cccccc;
+      padding: 10px;
+      width: 20em;
+    }
+    .container>strong {display: inline-block; margin-bottom: 30px;} /* nth-child 대신 nth-of-type 사용 */
+
+    .item {
+      width: fit-content;
+      background-color: #8ca0ff;
+      padding: 5px;
+      margin-bottom: 1em;
+    }
+
+
+    /* dlBox */
+    /* Flex 버전 */
+    .section {margin-top: 100px; width: 100%;}
+    .section strong {text-align: center; display: block; margin-bottom: 10px;}
+    .section strong:nth-of-type(2) {margin-top: 100px;} /* nth-child 대신 nth-of-type 사용 */
+    .dlBox { 
+      margin: 0 auto;  
+      width: 400px; /* fit-content 대신 고정값 */
+      border: 1px solid #000; 
+      padding: 20px; 
+    }
+    .dlBox dl {display: flex; margin-bottom: 10px;}
+    .dlBox dt {
+      width: 100px; /* dt 영역 고정 */
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .dlBox dt span {
+      width: fit-content;
+      padding: 5px 10px; 
+      border: 1px solid violet; 
+      border-radius: 20px;
+    }
+    .dlBox dd {flex: 1; margin-left: 20px; height:  40px; display: flex; align-items: center;}
+
+    /* Grid 버전 */
+    .dlBox-grid { 
+      margin: 0 auto; 
+      width: 400px; /* fit-content 대신 고정값 */
+      border: 1px solid #000; 
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 100px 1fr; /* dt 100px, dd는 나머지 */
+      row-gap: 10px; /* 행 간격 */
+      column-gap: 20px; /* 열 간격 - 주석 해제 */
+    }
+    .dlBox-grid dl {
+      display: contents; /* dl을 grid 아이템으로 만들지 않고 자식들만 grid에 배치 */
+    }
+    .dlBox-grid dt {
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+    .dlBox-grid dt span {
+      width: fit-content;
+      padding: 5px 10px; 
+      border: 1px solid violet; 
+      border-radius: 20px;
+    }
+    .dlBox-grid dd {
+      margin: 0;
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Float 버전 */
+    .section strong:nth-of-type(3) {margin-top: 100px;}
+    .dlBox-float {
+      margin: 0 auto;
+      width: 400px;
+      border: 1px solid #000;
+      padding: 20px;
+    }
+    .dlBox-float::after { /* clearfix */
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .dlBox-float dl {
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+    .dlBox-float dl:last-child {
+      margin-bottom: 0;
+    }
+    .dlBox-float dl::after { /* clearfix */
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .dlBox-float dt {
+      float: left;
+      width: 100px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+    .dlBox-float dt span {
+      width: fit-content;
+      padding: 5px 10px;
+      border: 1px solid violet;
+      border-radius: 20px;
+      display: inline-block;
+      
+    }
+    .dlBox-float dd {
+      margin-left: 120px; /* dt 100px + 간격 20px */
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+
+  </style>
+
+  <div class="container">
+    <strong>fit-content 예시</strong>
+
+    <div class="item">Item</div>
+    <div class="item">Item with more text in it.</div>
+    <div class="item">
+      Item with more text in it, hopefully we have added enough text so the text
+      will start to wrap.
+    </div>
+
+  </div>
+
+  <div class="section">
+    
+    <!-- Flex 버전 -->
+    <strong>flex Layout</strong>
+    <div class="dlBox">
+      <dl>
+        <dt><span>제목목</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>내용용용</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>이이이이름</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>날짜</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd></dl>
+    </div>
+
+    <!-- Grid 버전 -->
+    <strong>grid Layout</strong>
+    <div class="dlBox-grid">
+      <dl>
+        <dt><span>제목목</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>내용용용</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>이이이이름</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>날짜</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+    </div>
+
+    <!-- Float 버전 -->
+    <strong>float Layout</strong>
+    <div class="dlBox-float">
+      <dl>
+        <dt><span>제목목</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>내용용용</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>이이이이름</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+      <dl>
+        <dt><span>날짜</span></dt>
+        <dd>블라블라블라블라블라블라블라블라</dd>
+      </dl>
+    </div>
+  </div>
+  
+</body>
+</html>

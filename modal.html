@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal Form</title>
+
+  <style>
+    h1 { text-align: center; margin-top: 50px; }
+    .modal_list  {text-align: center;}
+    .modal_list button  {display: inline-block; margin: 3px auto; height: 44px; vertical-align: top;}
+
+    .modal_open     { display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; color: #fff; background: #007BFF; outline: none; border: none; border-radius: 12px; cursor: pointer;}
+    .modal_open.open     { font-weight: 700; }
+    .modal   { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; overflow-x: auto; }
+    .modal_cont     { background: #fff; padding: 20px; border-radius: 12px; position: relative; width: 300px; text-align: center; box-sizing: border-box; }
+    .modal_close    { position: absolute; top: 10px; right: 10px; cursor: pointer; background: none; border: none; outline: none;}
+    .modal_cont .modal_close { color: #000; font-size: 25px; width: 25px; height: 25px; line-height: 25px; }
+    .modal > .modal_close { color: #fff; font-size: 40px; width: 40px; height: 40px; line-height: 40px;}
+    .modal_close:focus { outline: none; }
+    .modal_footer   { margin-top: 20px; display: flex; justify-content: center; gap: 8px; }
+    .modal_footer button { padding: 8px 20px; color: white; border: none; border-radius: 8px; cursor: pointer;}
+
+    /* ***************** 모달1 - 기본 */
+    .btn_ok      { background-color: #007BFF; }
+    
+    /* ***************** 모달2 - 버튼2개 */
+    .btn_cancel  { background-color: #6c757d; }
+
+    /* ***************** 모달3 - 실무형 스타일 */
+    .modal_large .modal_cont { width: 500px; padding: 30px; text-align: left;}
+    .modal_large .modal_header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e0e0e0; }
+    .modal_large .modal_header h2 { margin: 0; font-size: 20px; font-weight: 600; }
+    .modal_large .modal_header .modal_close { position: static; font-size: 24px; color: #666; }
+    .modal_large .modal_body { margin-bottom: 20px; line-height: 1.6; color: #333; }
+    .modal_large .modal_body .form_group { margin-bottom: 15px; }
+    .modal_large .modal_body label { display: block; margin-bottom: 5px; font-weight: 500; color: #333; }
+    .modal_large .modal_body input, .modal_large .modal_body textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+    .modal_large .modal_body textarea { resize: vertical; min-height: 100px; }
+    .modal_large .modal_footer { display: flex; justify-content: flex-end; gap: 10px; padding-top: 15px; border-top: 1px solid #e0e0e0; }
+    .modal_large .modal_footer button { min-width: 80px; }
+
+    /* 반응형 - 화면 크기별 모달 조정 */
+    @media (max-width: 600px) {
+      .navigation {min-width: 340px;}
+    }
+
+    /* *****************모달4 - 모바일 아래에서 위로 슬라이드 모달 */
+    @media (max-width: 600px) {
+      #modal4 .modal_cont {
+        width: 100%;
+        height: auto;
+        border-radius: 12px 12px 0 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+        transform: translateY(100%);
+      }
+
+      #modal4.show .modal_cont {
+        animation: slideUp 0.3s forwards;
+      }
+
+      .modal_slide_down { animation: slideDown 0.3s forwards !important; }
+    }
+    /* 슬라이드업 */
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+    /* 슬라이드다운 */
+    @keyframes slideDown {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100%);
+      }
+    }
+</style>
+</head>
+<body>
+  <div class="navigation">
+    <h1>modal form</h1>
+  
+    <!-- 모달 동작 버튼list -->
+    <div class="modal_list">
+      <button type="button" class="modal_open" data-modal="modal">모달 기본</button>
+      <button type="button" class="modal_open" data-modal="modal2">모달 2버튼</button>
+      <button type="button" class="modal_open" data-modal="modal3">모달 form</button>
+      <button type="button" class="modal_open" data-modal="modal4">slide (mobileonly)</button>
+    </div>
+  </div>
+
+
+
+  <!-- 모달1 - 기본형 -->
+  <div class="modal" id="modal">
+    <div class="modal_cont">
+      <button type="button" class="modal_close" id="modal_close">&times;</button>
+      <h2>modal Layer</h2>
+      <p>모달내용모달내용모달내용</p>
+      <div class="modal_footer">
+        <button type="button" class="btn_ok">확인</button>
+      </div>    
+    </div>
+    <button type="button" class="modal_close" id="modal_close2">&times;</button>
+  </div>
+
+<!-- 모달2 - 버튼 2개 -->
+  <div class="modal" id="modal2">
+    <div class="modal_cont">
+      <button type="button" class="modal_close" id="modal_close3">&times;</button>
+      <h2>modal 2버튼</h2>
+      <p>모달내용</p>
+      <div class="modal_footer">
+        <button type="button" class="btn_cancel">취소</button>
+        <button type="button" class="btn_ok">확인</button>
+      </div>
+    </div>
+    <button type="button" class="modal_close" id="modal_close4">&times;</button>
+  </div>
+
+  <!-- 모달3 - 실무형 Form 모달 -->
+  <div class="modal modal_large" id="modal3">
+    <div class="modal_cont">
+      <div class="modal_header">
+        <h2>문의하기</h2>
+      </div>
+      <div class="modal_body">
+        <div class="form_group">
+          <label for="userName">이름 <span style="color: red;">*</span></label>
+          <input type="text" id="userName" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form_group">
+          <label for="userEmail">이메일 <span style="color: red;">*</span></label>
+          <input type="email" id="userEmail" placeholder="example@email.com">
+        </div>
+        <div class="form_group">
+          <label for="userPhone">연락처</label>
+          <input type="tel" id="userPhone" placeholder="010-0000-0000">
+        </div>
+        <div class="form_group">
+          <label for="userMessage">문의 내용 <span style="color: red;">*</span></label>
+          <textarea id="userMessage" placeholder="문의 내용을 입력하세요"></textarea>
+        </div>
+      </div>
+      <div class="modal_footer">
+        <button type="button" class="btn_ok">제출</button>
+      </div>
+      <button type="button" class="modal_close">&times;</button>
+    </div>
+  </div>
+
+  <!-- 모달4 - 모바일 아래에서 위로 슬라이드 모달 -->
+  <div class="modal" id="modal4">
+    <div class="modal_cont">
+      <button type="button" class="modal_close">&times;</button>
+      <h2>모바일 아래에서 위로 슬라이드 모달</h2>
+      <p>모바일 환경에서 아래에서 위로 슬라이드되는 모달입니다.</p>
+      <div class="modal_footer">
+        <button type="button" class="btn_ok">제출</button>
+      </div>
+    </div>
+  </div>    
+
+  <script>
+    //////////////////// 모달 공통 ///////////////////
+    // 범용 모달 열기 기능
+    document.querySelectorAll('.modal_open').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+        this.classList.add('open');
+        
+        // 모달4에 show 클래스 추가 (슬라이드 업 애니메이션)
+        if (modalId === 'modal4') {
+          setTimeout(function() {
+            modal.classList.add('show');
+          }, 10);
+        }
+      });
+    });
+
+    // 범용 모달 닫기 기능
+    document.querySelectorAll('.modal_close').forEach(function(closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        const modal = this.closest('.modal');
+        
+        // 모달4 슬라이드 다운 애니메이션 처리
+        if (modal.id === 'modal4' && window.innerWidth <= 600) {
+          const modalCont = modal.querySelector('.modal_cont');
+          modal.classList.remove('show');
+          modalCont.classList.add('modal_slide_down');
+          
+          // 애니메이션 후 모달 닫기
+          setTimeout(function() {
+            modal.style.display = 'none';
+            modalCont.classList.remove('modal_slide_down');
+          }, 300);
+        } else {
+          modal.style.display = 'none';
+        }
+        
+        // 모든 열기 버튼의 open 클래스 제거
+        document.querySelectorAll('.modal_open').forEach(function(btn) {
+          btn.classList.remove('open');
+        });
+      });
+    });
+
+    // 모달 배경 클릭시 닫기
+    window.addEventListener('click', function(event) {
+      document.querySelectorAll('.modal').forEach(function(modal) {
+        if (event.target === modal) {
+          // 모달4 슬라이드 다운 애니메이션 처리
+          if (modal.id === 'modal4' && window.innerWidth <= 600) {
+            const modalCont = modal.querySelector('.modal_cont');
+            modal.classList.remove('show');
+            modalCont.classList.add('modal_slide_down');
+            
+            setTimeout(function() {
+              modal.style.display = 'none';
+              modalCont.classList.remove('modal_slide_down');
+            }, 300);
+          } else {
+            modal.style.display = 'none';
+          }
+          
+          // 모든 열기 버튼의 open 클래스 제거
+          document.querySelectorAll('.modal_open').forEach(function(btn) {
+            btn.classList.remove('open');
+          });
+        }
+      });
+    });
+
+    // ESC 키로 모달 닫기
+    window.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        document.querySelectorAll('.modal').forEach(function(modal) {
+          if (modal.style.display === 'flex') {
+            // 모달4 슬라이드 다운 애니메이션 처리
+            if (modal.id === 'modal4' && window.innerWidth <= 600) {
+              const modalCont = modal.querySelector('.modal_cont');
+              modal.classList.remove('show');
+              modalCont.classList.add('modal_slide_down');
+              
+              setTimeout(function() {
+                modal.style.display = 'none';
+                modalCont.classList.remove('modal_slide_down');
+              }, 300);
+            } else {
+              modal.style.display = 'none';
+            }
+            
+            // 모든 열기 버튼의 open 클래스 제거
+            document.querySelectorAll('.modal_open').forEach(function(btn) {
+              btn.classList.remove('open');
+            });
+          }
+        });
+      }
+    });
+
+          
+    ////////////////////모달3 - 실무형 폼 기능 ////////////////////
+    // 모달 3에 핸드폰번호 입력시 숫자만 입력 가능하게 하고, 숫자 외 문자가 입력되는 순간 alert 처리
+    document.getElementById('userPhone').addEventListener('input', function() {
+      const sanitizedValue = this.value.replace(/[^0-9\-]/g, ''); 
+      if (this.value !== sanitizedValue) {
+        alert('숫자와 하이픈(-)만 입력 가능합니다.');
+        this.value = sanitizedValue;
+      }
+    });
+
+    // 모달3 - 실무형 폼 제출 버튼 클릭시 폼 유효성 검증
+    document.querySelector('#modal3 .btn_ok').addEventListener('click', function() {
+      const userName = document.getElementById('userName').value.trim();
+      const userEmail = document.getElementById('userEmail').value.trim();
+      const userMessage = document.getElementById('userMessage').value.trim();
+
+      if (userName === '') {
+        alert('이름을 입력해주세요.');
+        return;
+      }
+      if (userEmail === '') {
+        alert('이메일을 입력해주세요.');
+        return;
+      }
+      if (userMessage === '') {
+        alert('문의 내용을 입력해주세요.');
+        return;
+      }
+
+      // 폼이 유효한 경우 제출 처리 (예: 서버로 전송)
+      alert('폼이 성공적으로 제출되었습니다!');
+      // 모달 닫기
+      document.getElementById('modal3').style.display = 'none';
+      document.querySelectorAll('.modal_open').forEach(function(btn) {
+        btn.classList.remove('open');
+      });
+    });
+
+  </script>
+
+</body>
+</html>

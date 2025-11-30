@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>구인구직 복잡 테이블 (JS 없이)</title>
+  <style>
+    :root{
+      --bg:#0e1117; --card:#0f141d; --ink:#e7edf7; --muted:#9aa3b2; --border:#223148;
+      --chip:#162032; --ok:#53d769; --warn:#ffcc00; --danger:#ff6b6b; --tag:#122036; --primary:#8bd3dd;
+    }
+    html,body{height:100%}
+    body{margin:0; background:linear-gradient(180deg,#0b0c10,#0e1117); color:var(--ink); font:14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
+    .wrap{max-width:1200px;margin:24px auto;padding:0 16px}
+
+    .table-box{background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:auto; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+
+    table{width:100%; min-width:1100px; border-collapse:separate; border-spacing:0; background:#0f1219;}
+    caption{padding:14px 18px; text-align:left; color:var(--muted)}
+
+    colgroup col:nth-child(1){width:320px}
+    colgroup col:nth-child(2){width:130px}
+    colgroup col:nth-child(3){width:120px}
+    colgroup col:nth-child(4){width:130px}
+    colgroup col:nth-child(5){width:170px}
+    colgroup col:nth-child(6){width:230px}
+    colgroup col:nth-child(7){width:140px}
+
+    thead th{position:sticky; top:0; z-index:3; background:#0f141d; color:#cfe2ff; text-align:left; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px}
+    thead tr:first-child th{background:#0d1320}
+    tbody th[scope=row], tbody td{padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top;}
+
+    /* sticky first col */
+    .sticky-col{position:sticky; left:0; z-index:2; background:#101621; box-shadow:6px 0 12px rgba(0,0,0,.18)}
+    thead .sticky-col{z-index:4}
+
+    /* chips/tags */
+    .chip{display:inline-flex; align-items:center; gap:6px; padding:3px 8px; border-radius:999px; background:var(--chip); border:1px solid var(--border); font-size:12px}
+    .chip .dot{width:8px;height:8px;border-radius:999px;display:inline-block}
+    .chip.ok .dot{background:var(--ok)}
+    .chip.warn .dot{background:var(--warn)}
+    .chip.danger .dot{background:var(--danger)}
+    .tag{display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--border); background:var(--tag); color:#cfe2ff; font-size:12px}
+
+    /* cells */
+    .pos{font-weight:700}
+    .company{color:var(--muted)}
+    .skills{color:#d9e3ff}
+    .meta{color:var(--muted); font-size:12px}
+
+    /* zebra */
+    tbody tr:nth-child(4n+1) td, tbody tr:nth-child(4n+1) th[scope=row]{background:#0f1219}
+    tbody tr:nth-child(4n+2) td, tbody tr:nth-child(4n+2) th[scope=row]{background:#101723}
+    tbody tr:nth-child(4n+3) td, tbody tr:nth-child(4n+3) th[scope=row]{background:#0f1219}
+    tbody tr:nth-child(4n) td, tbody tr:nth-child(4n) th[scope=row]{background:#101723}
+
+    /* legend/footer */
+    tfoot td{position:sticky; bottom:0; z-index:1; background:#0f141d; border-top:1px solid var(--border); padding:12px 14px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* visually hidden */
+    .vh{position:absolute !important; width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,1px,1px);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="table-box" role="region" aria-labelledby="tblHeading">
+      <table aria-describedby="tblDesc">
+        <caption id="tblDesc">구인구직 사이트용 복잡 테이블 샘플. 다단 헤더, 고정 첫 열, 상태 칩, 기술 스택 표현 포함. 자바스크립트 없이 순수 HTML+CSS.</caption>
+        <colgroup>
+          <col><col><col><col><col><col><col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th id="h-pos" class="sticky-col" rowspan="2" scope="col">포지션 · 회사</th>
+            <th id="h-cond" colspan="2" scope="colgroup">근무조건</th>
+            <th id="h-hire" colspan="2" scope="colgroup">채용 정보</th>
+            <th id="h-skill" rowspan="2" scope="col">요구 기술</th>
+            <th id="h-state" rowspan="2" scope="col">상태</th>
+          </tr>
+          <tr>
+            <th id="h-loc" scope="col">지역</th>
+            <th id="h-type" scope="col">형태</th>
+            <th id="h-sal" scope="col">연봉(만원)</th>
+            <th id="h-dl" scope="col">마감일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ROW 1 -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">프론트엔드 엔지니어 <span class="tag">정규직</span></div>
+              <div class="company">라이팅랩스 · 서울·역삼</div>
+              <div class="meta">공고 ID: J-1001</div>
+            </th>
+            <td headers="h-cond h-loc">서울·역삼</td>
+            <td headers="h-cond h-type">정규직</td>
+            <td headers="h-hire h-sal">5,200</td>
+            <td headers="h-hire h-dl">2025-12-10</td>
+            <td headers="h-skill" class="skills">JavaScript, Vue, TypeScript, Vite<br><span class="meta">우대: 웹 접근성, GraphQL</span></td>
+            <td headers="h-state">
+              <span class="chip ok" aria-label="모집중"><span class="dot" aria-hidden="true"></span>모집중</span>
+            </td>
+          </tr>
+
+          <!-- ROW 2 (다른 조합 예시) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">백엔드 엔지니어 <span class="tag">정규직</span></div>
+              <div class="company">글림소프트 · 부산·센텀</div>
+              <div class="meta">공고 ID: J-1002</div>
+            </th>
+            <td headers="h-cond h-loc">부산·센텀</td>
+            <td headers="h-cond h-type">정규직</td>
+            <td headers="h-hire h-sal">6,000</td>
+            <td headers="h-hire h-dl">2025-11-30</td>
+            <td headers="h-skill" class="skills">Java, Spring, MySQL, AWS<br><span class="meta">우대: Kafka, 성능 튜닝</span></td>
+            <td headers="h-state">
+              <span class="chip" aria-label="서류접수"><span class="dot" style="background:var(--primary)" aria-hidden="true"></span>서류접수</span>
+            </td>
+          </tr>
+
+          <!-- ROW 3 (계약직/디자이너) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">UX/UI 디자이너 <span class="tag">계약직</span></div>
+              <div class="company">네오픽셀 · 대구</div>
+              <div class="meta">공고 ID: J-1003</div>
+            </th>
+            <td headers="h-cond h-loc">대구</td>
+            <td headers="h-cond h-type">계약직</td>
+            <td headers="h-hire h-sal">4,200</td>
+            <td headers="h-hire h-dl">2025-12-31</td>
+            <td headers="h-skill" class="skills">Figma, Design System, ProtoPie<br><span class="meta">우대: 모션 디자인</span></td>
+            <td headers="h-state">
+              <span class="chip ok" aria-label="모집중"><span class="dot" aria-hidden="true"></span>모집중</span>
+            </td>
+          </tr>
+
+          <!-- ROW 4 (데이터/정규직) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">데이터 엔지니어 <span class="tag">정규직</span></div>
+              <div class="company">알파데이터 · 판교</div>
+              <div class="meta">공고 ID: J-1004</div>
+            </th>
+            <td headers="h-cond h-loc">판교</td>
+            <td headers="h-cond h-type">정규직</td>
+            <td headers="h-hire h-sal">6,800</td>
+            <td headers="h-hire h-dl">2025-11-25</td>
+            <td headers="h-skill" class="skills">Python, Airflow, Spark, BigQuery<br><span class="meta">우대: dbt, Terraform</span></td>
+            <td headers="h-state">
+              <span class="chip warn" aria-label="마감 임박"><span class="dot" aria-hidden="true"></span>마감임박</span>
+            </td>
+          </tr>
+
+          <!-- ROW 5 (원격/프리랜서) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">QA 매니저 <span class="tag">프리랜서</span></div>
+              <div class="company">스테빌 · 원격</div>
+              <div class="meta">공고 ID: J-1005</div>
+            </th>
+            <td headers="h-cond h-loc">원격</td>
+            <td headers="h-cond h-type">프리랜서</td>
+            <td headers="h-hire h-sal">4,800</td>
+            <td headers="h-hire h-dl">2025-12-05</td>
+            <td headers="h-skill" class="skills">Cypress, Playwright, Jest<br><span class="meta">우대: 접근성/보안 테스트</span></td>
+            <td headers="h-state">
+              <span class="chip ok" aria-label="모집중"><span class="dot" aria-hidden="true"></span>모집중</span>
+            </td>
+          </tr>
+
+          <!-- ROW 6 (iOS) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">iOS 개발자 <span class="tag">정규직</span></div>
+              <div class="company">포레스트 · 서울·을지로</div>
+              <div class="meta">공고 ID: J-1006</div>
+            </th>
+            <td headers="h-cond h-loc">서울·을지로</td>
+            <td headers="h-cond h-type">정규직</td>
+            <td headers="h-hire h-sal">7,000</td>
+            <td headers="h-hire h-dl">2025-12-20</td>
+            <td headers="h-skill" class="skills">Swift, SwiftUI, Combine<br><span class="meta">우대: 금융 도메인</span></td>
+            <td headers="h-state">
+              <span class="chip" aria-label="서류접수"><span class="dot" style="background:var(--primary)" aria-hidden="true"></span>서류접수</span>
+            </td>
+          </tr>
+
+          <!-- ROW 7 (보안) -->
+          <tr>
+            <th headers="h-pos" scope="row" class="sticky-col">
+              <div class="pos">보안 엔지니어 <span class="tag">정규직</span></div>
+              <div class="company">시큐어드 · 대전</div>
+              <div class="meta">공고 ID: J-1007</div>
+            </th>
+            <td headers="h-cond h-loc">대전</td>
+            <td headers="h-cond h-type">정규직</td>
+            <td headers="h-hire h-sal">7,500</td>
+            <td headers="h-hire h-dl">2025-11-28</td>
+            <td headers="h-skill" class="skills">Security, SIEM, AWS, Linux<br><span class="meta">우대: OSCP, CISSP</span></td>
+            <td headers="h-state">
+              <span class="chip danger" aria-label="마감"><span class="dot" aria-hidden="true"></span>마감</span>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7">
+              <div class="legend" aria-label="범례">
+                <span class="chip ok"><span class="dot" aria-hidden="true"></span>모집중</span>
+                <span class="chip" style="--c:var(--primary)"><span class="dot" style="background:var(--primary)" aria-hidden="true"></span>서류접수</span>
+                <span class="chip warn"><span class="dot" aria-hidden="true"></span>마감임박</span>
+                <span class="chip danger"><span class="dot" aria-hidden="true"></span>마감</span>
+                <span class="meta">※ 본 샘플은 시맨틱/접근성 데모용으로, 기능(정렬/필터)은 포함하지 않습니다.</span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

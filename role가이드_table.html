@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>role 사용 실무가이드</title>
+  <style>
+  table  {border-collapse: collapse; margin: 0 auto;}
+  th, td {border: 1px solid #999; padding: 10px; text-align: left; vertical-align: middle;}
+  code  {background: #f4f4f4; font-size: 16px; padding: 2px 4px; border-radius: 4px;}
+  </style>
+</head>
+<body>
+  <table border="1">
+    <thead>
+      <tr>
+        <th scope="col">상황</th>
+        <th scope="col">role을 써야 하는 경우</th>
+        <th scope="col">role을 쓰면 안 되는 경우</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1. div/span만으로 UI를 만들 때</td>
+        <td>
+          실제 의미를 부여하기 위해 필요<br>
+          예: <code>&lt;div role="button"&gt;</code>
+        </td>
+        <td>
+          div인데 실제 버튼 기능도 없고 단순 레이아웃만 담당할 경우
+        </td>
+      </tr>
+      <tr>
+        <td>2. HTML 시맨틱 태그가 없는 경우</td>
+        <td>
+          목록 UI인데 <code>&lt;div&gt;</code>로 만들었다면 
+          <code>role="list"</code> / <code>role="listitem"</code>
+        </td>
+        <td>
+          시맨틱 태그(<code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>)를 쓸 수 있는데도 
+          div로 억지로 role만 붙임
+        </td>
+      </tr>
+      <tr>
+        <td>3. 모달/팝업 만들 때</td>
+        <td>
+          <code>&lt;div role="dialog"&gt;</code> 필수<br>
+          + <code>aria-labelledby</code>, <code>aria-describedby</code>
+        </td>
+        <td>
+          modal인데 <code>role="dialog"</code> 안 넣고 div만 사용하면 ❌
+        </td>
+      </tr>
+      <tr>
+        <td>4. 탭/아코디언 같은 인터랙션 UI</td>
+        <td>
+          <code>tab</code>, <code>tablist</code>, <code>tabpanel</code> 사용
+        </td>
+        <td>
+          HTML만으로 시맨틱 구조 만들 수 없다고 해도<br>
+          role을 엉뚱하게 사용하는 경우
+        </td>
+      </tr>
+      <tr>
+        <td>5. Landmark 지정이 필요한 큰 영역</td>
+        <td>
+          header → <code>role="banner"</code><br>
+          nav → <code>role="navigation"</code><br>
+          main → <code>role="main"</code>
+        </td>
+        <td>
+          이미 <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code> 등 시맨틱 태그 쓰고 있으면<br>
+          role 중복 필요 없음
+        </td>
+      </tr>
+      <tr>
+        <td>6. 스크린리더가 자동으로 읽어야 하는 영역</td>
+        <td>
+          에러 메시지, 알림 → <code>role="alert"</code>
+        </td>
+        <td>
+          일반 텍스트나 설명문에 <code>role="alert"</code> 쓰면<br>
+          스크린리더가 계속 끼어들어 혼란 발생
+        </td>
+      </tr>
+      <tr>
+        <td>7. section에 제목이 존재하고 영역 구분 필요</td>
+        <td>
+          <code>&lt;section&gt;</code> → <code>role="region"</code> + <code>aria-label</code>
+        </td>
+        <td>
+          제목이 없거나 의미 없는 구역인데 괜히 <code>role="region"</code> 붙이면 안 됨
+        </td>
+      </tr>
+      <tr>
+        <td>8. 단순 아이콘</td>
+        <td>
+          시각적 장식 아이콘은 <code>aria-hidden="true"</code>
+        </td>
+        <td>
+          아이콘에 의미가 있는데 <code>aria-hidden</code> 넣어버리면 ❌<br>
+          (예: 검색버튼 아이콘)
+        </td>
+      </tr>
+      <tr>
+        <td>9. table 요소</td>
+        <td>
+          div 기반 그리드 UI인데 스크린리더에서 테이블처럼 읽혀야 할 때<br>
+          <code>role="table"</code>
+        </td>
+        <td>
+          실제 <code>&lt;table&gt;</code> 쓰는 상황 + role 중복(필요 없음)
+        </td>
+      </tr>
+      <tr>
+        <td>10. 입력 영역</td>
+        <td>
+          custom checkbox, switch 같은 UI →<br>
+          <code>role="checkbox"</code>, <code>role="switch"</code>
+        </td>
+        <td>
+          기본 <code>&lt;input type="checkbox"&gt;</code>에는 role 넣으면 안 됨<br>
+          (이미 의미 충분)
+        </td>
+      </tr>
+      <tr>
+        <td>11. 메뉴 UI</td>
+        <td>
+          드롭다운 메뉴 → <code>role="menu"</code>, <code>role="menuitem"</code>
+        </td>
+        <td>
+          네비게이션 메뉴는 일반적으로 menu role 쓰지 않음<br>
+          (오해의 소지 있음)
+        </td>
+      </tr>
+      <tr>
+        <td>12. 단순한 텍스트/레이아웃 요소</td>
+        <td>
+          <code>role="presentation"</code> 또는 <code>role="none"</code>으로 의미 제거
+        </td>
+        <td>
+          의미 있는 요소(<code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>)인데<br>
+          presentation 넣으면 스크린리더가 인식 못함
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+</body>
+</html>
