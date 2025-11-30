@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유의사항</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="form.js"></script> -->
+</head>
+<body>
+
+  <style>
+    *       {margin: 0; padding: 0; box-sizing: border-box;}
+    ul,ol   {list-style: none;}
+
+    main    {padding: 30px 300px; width: 100%; margin: 0 auto; text-align: center; box-sizing: border-box;}
+    button.more   {display: block; margin: 0 auto; padding: 0 10px; width: auto; height: 40px; line-height: 40px; text-align: center; color: #000; background-color: rgb(186, 236, 255); cursor: pointer; outline: none; border: 1px solid #eee; border-radius: 6px;}
+    button.more.active    {font-weight: 700;}
+
+    /* .noti-box {display: none; padding-top: 10px;}
+    .more.active + .noti-box {display: block;} */
+    /* 애니메이션 적용 */
+    .noti-box     {max-height: 0; overflow: hidden; padding-top: 0; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, padding-top 0.4s ease; }
+    button.more.active + .noti-box    {opacity: 1; padding-top: 10px; }
+    .noti-box ul li     {font-size: 18px; text-align: left; font-weight: 400;}
+    .noti-box ul li.noti-tit     {padding-left: 14px; font-weight: 600;}
+  </style>
+
+  <main>
+    <button class="more">유의사항 더보기 (후기)</button>
+    <div class="noti-box">
+      <ul>
+        <li class="noti-tit">후기 이벤트 참여 유의사항</li>
+        <li class="noti-txt">· 본 페이지에 안내된 리뷰 이벤트, 구매 이벤트는 서로 중복 참여 가능합니다.</li>
+        <li class="noti-txt">· 본 이벤트의 응모를 위해서는 삼성닷컴 회원가입 및 계정 정보가 필요합니다.</li>
+        <li class="noti-txt">· 본 이벤트는 행사매장 내 대상모델에 한하며, 복수 구매 시 중복 참여 가능합니다.</li>
+        <li class="noti-txt">· 이벤트 응모 기간 : 2025.10.28 ~ 2026.05.31</li>
+        <li class="noti-txt">· 이벤트 신청 대상</li>
+        <li class="noti-txt">- 2025.09.23 ~ 2025.12.31 이내 이벤트 대상 모델 구매 및 2026.05.31일까지 설치 완료 고객</li>
+        <li class="noti-txt">- 결제 일자 포함 계약서 사진 증빙 필수</li>
+        <li class="noti-txt">· 구매 기간은 가구장 계약서 기준입니다.</li>
+        <li class="noti-txt">· 이벤트 대상 구매처</li>
+        <li class="noti-txt">- 오프라인 : 삼성스토어, 백화점</li>
+        <li class="noti-txt">· 이벤트 참여 계정 및 게시물/댓글 등은 당첨자 발표일까지 전체공개 되어 있어야 합니다.</li>
+        <li class="noti-txt">· 본 이벤트는 게시물 내 이벤트 조건에 맞는 내용의 사진(또는 영상) 2장 이상, 최소 100자 이상의 설명글, 필수 해시태그가 모두 포함되어 있어야 정상 참여로 인정됩니다.</li>
+        <li class="noti-txt">· 필수 해시태그 : #삼성원스톱가전리폼서비스 #가구장리폼 #삼성가구장리폼 #삼성전자이벤트</li>
+        <li class="noti-txt">· 본 이벤트 참여 게시물로 제출된 게시물과 게시물 내 사진(또는 영상)은 상업적 용도로 활용될 수 있으며 기간 제한 없이 당사의 마케팅 목적으로 활용(수정, 편집 포함) 될 수 있습니다.</li>
+        <li class="noti-txt">· 지급 확정 발표 : 이벤트 종료 후 3개월 이내 수령 대상자 개별 안내</li>
+        <li class="noti-txt">· 베스트 리뷰어 선정 혜택은 후기 이벤트 작성 요건 충족 시 자동으로 응모됩니다.</li>
+        <li class="noti-txt">· 구매 취소 시 제공받은 혜택은 반납하여야 합니다.</li>
+        <li class="noti-txt">· 본 행사는 당사 사정에 따라 예고 없이 변경되거나 중단될 수 있습니다.</li>
+        <li class="noti-txt">· 실제 상품은 상기 이미지와 다를 수 있습니다.</li>
+        <li class="noti-txt">· 경품/사은품 등으로 받은 상품권은 현금 반환 및 기간 연장이 불가합니다.</li>
+        <li class="noti-txt">· 혜택 발송을 위해 당사 혜택 운영 관리 대행사에 개인정보가 제공되며 행사 종료일 기준 3개월 후 파기됩니다.</li>
+        <li class="noti-txt">· 당첨자별 발송 및 배송 시점은 다를 수 있습니다. </li>
+        <li class="noti-txt">· 10만원 신세계 상품권 : 모바일로 발송되어 교환권 형태로 제공 (교환 가능 기간 : 발급일로부터 60일 이내 지류변경) </li>
+        <li class="noti-txt">· 30만원 신세계 상품권 : 지류 상품권이 응모시 기입하신 주소로 등기 발송</li>
+        <li class="noti-txt">· 본 이벤트에서 제시된 조건을 충족하지 않을 경우 당첨이 제한, 취소될 수 있습니다.</li>
+        <li class="noti-txt">· 이벤트 신청 시 잘못 입력한 개인정보로 인해 오발송 또는 분실될 경우 재발송은 불가하며, 고객 책임으로 인한 혜택 미제공은 재발급이 어려우니 신청 전 반드시 입력 정보를 확인해 주시기 바랍니다.</li>
+        <li class="noti-txt">· 고객이 잘못 입력한 정보 혹은 수령한 혜택 분실 등 고객 책임으로 인한 혜택 미제공은 당사가 책임지지 않습니다.</li>
+        <li class="noti-txt">· 당첨자는 삼성닷컴 응모하기를 통해 접수하신 분들을 대상으로, 구매 및 SNS 게시물 인증/검증 완료된 고객들 중 선정됩니다.</li>
+        <li class="noti-txt">· 경품 증정 일자, 증정 방법 등은 당첨자에게 개별 연락드릴 예정이며, 지급 확정 발표 기간 내 문자 및 전화 등 연락이 닿지 않을 시 당첨이 취소됩니다.</li>
+        <li class="noti-txt">· 비 정상적인 방법으로 참여 시 당첨이 제한, 취소될 수 있습니다. (타인 명의 이미지 도용, 가짜 명의 생성, 반복 참여 프로그램 이용, 단순 복사 등)</li>
+        <li class="noti-txt">· 타인의 보호되는 저작물, 초상권 일부 또는 전부를 해당 권리자 허락 없이 이용하거나 허락 범위를 넘어 이용하는 행위는 저작권, 초상권 침해가 되어 당첨이 취소될 수 있으며, 이에 대한 법적 책임은 이용자 본인에게 있습니다.</li>
+      </ul>
+    </div>
+
+
+    <button class="more">유의사항 더보기 (구매)</button>
+    <div class="noti-box">
+      <ul>
+        <li class="noti-tit">구매 이벤트 참여 유의사항</li>
+        <li class="noti-txt">· 본 페이지에 안내된 후기 이벤트, 구매 이벤트는 서로 중복 참여 가능합니다.</li>
+        <li class="noti-txt">· 본 이벤트의 응모를 위해서는 삼성닷컴 회원가입 및 계정 정보가 필요합니다.</li>
+        <li class="noti-txt">· 제품의 기능은 상세 페이지를 통해 확인 가능합니다. (링크).</li>
+        <li class="noti-txt">· 이벤트 응모 기간 : 2025.10.28 ~ 2026.01.18</li>
+        <li class="noti-txt">· 이벤트 신청 대상 : 삼성닷컴 회원 및 구매 이벤트 내의 기능 이미지 포함, 필수 해시태그 포함 SNS 전체 공개 게시물 작성 고객</li>
+        <li class="noti-txt">· 인스타그램, 페이스북, 블로그 등 SNS 제한 없음</li>
+        <li class="noti-txt">· 이벤트 참여 계정 및 게시물/댓글 등은 당첨자 발표일까지 전체공개 되어 있어야 합니다.</li>
+        <li class="noti-txt">· 본 이벤트는 게시물 내 이벤트 조건에 맞는 내용의 사진 1장 이상, 필수 해시태그가 모두 포함되어 있어야 정상 참여로 인정됩니다.</li>
+        <li class="noti-txt">· 필수 해시태그 : #삼성원스톱가전리폼서비스 #가구장리폼 #삼성가구장리폼 #삼성전자이벤트 가 모두 포함되어야 정상 참여로 인정됩니다.</li>
+        <li class="noti-txt">· 지급 확정 발표 : 이벤트 종료 후 3개월 이내 수령 대상자 개별 안내</li>
+        <li class="noti-txt">· 스타벅스 아메리카노 모바일 상품권 사용기간은 발급일로부터 60일입니다.</li>
+        <li class="noti-txt">· 만 14세 미만은 이벤트 참여가 불가능합니다.</li>
+        <li class="noti-txt">· 이벤트 신청 시 잘못 입력한 개인정보로 인해 오발송 또는 분실될 경우 재발송은 불가하며, 고객 책임으로 인한 혜택 미제공은 재발급이 어려우니 신청 전 반드시 입력 정보를 확인해 주시기 바랍니다.</li>
+        <li class="noti-txt">· 쿠폰은 MMS로 지급되며, 응모 시 기입하신 연락처로 지급됩니다.</li>
+        <li class="noti-txt">· 실제 상품은 상기 이미지와 다를 수 있습니다.</li>
+        <li class="noti-txt">· 유효기간 만료 이후 소멸로 인한 피해 보상 및 재발급은 불가능합니다.</li>
+        <li class="noti-txt">· 경품/사은품 등으로 받은 상품권은 현금 반환 및 기간 연장이 불가합니다.</li>
+        <li class="noti-txt">· 본 행사는 당사 사정에 따라 예고 없이 변경되거나 중단될 수 있습니다.</li>
+        <li class="noti-txt">· 혜택 발송을 위해 당사 혜택 운영 관리 대행사에 개인정보가 제공되며 행사 종료일 기준 3개월 후 파기됩니다.</li>
+        <li class="noti-txt">· 당첨자는 삼성닷컴 응모하기를 통해 접수하신 분들을 대상으로 추첨을 통해 선정됩니다.</li>
+        <li class="noti-txt">· 당첨자별 발송 및 배송 시점은 다를 수 있습니다. </li>
+        <li class="noti-txt">· 경품 증정 일자, 증정 방법 등은 당첨자에게 개별 연락드릴 예정이며, 지급 확정 발표 기간 내 문자 및 전화 등 연락이 닿지 않을 시 당첨이 취소됩니다.</li>
+        <li class="noti-txt">· 본 이벤트는 중복 참여 및 중복 당첨이 불가능합니다.</li>
+        <li class="noti-txt">· 비 정상적인 방법으로 참여 시 당첨이 제한, 취소될 수 있습니다. (타인 명의 이미지 도용, 가짜 명의 생성, 반복 참여 프로그램 이용, 단순 복사 등)</li>
+        <li class="noti-txt">· 타인의 보호되는 저작물, 초상권 일부 또는 전부를 해당 권리자 허락 없이 이용하거나 허락 범위를 넘어 이용하는 행위는 저작권, 초상권 침해가 되어 당첨이 취소될 수 있으며, 이에 대한 법적 책임은 이용자 본인에게 있습니다. </li>
+        <li class="noti-txt">· 혜택 운영 관리 : ㈜디메이크 02-6207-1311 (평일 10-17시, 점심시간 12-13시 30분, 주말 및 공휴일 미운영)_</li>
+      </ul>
+    </div>
+  </main>
+
+
+  <script>
+    $(document).ready(function() {
+      $('.more').on('click', function() {
+          $(this).toggleClass('active');
+          
+          const $notiBox = $(this).next('.noti-box');
+          
+          if ($(this).hasClass('active')) {
+              // 열릴 때: 실제 콘텐츠 높이 계산 + 여유 높이 추가
+              const scrollHeight = $notiBox.prop('scrollHeight');
+              $notiBox.css('max-height', (scrollHeight + 50) + 'px');
+          } else {
+              // 닫힐 때: 0으로
+              $notiBox.css('max-height', '0');
+          }
+      });
+    });
+  </script>
+</body>
+</html>

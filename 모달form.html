@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <title>모달템플릿(접근성 완성형)</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+
+  <style>
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 24px;
+      width: 320px;
+      border-radius: var(--radius-md);
+    }
+
+  </style>
+</head>
+<body>
+  <button class="btn btn-primary" data-modal-open="basicModal">모달 열기</button>
+
+  <div class="modal" id="basicModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <h2 id="modalTitle">모달 타이틀</h2>
+      <p id="modalDesc">모달 내용이 들어갑니다.</p>
+
+      <button class="btn btn-outline" data-modal-close>닫기</button>
+    </div>
+  </div>
+
+  <script>
+    // 모달 스크립트
+    document.querySelectorAll("[data-modal-open]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.modalOpen;
+        document.getElementById(target).classList.add("show");
+      });
+    });
+
+    document.querySelectorAll("[data-modal-close]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.closest(".modal").classList.remove("show");
+      });
+    });
+
+  </script>
+  
+</body>
+</html>

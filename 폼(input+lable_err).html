@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=, initial-scale=1.0">
+  <title>input form</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+
+  <style>
+    .form-group {
+      margin-bottom: var(--space-md);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    .form-group input {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+    }
+
+    .form-error {
+      margin-top: 4px;
+      color: #e74c3c;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="form-group">
+    <label for="userName">이름</label>
+    <input type="text" id="userName" aria-describedby="nameError" />
+    <p id="nameError" class="form-error" aria-live="polite"></p>
+  </div>
+
+  <script>
+    //빈값일때 에러메시지 출력
+    const input = document.getElementById("userName");
+    const error = document.getElementById("nameError");
+
+    input.addEventListener("blur", () => {
+      if (input.value.trim() === "") {
+        error.textContent = "이름을 입력해주세요.";
+      } else {
+        error.textContent = "";
+      }
+    });
+  </script>
+
+  <script>
+    // 글자수 부족 에러
+    if (input.value.length < 2) {
+      error.textContent = "이름은 2글자 이상 입력해야 합니다.";
+    }
+  </script>
+
+  <script>
+    // 특정 패턴이 아닐때 에러 (ex. 숫자만입력해야할때)
+    if (!/^[0-9]+$/.test(input.value)) {
+      error.textContent = "숫자만 입력 가능합니다.";
+    }
+
+  </script>
+</body>
+</html>

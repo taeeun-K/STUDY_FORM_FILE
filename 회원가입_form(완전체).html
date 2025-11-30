@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 form</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+  
+  <style>
+    /* 기본 셋팅 */
+    form {
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      font-family: Pretendard, sans-serif;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border-color .2s;
+    }
+
+    /* 🔥 에러 시 빨간 테두리 */
+    input.error {
+      border-color: #e74c3c !important;
+    }
+
+    /* 에러 문구 */
+    .form-error {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    /* 버튼 */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #4864f6;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <form id="signupForm" novalidate>
+    <!-- 이름 -->
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input 
+        type="text" 
+        id="name" 
+        aria-describedby="nameError"
+        required
+      />
+      <p id="nameError" class="form-error" aria-live="polite"></p>
+
+      <!-- 
+
+        aria-live="polite"의 의미
+        aria-live는 스크린리더가 어떤 영역의 변화를 자동으로 읽어줄지를 정하는 속성.
+        즉, “이 영역 안의 내용이 바뀌면 사용자에게 읽어줘!” 하는 역할.
+        그 중 polite는 “읽어주긴 하는데, 사용자의 현재 행동을 방해하지 않는 방식으로 읽어줘”라는 의미
+        결론: 유효성검사에서 이메일 형식 오류로 에러메세지가 출력됐을때 에러문구를 읽어주지만, 사용자가 작성중일때 갑자기 끼어들어서 읽지는 않는다. 이게 polite.
+
+        **꼭 필요한 이유
+          시각장애 사용자가 에러를 놓치지 않게 함
+          입력 중 방해하지 않음
+          웹접근성 평가에서 PASS 포인트
+
+        **다른 값 예시
+          off - 변경되어도 읽지 않음
+          polite - 현재 읽기 끝나고 부드럽게 읽어줌 (폼 에러 메시지에 가장 적합)
+          assertive - 현재 읽는 걸 즉시 중단하고 바로 읽음 → 경고/중요 알림용
+      -->
+    </div>
+
+    <!-- 이메일 -->
+    <div class="form-group">
+      <label for="email">이메일</label>
+      <input 
+        type="email" 
+        id="email" 
+        aria-describedby="emailError"
+        required
+      />
+      <p id="emailError" class="form-error" aria-live="polite"></p>
+    </div>
+
+    <!-- 비밀번호 -->
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input 
+        type="password" 
+        id="password" 
+        aria-describedby="pwError"
+        required
+      />
+      <p id="pwError" class="form-error" aria-live="polite"></p>
+    </div>
+
+    <!-- 비밀번호 확인 -->
+    <div class="form-group">
+      <label for="passwordCheck">비밀번호 확인</label>
+      <input 
+        type="password" 
+        id="passwordCheck" 
+        aria-describedby="pwCheckError"
+        required
+      />
+      <p id="pwCheckError" class="form-error" aria-live="polite"></p>
+    </div>
+
+    <button type="submit" class="btn-submit">회원가입</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("signupForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      let valid = true;
+
+      // 요소 가져오기
+      const name = document.getElementById("name");
+      const email = document.getElementById("email");
+      const pw = document.getElementById("password");
+      const pwCheck = document.getElementById("passwordCheck");
+
+      // 에러 영역
+      const nameErr = document.getElementById("nameError");
+      const emailErr = document.getElementById("emailError");
+      const pwErr = document.getElementById("pwError");
+      const pwCheckErr = document.getElementById("pwCheckError");
+
+      // 초기화
+      [name, email, pw, pwCheck].forEach(input => input.classList.remove("error"));
+      [nameErr, emailErr, pwErr, pwCheckErr].forEach(el => el.textContent = "");
+
+      // 🔴 이름 검사
+      // 빈 문자열 체크
+      if (name.value.trim() === "") {
+        nameErr.textContent = "이름을 입력해주세요.";
+        // error 클래스 -> 빨간테두리
+        name.classList.add("error");
+        valid = false;
+      }
+
+      // 🔴 이메일 검사
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      // 빈 문자열 체크
+      if (email.value.trim() === "") {
+        emailErr.textContent = "이메일을 입력해주세요.";
+        // error 클래스 -> 빨간테두리
+        email.classList.add("error");
+        valid = false;
+      } else if (!emailPattern.test(email.value)) {
+        emailErr.textContent = "올바른 이메일 형식이 아닙니다.";
+        // error 클래스 -> 빨간테두리
+        email.classList.add("error");
+        valid = false;
+      }
+
+      // 🔴 비밀번호 길이 검사
+      if (pw.value.length < 6) {
+        pwErr.textContent = "비밀번호는 6자 이상이어야 합니다.";
+        // error 클래스 -> 빨간테두리
+        pw.classList.add("error");
+        valid = false;
+      }
+
+      // 🔴 비밀번호 일치 확인 검사
+      if (pw.value !== pwCheck.value) {
+        pwCheckErr.textContent = "비밀번호가 일치하지 않습니다.";
+        // error 클래스 -> 빨간테두리
+        pwCheck.classList.add("error");
+        valid = false;
+      }
+
+      // 최종 통과
+      if (valid) {
+        alert("회원가입 완료!");
+        form.reset();
+      }
+    });
+
+  </script>
+</body>
+</html>

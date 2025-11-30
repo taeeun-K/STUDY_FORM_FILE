@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유의사항 아코디언 하나만 arrow 애니메이션적용</title>
+
+  <style>
+    .acc-list {
+      list-style: none;
+      padding: 0;
+      margin: 40px auto;
+      width: 100%;
+      max-width: 1440px;
+      font-family: "Pretendard", sans-serif;
+    }
+
+    .acc-item {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .acc-btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .acc-btn .arrow {
+      width: 16px;
+      height: 16px;
+      position: relative;        /* 🔥 arrow 박스 자체가 기준 */
+      display: inline-block;
+    }
+
+    .acc-btn .arrow::before {
+      content: "";
+      position: absolute;        /* 🔥 회전해도 위치 안 변함 */
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #333;
+      border-bottom: 2px solid #333;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transform-origin: center;
+      transition: transform .3s;
+    }
+    
+    /* --- arrow 애니메이션 되는 버전 --- */
+    .arrow.animate {
+      transition: transform .3s;
+    }
+
+    /* 열렸을 때 */
+    .acc-btn[aria-expanded="true"] .arrow::before {
+      transform: translate(-50%, -50%) rotate(-135deg);
+    }
+    .acc-content {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .35s ease;
+      padding: 0 18px;
+      /* display: none; 초기에는 모두 닫힘 */
+    }
+
+    .acc-content p {
+      padding: 16px 0;
+      color: #555;
+      font-size: 16px;
+    }
+
+    /* 반응형 */
+    @media (max-width: 760px) {
+      .acc-btn { font-size: 16px; padding: 16px; }
+      .acc-content p { font-size: 15px; }
+    }
+
+  </style>
+</head>
+<body>
+  <ul class="acc-list">
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont1">
+        유의사항 1
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont1">
+        <p>이 이벤트는 특정 모델에 한해 적용됩니다.</p>
+      </div>
+    </li>
+
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont2">
+        유의사항 2
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont2">
+        <p>혜택은 중복 적용되지 않습니다.</p>
+      </div>
+    </li>
+
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont3">
+        유의사항 3
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont3">
+        <p>내용은 사전 예고 없이 변경될 수 있습니다.</p>
+      </div>
+    </li>
+  </ul>
+
+
+
+  
+  <script>
+    // arrow 애니메이션 버전
+    document.querySelectorAll('.acc-btn .arrow').forEach(el => el.classList.add('animate'));
+
+    const accBtns = document.querySelectorAll(".acc-btn");
+
+    accBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        const content = document.getElementById(btn.getAttribute("aria-controls"));
+
+        // 1) 먼저 전체 아코디언 닫기 (only one)
+        accBtns.forEach(otherBtn => {
+          if (otherBtn !== btn) {
+            otherBtn.setAttribute("aria-expanded", "false");
+            const otherContent = document.getElementById(
+              otherBtn.getAttribute("aria-controls")
+            );
+            otherContent.style.maxHeight = null;
+          }
+        });
+
+        // 2) 현재 클릭한 요소 토글
+        btn.setAttribute("aria-expanded", !expanded);
+
+        if (!expanded) {
+          content.style.maxHeight = content.scrollHeight + "px"; // 슬라이드 다운
+        } else {
+          content.style.maxHeight = null; // 슬라이드 업
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>

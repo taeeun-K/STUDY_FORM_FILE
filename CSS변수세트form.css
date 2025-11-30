@@ -1,0 +1,23 @@
+:root {
+  /* Colors */
+  --color-primary: #4864f6;
+  --color-secondary: #ff9d43;
+  --color-bg: #ffffff;
+  --color-text: #222;
+  --color-muted: #888;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Font */
+  --font-main: 'Pretendard', sans-serif;
+}

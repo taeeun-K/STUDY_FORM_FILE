@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유의사항 아코디언 (arrow 회전 없음)</title>
+  <style>
+    .acc-list { list-style: none; padding: 0; margin: 40px auto; width: 100%; max-width: 1440px; font-family: "Pretendard", sans-serif; }
+    .acc-item { border-bottom: 1px solid #ddd; }
+    .acc-btn { width: 100%; padding: 18px; font-size: 18px; background: none; border: none; cursor: pointer; position: relative; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+    .acc-btn .arrow { width: 16px; height: 16px; position: relative; display: inline-block; }
+    .acc-btn .arrow::before { content: ""; position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; border-right: 2px solid #333; border-bottom: 2px solid #333; transform: translate(-50%, -50%) rotate(45deg); transform-origin: center; transition: none; }
+    /* 열렸을 때: 방향만 바뀜, 회전 애니메이션 없음 */
+    .acc-btn[aria-expanded="true"] .arrow::before { margin-top: 5px; transform: translate(-50%, -50%) rotate(-135deg); }
+    .acc-content { overflow: hidden; max-height: 0; transition: max-height .35s ease; padding: 0 18px; }
+    .acc-content p { padding: 16px 0; color: #555; font-size: 16px; }
+    @media (max-width: 760px) { .acc-btn { font-size: 16px; padding: 16px; } .acc-content p { font-size: 15px; } }
+  </style>
+</head>
+<body>
+  <ul class="acc-list">
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont1">
+        유의사항 1
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont1">
+        <p>이 이벤트는 특정 모델에 한해 적용됩니다.</p>
+      </div>
+    </li>
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont2">
+        유의사항 2
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont2">
+        <p>혜택은 중복 적용되지 않습니다.</p>
+      </div>
+    </li>
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont3">
+        유의사항 3
+        <span class="arrow"></span>
+      </button>
+      <div class="acc-content" id="accCont3">
+        <p>내용은 사전 예고 없이 변경될 수 있습니다.</p>
+      </div>
+    </li>
+  </ul>
+  <script>
+    // arrow 회전 애니메이션 없이 방향만 바뀌는 버전
+    const accBtns = document.querySelectorAll(".acc-btn");
+    accBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        const content = document.getElementById(btn.getAttribute("aria-controls"));
+        accBtns.forEach(otherBtn => {
+          if (otherBtn !== btn) {
+            otherBtn.setAttribute("aria-expanded", "false");
+            const otherContent = document.getElementById(otherBtn.getAttribute("aria-controls"));
+            otherContent.style.maxHeight = null;
+          }
+        });
+        btn.setAttribute("aria-expanded", !expanded);
+        if (!expanded) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = null;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

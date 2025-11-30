@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>객체지향 - 도서관리시스템</title>
+
+  <style>
+    * { padding: 0; margin: 0; box-sizing: border-box; }
+    ul, ol, li { list-style: none; padding: 0; margin: 0; }
+    em { font-style: normal; font-weight: 700; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; }
+
+    
+    
+    #wrap  {width: 100%; padding: 20px; box-sizing: border-box;}
+    header {padding-bottom: 20px; border-bottom: 3px solid #ccc;}
+    header h1 { font-size: 24px; color: #222;}
+    
+    .main_wrapper {display: flex; gap: 10px; margin-top: 20px; height: calc(100vh - 120px);}
+    /* .main_wrapper.has-right-box {gap: 20px;} */
+    .left_center_wrap {display: flex; flex-direction: column; gap: 20px; flex: 1;}
+    .container main section ul li:hover  {background: #eee;}
+
+
+    .search_box { width: 100%; padding: 10px 20px; background: #ccc; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px; }
+    .search_box form  {display: inline;}
+    .search_box form input  {vertical-align: top; padding: 5px; width: 500px; height: 30px;}
+    .search_box form button.search  { width: 40px; height: 30px; line-height: 30px; text-align: center;}
+    .search_box .category-box  {margin-left: 30px; display: inline;}
+    .search_box .category-box label  { font-size: 12px;}
+    .search_box .category-box select  { width: 100px; height: 30px;}
+    
+    
+    .container {width: 100%; height: 100vh; display: flex; color: #222; align-items: flex-start; }
+    .container nav  {padding: 20px; width: 200px; height: 100%; flex-shrink: 0; border-right: 1px solid #ccc;}
+    .container nav ul li{width: 100%; text-align: center; background: #eee; margin-top: 10px; border: 1px solid #222;}
+    .container nav ul li:first-child  {margin-top: 0;}
+    .container nav ul li a {display: block; height: 30px; line-height: 30px;}
+    .container nav ul li a.on {font-weight: 700;}
+    .container main  {padding: 20px 0 20px 20px; flex: 1;height: 100%;}
+    .container main section { font-size: 14px;}
+    .container main section h2   {padding-bottom: 20px; font-size: 20px; color: #000;}
+    .container main section ul { padding: 20px; border: 1px solid #ccc;}
+    .container main section ul li {position: relative; padding-left: 8px; margin-top: 10px;}
+    .container main section ul li:after {position: absolute; content: "·"; left: 0; top: 0; color: #000;}
+    .container main section ul li:first-of-type {margin-top: 0;}
+    .container main section .btn-wrap  {width: 100%; margin-top: 20px; text-align: right;}
+    .container main section button  {padding: 5px 15px; margin-left: 10px;}
+    .container main section button:first-of-type  { margin-left: 0;}
+
+
+    .container main section.book-listing ul li  {width: 100%;}
+    .container main section.book-listing ul li a  {display: flex; flex-wrap: nowrap; width: 100%;}
+    .container main section.book-listing ul li.list-item span  {display: inline-block; margin-left: 20px;}
+    .container main section.book-listing ul li.list-item span.title  { margin-left: 0; flex: 1; min-width: 15%; width: 40%;}
+    .container main section.book-listing ul li.list-item span.writer  {width: 20%; min-width: 8%;}
+    .container main section.book-listing ul li.list-item span.genre  {width: 13%; min-width: 6%;}
+    .container main section.book-listing ul li.list-item span.date  {width: 20%; min-width: 8%;}
+    .container main section.book-listing ul li.list-item span.loan_availability  {display: none; width: 20%; min-width: 8%; font-size: 10px; line-height: 20px;}
+    .container main section.book-listing .search_none {display: none; width: 100%; height: 100%; text-align: center;}
+
+    
+    .container main section.book-adding  {width: 500px;}
+    .container main section.book-adding form  {width: 100%;}
+    .container main section.book-adding form > div  {display: flex; flex-wrap: nowrap; align-items: center; margin-top: 20px;}
+    .container main section.book-adding form > div:first-of-type  {margin-top: 0;}
+    .container main section.book-adding form label  {width: 150px; flex-shrink: 0; height: 30px; font-size: 20px; line-height: 30px;}
+    .container main section.book-adding form input  {flex: 1; min-width: 300px; margin-left: 20px; height: 30px; font-size: 20px; line-height: 30px;}
+
+    
+    .container main section.loan-management ul li  {padding-left: 12px; width: 100%;display: flex; gap: 10px;}
+    .container main section.loan-management ul li  {padding-top: 2px;}
+    .container main section.loan-management ul li input:checked~ .loan-info  {background: #eee;}
+    .container main section.loan-management ul li .loan-info  {display: flex; flex-wrap: nowrap; padding-left: 5px; width: 100%;}
+    .container main section.loan-management ul li .loan-info span  {display: inline-block; margin-left: 20px;}
+    .container main section.loan-management ul li .loan-info span.title  { margin-left: 0; flex: 1; min-width: 20%; width: 25%;}
+    .container main section.loan-management ul li .loan-info span.writer  {width: 10%; min-width: 8%;}
+    .container main section.loan-management ul li .loan-info span.code  {width: 11%; min-width: 8%;}
+    .container main section.loan-management ul li .loan-info span.user  {width: 10%; min-width: 8%;}
+    .container main section.loan-management ul li .loan-info span.user_phone  {width: 15%; min-width: 10%;}
+    .container main section.loan-management ul li .loan-info span.date  {width: 15%; min-width: 10%;}
+    .container main section.loan-management ul li .loan-info span.period  {width: 15%; min-width: 10%;}
+
+
+    .container main section.member-management ul li  {width: 100%;}
+    .container main section.member-management ul li a  {display: flex; flex-wrap: nowrap; width: 100%;}
+    .container main section.member-management ul li.list-item span  {display: inline-block; margin-left: 20px;}
+    .container main section.member-management ul li.list-item span.name  { margin-left: 0; width: 10%; min-width: 8%;}
+    .container main section.member-management ul li.list-item span.phone  {width: 18%; min-width: 12%;}
+    .container main section.member-management ul li.list-item span.tel  {width: 18%; min-width: 12%;}
+    .container main section.member-management ul li.list-item span.address  {flex: 1; min-width: 25%;}
+    .container main section.member-management ul li.list-item span.date  {width: 15%; min-width: 10%;}
+    .right_box  {display: block; padding: 20px; width: 300px; flex-shrink: 0; border-left: 1px solid #222;}
+    section {display: none; }
+    section:first-child {display: block;}
+
+    section.right_box  {display: none;}
+    section.right_box h2  {margin-bottom: 20px; font-size: 20px;}
+    section.right_box div label   {font-size: 14px;}
+    section.right_box form.right_form  {width: 100%; }
+    section.right_box form.right_form div   {margin-top: 10px; padding: 2px 0; width: 100%; display: flex; flex-direction: row; align-items: center; gap: 5px;}
+    section.right_box form.right_form div:first-child   {margin-top: 0;}
+    section.right_box form.right_form div label  { width: 80px; flex-shrink: 0; height: 30px; line-height: 30px;}
+    section.right_box form.right_form div input  { flex: 1; min-width: calc(100% - 80px - 5px); height: 30px; box-sizing: border-box;}
+    section.right_box .btn_wrap  {display: flex; justify-content: flex-end; gap: 8px;}
+    section.right_box section.member-editing .btn_wrap  {margin-top: 20px;}
+    section.right_box .btn_wrap button  {padding: 2px 5px;}
+    
+    .loan_apl_info  {display: none; padding-bottom: 20px;}
+    .loan_apl_info.show  {display: block !important;}
+    .loan_apl_info h3  {font-size: 16px;}
+    section.right_box .loan_apl_info div   {display: flex; margin-top: 10px;}
+    section.right_box .loan_apl_info div label  { width: 80px; flex-shrink: 0; height: 30px; line-height: 30px;}
+    section.right_box .loan_apl_info div input  { flex: 1; min-width: calc(100% - 80px - 5px); height: 30px; box-sizing: border-box;}
+    button.modal_close {  display: none; };
+
+    @media (max-width: 1400px) {
+      .search_box { width: 100%;}
+    }
+
+    @media (max-width: 1020px) {
+      .search_box form input { width: calc(100% - 50px);}
+      .search_box .category-box {display: block; margin-left: 0; margin-top: 10px;}
+      .container  {flex-direction: column;}
+      .container nav{padding: 0 0 20px 0; width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ddd; }
+      .container nav ul {display: flex; gap: 20px; justify-content: flex-start; flex-wrap: nowrap;}
+      .container nav ul li {width: 80px; margin-top: 0;}
+      .container main  {width: 100%;}
+      .container main section ul li em{display: block;}
+    }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 3.7500vw;}
+      .search_box form input { width: calc(100% - 7.8125vw);}
+      .main_wrapper{display: block; margin-top: 3.1250vw;}
+      .left_center_wrap{gap: 3.1250vw;}
+      .container nav{padding: 0 0 3.1250vw 0;}
+      .container nav ul li {width: 10.9375vw;}
+      .container nav ul li a {height: 3.9500vw; font-size: 2vw; line-height: 3.9500vw;}
+      .search_box form button.search  {width: 6.2500vw; height: 4.6875vw; line-height: 4.6875vw; font-size: 1.8750vw; vertical-align: top;}
+      .search_box form input{height:4.6875vw; font-size: 2.1875vw;}
+      .search_box form input::placeholder{font-size: 2.1875vw;}
+      .search_box .category-box{margin-top: 0;}
+      .search_box .category-box label{font-size: 1.8750vw;}
+      .search_box .category-box select{width: 15.6250vw; height: 4.6875vw; font-size: 1.8750vw;}
+      .search_box .category-box select option{font-size: 1.8750vw;}
+      .container main{padding: 3.1250vw 0 0 0 ;}
+      .container main section h2{padding-bottom: 3.1250vw; font-size: 3.1250vw;}
+      .container main section button{padding: 0.7813vw 2.3438vw;}
+      .container main section ul{padding: 3.1250vw;}
+      .container main section ul li{margin-top: 1.5625vw;}
+      .container main section.book-listing ul li.list-item span{font-size: 2.1875vw;}
+      .container main section.book-adding{width: 100%;}
+      .container main section.book-adding form label{width: 17%; font-size: 3.1250vw;}
+      .container main section.book-adding form input{flex: 1; margin-left: 0; min-width: auto;}
+      .container main section.book-adding button{font-size: 1.8750vw;}
+      .container main section.loan-management .loan-info span{font-size: 2.1875vw;}
+      .container main section.loan-management ul li{padding-left: 1.8750vw; gap: 0;}
+      .container main section.loan-management ul li input{width: 1.5625vw; height: 1.5625vw;}
+      .container main section.loan-management .loan-list-wrapper{overflow-x: auto;}
+      .container main section.loan-management .loan-list-wrapper ul{min-width: 800px;}
+      .container main section.member-management ul li.list-item span{font-size: 2.1875vw;}
+      .mo_bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
+      section.right_box { position: fixed; top: 50%; left: 50%; width: 90vw; max-width: 62.5000vw; height: auto; max-height: 90vh; padding: 3.1250vw; background: #fff; border-radius: 1.8750vw; transform: translate(-50%, -50%); z-index: 1000; display: none; overflow-y: auto; border-left: none;}
+      button.modal_close { position: fixed;display: block; top: 2.5625vw; right: 2.5625vw; width: 4.6875vw; height: 4.6875vw; background: #fff; border: none; border-radius: 50%; font-size: 3.7500vw; line-height: 4.6875vw; text-align: center; box-shadow: 0 0.3125vw 1.2500vw rgba(0,0,0,0.2); z-index: 1001; }
+      section.right_box div  {align-items: baseline;}
+      section.right_box h2{margin-bottom: 3.1250vw; font-size: 3.1250vw;}
+      section.right_box form.right_form div label{width: 12.5000vw; height: 4.6875vw; line-height: 4.6875vw; font-size: 2.5000vw;}
+      section.right_box form.right_form div input{width: 12.5000vw; height: 4.6875vw; line-height: 4.6875vw; font-size: 2.3000vw;}
+      section.right_box .loan_apl_info div  {gap:  0.7813vw;}
+      section.right_box .loan_apl_info div label{width: 12.5000vw; height: 4.6875vw; line-height: 4.6875vw; font-size: 2.5000vw;}
+      section.right_box .loan_apl_info div input{width: 12.5000vw; height: 4.6875vw; line-height: 4.6875vw; font-size: 2.3000vw;}
+      section.right_box .btn_wrap button{padding: 0.3125vw 0.7813vw; font-size: 1.8750vw;}
+    }
+    
+  </style>
+</head>
+<body>
+  
+  <div id="wrap">
+    <header>
+      <h1><a href="#">도서 관리 시스템</a></h1>
+    </header>
+
+    <div class="main_wrapper">
+      <div class="left_center_wrap">
+        <!-- 검색 영역 -->
+      <section class="search_box">
+        <!-- 검색 폼 -->
+        <form id="search-form">
+          <input type="text" id="search-query" placeholder="도서명 또는 저자명으로 검색">
+          <button type="submit" class="search">검색</button>
+        </form>
+        <!--카테고리 selectBox -->
+        <div class="category-box">
+          <label for="category-select">카테고리:</label>
+          <select id="category-select">
+            <option value="all">전체</option>
+            <option value="fiction">소설</option>
+            <option value="essay">에세이</option>
+            <option value="humanities">인문</option>
+            <option value="science">과학</option>
+            <option value="history">역사</option>
+            <option value="etc">기타</option>
+          </select>
+        </div>
+      </section>
+
+      <div class="container">
+        <!-- 본문왼쪽영역 -->
+        <nav>
+          <ul>
+            <li><a href="#" class="book-listing" aria-current="page">도서 목록</a></li>
+            <li><a href="#" class="book-adding">도서 추가</a></li>
+            <li><a href="#" class="loan-management">대출 관리</a></li>
+            <li><a href="#" class="member-management">회원 관리</a></li>
+          </ul>
+        </nav>
+      
+        <main>
+          <!-- 도서 목록 페이지 -->
+          <section class="book-listing">
+            <h2>도서 목록</h2>
+            <ul id="book-list">
+              <!-- 도서 항목이 여기에 추가됩니다. -->
+            </ul>
+
+            <div class="search_none">
+              검색된 도서가 없습니다.
+            </div>
+          </section>
+          
+          
+          <!-- 도서추가 영역 -->
+          <section class="book-adding">
+            <h2>도서 정보</h2>
+            <form id="book-form">
+              <div>
+                <label for="add-title">도서명:</label>
+                <input type="text" id="add-title" name="title" required>
+              </div>
+              <div>
+                <label for="add-author">저자:</label>
+                <input type="text" id="add-author" name="author" required>
+              </div>
+              <div>
+                <label for="add-genre">장르:</label>
+                <input type="text" id="add-genre" name="genre" required>
+              </div>
+              <div>
+                <label for="add-date">입고날짜:</label>
+                <input type="text" id="add-date" name="date" required>
+              </div>
+            </form>
+
+            <div class="btn-wrap">
+              <button type="submit" class="add">도서 추가</button>
+            </div>
+          </section>
+
+
+          <!-- 대출관리 영역 -->
+          <section class="loan-management">
+            <h2>대출 관리</h2>
+            <div class="loan-list-wrapper">
+              <ul>
+                <!-- 대출 항목이 여기에 추가됩니다. -->
+              </ul>
+            </div>
+            <div class="btn-wrap">
+              <button type="button" class="end">대출 완료</button>
+              <button type="button" class="extend">대출 연장</button>
+            </div>
+          </section>
+
+
+          <!-- 회원 관리 페이지 -->
+          <section class="member-management">
+            <h2>회원 관리</h2>
+            <ul id="member-list">
+              <!-- 회원 항목이 여기에 추가됩니다. -->
+            </ul>
+
+            <div class="btn-wrap">
+              <button type="button" class="member-add">회원 추가</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- 본문오른쪽영역 -->
+    <div class="mo_bg"></div>
+    <section class="right_box">        
+      <!-- 도서 정보 상세 영역 -->
+      <section class="book-editing">
+        <h2>도서 정보 상세</h2>
+        <form class="right_form" id="book-edit-form">
+          <div>
+            <label for="edit-title">도서명:</label>
+            <input type="text" id="edit-title" name="title" required>
+          </div>
+          <div>
+            <label for="edit-author">저자:</label>
+            <input type="text" id="edit-author" name="author" required>
+          </div>
+          <div>
+            <label for="edit-genre">장르:</label>
+            <input type="text" id="edit-genre" name="genre" required>
+          </div>
+          <div>
+            <label for="edit-date">입고날짜:</label>
+            <input type="text" id="edit-date" name="date" required>
+          </div>
+          <br>
+        </form>
+
+        <div class="loan_apl_info">
+          <h3>대출 신청자 정보</h3>
+          <div>
+            <label for="applicant-name">이름:</label>
+            <input type="text" id="applicant-name" name="applicant-name" required>
+          </div>
+          <div>
+            <label for="applicant-phone">휴대폰번호:</label>
+            <input type="text" id="applicant-phone" name="applicant-phone" required>
+          </div>
+        </div>
+        
+        <div class="btn_wrap">
+          <button type="submit" class="edit_save">저장</button>
+          <button type="submit" class="loan_application">대출신청</button>
+          <button class="book_del">삭제</button>
+        </div>
+      </section>
+
+      <!-- 회원 정보 상세 영역 -->
+      <section class="member-editing">
+        <h2>회원 정보 상세</h2>
+        <form class="right_form" id="member-form">
+          <div>
+            <label for="name">이름:</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="phone">휴대폰번호:</label>
+            <input type="text" id="phone" name="phone" required>
+          </div>
+          <div>
+            <label for="tel">전화번호:</label>
+            <input type="text" id="tel" name="tel" required>
+          </div>
+          <div>
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" required>
+          </div>
+        </form>
+        <div class="btn_wrap">
+          <button type="submit" class="mem_save">저장</button>
+          <button class="member_del">삭제</button>
+        </div>
+      </section>
+
+      <button type="button" class="modal_close">×</button>
+    </section>
+    </div>
+  </div>
+  
+  <script>
+    // 바닐라 js 로 domContentLoaded 이벤트 사용
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      const navLinks = document.querySelectorAll('nav a');
+      const sections = document.querySelectorAll('main section');
+      const rightBox = document.querySelector('section.right_box');
+      const moBg = document.querySelector('.mo_bg');
+      const mainWrapper = document.querySelector('.main_wrapper');
+      // right box 열기/닫기 함수 반응형(모달) 대응
+      function openRightBox() {
+        rightBox.style.display = 'block';
+        if (window.innerWidth <= 640) {
+          moBg.style.display = 'block';
+          document.body.classList.add('modal-open');
+        } else {
+          mainWrapper.classList.add('has-right-box');
+        }
+      }
+      function closeRightBox() {
+        rightBox.style.display = 'none';
+        moBg.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        mainWrapper.classList.remove('has-right-box');
+      }
+      
+      // 모달 닫기 버튼
+      const modalCloseBtn = document.querySelector('button.modal_close');
+      if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeRightBox();
+        });
+      }
+
+      // 모달 배경 클릭 시 닫기
+      if (moBg) {
+        moBg.addEventListener('click', function(e) {
+          if (e.target === moBg) {  // 배경 자체를 클릭한 경우만
+            closeRightBox();
+          }
+        });
+      }
+      
+      // nav 메뉴 클릭 시 섹션 전환 및 on 클래스 처리
+      navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          
+          // 기존 aria-current와 on 클래스 제거
+          navLinks.forEach(item => item.removeAttribute('aria-current'));
+          navLinks.forEach(item => item.classList.remove('on'));
+          
+          // 현재 클릭된 메뉴에 설정
+          e.currentTarget.setAttribute('aria-current', 'page');
+          e.currentTarget.classList.add('on');
+          
+          // 섹션 전환
+          const targetClass = e.currentTarget.className.replace('on', '').trim();
+
+          sections.forEach(section => {
+            if (section.classList.contains(targetClass)) {
+              section.style.display = 'block';
+            } else {
+              section.style.display = 'none';
+            }
+          });
+
+          // nav 탭 클릭 시 항상 우측 패널 숨김
+          closeRightBox();
+        });
+      });
+
+
+      // 도서가 대출 중인지 확인하는 헬퍼 함수
+      function isBookOnLoan(bookTitle, bookAuthor) {
+        let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+        return storedLoans.some(loan => 
+          loan.title === bookTitle && loan.author === bookAuthor
+        );
+      }
+
+      //검색창에 도서명 또는 저자명 입력 후 검색버튼 클릭 시 도서목록과 연동
+      const searchForm = document.getElementById('search-form');
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = document.getElementById('search-query').value.toLowerCase().replace(/\s+/g, '');
+        const bookListItems = document.querySelectorAll('.book-listing ul li');
+        let found = false;
+
+        bookListItems.forEach(item => {
+          const title = item.querySelector('.title em').textContent.toLowerCase().replace(/\s+/g, '');
+          const author = item.querySelector('.writer em').textContent.toLowerCase().replace(/\s+/g, '');
+          if (title.includes(query) || author.includes(query)) {
+            item.style.display = 'block';
+            found = true;
+            
+            // 대출 가능 여부 표시
+            const titleText = item.querySelector('.title em').textContent;
+            const authorText = item.querySelector('.writer em').textContent;
+            const loanOk = item.querySelector('.loan_availability.ok');
+            const loanNo = item.querySelector('.loan_availability.no');
+            
+            if (isBookOnLoan(titleText, authorText)) {
+              loanOk.style.display = 'none';
+              loanNo.style.display = 'block';
+            } else {
+              loanOk.style.display = 'block';
+              loanNo.style.display = 'none';
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // 검색 결과 없을 시 안내문구 표시 및 ul#book-list 숨기기
+        const searchNone = document.querySelector('.book-listing .search_none');
+        const bookList = document.getElementById('book-list');
+        if (!found) {
+          searchNone.style.display = 'block';
+          bookList.style.display = 'none';
+        } else {
+          searchNone.style.display = 'none';
+          bookList.style.display = 'block';
+        }
+      });
+
+      // 도서목록 li a 클릭 시 상세 우측 패널 표시
+      const bookLinks = document.querySelectorAll('.book-listing ul li a');
+      let selectedBookIndex = null; // 현재 선택된 도서 인덱스
+      if (bookLinks.length && rightBox) {
+        bookLinks.forEach((link, idx) => {
+          // 각 li에 data-index 부여
+          link.parentElement.setAttribute('data-index', idx);
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // 모든 a에서 on 제거
+            bookLinks.forEach(l => l.classList.remove('on'));
+            // 현재 클릭된 a에 on 추가
+            this.classList.add('on');
+            // 우측 상세 패널 보이기
+            openRightBox();
+            // 현재 선택 인덱스 저장
+            selectedBookIndex = parseInt(this.parentElement.getAttribute('data-index'));
+            // 클릭된 도서 정보 우측 상세 input에 채우기
+            const bookEditing = document.querySelector('section.right_box section.book-editing');
+            if (bookEditing) {
+              const title = this.querySelector('.title em')?.textContent || '';
+              const author = this.querySelector('.writer em')?.textContent || '';
+              const genre = this.querySelector('.genre em')?.textContent || '';
+              const date = this.querySelector('.date em')?.textContent || '';
+              bookEditing.querySelector('#edit-title').value = title;
+              bookEditing.querySelector('#edit-author').value = author;
+              bookEditing.querySelector('#edit-genre').value = genre;
+              bookEditing.querySelector('#edit-date').value = date;
+            }
+          });
+        });
+      }
+
+      // 도서목록 전체 렌더링 및 이벤트 바인딩 함수
+      function renderBookList() {
+        const bookList = document.getElementById('book-list');
+        bookList.innerHTML = '';
+        let storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+        storedBooks.forEach((book, idx) => {
+          const li = document.createElement('li');
+          li.classList.add('list-item');
+          li.setAttribute('data-index', idx);
+          
+          // 대출 중인지 확인
+          const onLoan = isBookOnLoan(book.title, book.author);
+          
+          li.innerHTML = `
+            <a href="#">
+              <span class="title">도서명: <em>${book.title}</em></span>
+              <span class="writer">저자: <em>${book.author}</em></span>
+              <span class="genre">장르: <em>${book.genre}</em></span>
+              <span class="date">입고날짜: <em>${book.date}</em></span>
+              <span class="loan_availability ok" style="display: ${onLoan ? 'none' : 'none'}">대출: <em>가능</em></span>
+              <span class="loan_availability no" style="display: ${onLoan ? 'none' : 'none'}">대출: <em>불가</em></span>
+            </a>
+          `;
+          // 클릭 이벤트 바인딩
+          li.querySelector('a').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.book-listing ul li a').forEach(l => l.classList.remove('on'));
+            this.classList.add('on');
+            openRightBox();
+            selectedBookIndex = idx;
+            const bookEditing = document.querySelector('section.right_box section.book-editing');
+            if (bookEditing) {
+              bookEditing.querySelector('#edit-title').value = book.title;
+              bookEditing.querySelector('#edit-author').value = book.author;
+              bookEditing.querySelector('#edit-genre').value = book.genre;
+              bookEditing.querySelector('#edit-date').value = book.date;
+            }
+          });
+          bookList.appendChild(li);
+        });
+      }
+
+      // 대출관리 리스트 렌더링 및 이벤트 바인딩 함수
+      function renderLoanList() {
+        const loanList = document.querySelector('.loan-management ul');
+        loanList.innerHTML = '';
+        let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+        storedLoans.forEach((loan, idx) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <form action="">
+              <input type="checkbox" id="loan${idx}" />
+            </form>
+            <div class="loan-info">
+              <span class="title">도서명: <em>${loan.title}</em></span>
+              <span class="writer">저자: <em>${loan.author}</em></span>
+              <span class="user">대출자: <em>${loan.user}</em></span>
+              <span class="user_phone">연락처: <em>${loan.user_phone}</em></span>
+              <span class="date">대출날짜: <em>${loan.date}</em></span>
+              <span class="period">대출기간: <em>${loan.period}</em></span>
+            </div>
+          `;
+          // user_phone 값에 하이픈 추가 포맷팅
+          const userPhoneEm = li.querySelector('.user_phone em');
+          if (userPhoneEm) {
+            userPhoneEm.textContent = userPhoneEm.textContent.replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
+          }
+
+          // 체크박스 이벤트
+          const checkbox = li.querySelector('input[type="checkbox"]');
+          const loanInfo = li.querySelector('.loan-info');
+          checkbox.addEventListener('change', function() {
+            loanInfo.style.background = this.checked ? '#eee' : '';
+          });
+
+          // li 전체 클릭 시 체크박스 토글
+          li.addEventListener('click', function(e) {
+            if (e.target !== checkbox) {
+              checkbox.checked = !checkbox.checked;
+              loanInfo.style.background = checkbox.checked ? '' : '';
+            }
+          });
+          
+          loanList.appendChild(li);
+        });
+      }
+
+      // 회원관리 리스트 렌더링 및 이벤트 바인딩 함수
+      function renderMemberList() {
+        const memberList = document.getElementById('member-list');
+        memberList.innerHTML = '';
+        let storedMembers = JSON.parse(localStorage.getItem('members')) || [];
+        storedMembers.forEach((member, idx) => {
+          const li = document.createElement('li');
+          li.classList.add('list-item');
+          li.setAttribute('data-index', idx);
+          li.innerHTML = `
+            <a href="#">
+              <span class="name">이름: <em>${member.name}</em></span>
+              <span class="phone">휴대폰번호: <em>${member.phone}</em></span>
+              <span class="tel">전화번호: <em>${member.tel}</em></span>
+              <span class="address">주소: <em>${member.address}</em></span>
+              <span class="date">가입날짜: <em>${member.date}</em></span>
+            </a>
+          `;
+          // 클릭 이벤트 바인딩
+          li.querySelector('a').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.member-management ul li a').forEach(l => l.classList.remove('on'));
+            this.classList.add('on');
+            openRightBox();
+            
+            const bookEditing = document.querySelector('.right_box .book-editing');
+            const memberEditing = document.querySelector('.right_box .member-editing');
+            if (bookEditing) bookEditing.style.display = 'none';
+            if (memberEditing) memberEditing.style.display = 'block';
+            
+            selectedMemberIndex = idx;
+            if (memberEditing) {
+              memberEditing.querySelector('#name').value = member.name;
+              memberEditing.querySelector('#phone').value = member.phone;
+              memberEditing.querySelector('#tel').value = member.tel;
+              memberEditing.querySelector('#address').value = member.address;
+            }
+          });
+          memberList.appendChild(li);
+        });
+      }
+
+      // 삭제된 도서의 대출 내역 정리 함수
+      function cleanupLoans() {
+        let storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+        let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+        
+        // 현재 도서 목록에 없는 대출 내역 제거
+        storedLoans = storedLoans.filter(loan => {
+          return storedBooks.some(book => 
+            book.title === loan.title && book.author === loan.author
+          );
+        });
+        
+        localStorage.setItem('loans', JSON.stringify(storedLoans));
+      }
+
+      // 최초 렌더링
+      cleanupLoans(); // 삭제된 도서의 대출 내역 정리
+      renderBookList();
+      renderLoanList();
+      renderMemberList();
+
+      // 도서상세 저장 버튼 클릭 시 도서목록/로컬스토리지 동기화
+      const editSaveBtn = document.querySelector('.book-editing .edit_save');
+      if (editSaveBtn) {
+        editSaveBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (selectedBookIndex === null) return;
+          // 입력값
+          const title = document.getElementById('edit-title').value;
+          const author = document.getElementById('edit-author').value;
+          const genre = document.getElementById('edit-genre').value;
+          let date = document.getElementById('edit-date').value;
+          if (/^\d{8}$/.test(date)) {
+            date = date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+          }
+          // localStorage 갱신
+          let storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+          if (storedBooks[selectedBookIndex]) {
+            storedBooks[selectedBookIndex] = { title, author, genre, date };
+            localStorage.setItem('books', JSON.stringify(storedBooks));
+          }
+          renderBookList();
+          alert('수정되었습니다.');
+        });
+      }
+
+      // 도서상세 삭제 버튼 클릭 시 도서목록/로컬스토리지 동기화
+      const editDelBtn = document.querySelector('.book-editing .book_del');
+      if (editDelBtn) {
+        editDelBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (selectedBookIndex === null) return;
+          
+          // 삭제 확인
+          if (!confirm('삭제하시겠습니까?')) {
+            return;
+          }
+          
+          // localStorage 갱신
+          let storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+          storedBooks.splice(selectedBookIndex, 1);
+          localStorage.setItem('books', JSON.stringify(storedBooks));
+          
+          // 삭제된 도서의 대출 내역도 함께 삭제
+          const deletedTitle = document.getElementById('edit-title').value;
+          const deletedAuthor = document.getElementById('edit-author').value;
+          let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+          storedLoans = storedLoans.filter(loan => 
+            !(loan.title === deletedTitle && loan.author === deletedAuthor)
+          );
+          localStorage.setItem('loans', JSON.stringify(storedLoans));
+          
+          // 우측 패널 입력 초기화 및 숨김
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-author').value = '';
+          document.getElementById('edit-genre').value = '';
+          document.getElementById('edit-date').value = '';
+          closeRightBox();
+          selectedBookIndex = null;
+          renderBookList();
+          renderLoanList();
+          alert('삭제되었습니다.');
+        });
+      }
+
+      // 도서추가 컨텐츠에서 정보 입력 후 도서 추가 버튼 클릭 시 도서목록에 추가
+      const addButton = document.querySelector('.book-adding .add');
+      if (addButton) {
+        addButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          const title = document.getElementById('add-title').value;
+          const author = document.getElementById('add-author').value;
+          const genre = document.getElementById('add-genre').value;
+          let date = document.getElementById('add-date').value;
+          if (/^\d{8}$/.test(date)) {
+            date = date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+          }
+          let storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+          storedBooks.push({ title, author, genre, date });
+          localStorage.setItem('books', JSON.stringify(storedBooks));
+          renderBookList();
+          alert('도서가 추가되었습니다.');
+          document.getElementById('book-form').reset();
+        });
+      }
+
+
+      
+
+      // 대출관리 체크박스 선택 후 대출연장 클릭 시 대출기한 7일 연장
+      const extendButton = document.querySelector('.loan-management .extend');
+      if (extendButton) {
+        extendButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          const checkboxes = document.querySelectorAll('.loan-management ul li input[type="checkbox"]:checked');
+          if (checkboxes.length === 0) {
+            alert('연장할 항목을 선택해주세요.');
+            return;
+          }
+          
+          // localStorage에서 대출 목록 가져오기
+          let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+          const checkedIndices = [];
+          
+          checkboxes.forEach(checkbox => {
+            const li = checkbox.closest('li');
+            const idx = Array.from(li.parentElement.children).indexOf(li);
+            checkedIndices.push(idx);
+            
+            // DOM 업데이트
+            const periodSpan = li.querySelector('.period em');
+            let currentDate = new Date(periodSpan.textContent);
+            currentDate.setDate(currentDate.getDate() + 7);
+            const newDateStr = currentDate.toISOString().split('T')[0];
+            periodSpan.textContent = newDateStr;
+            
+            // localStorage 업데이트
+            if (storedLoans[idx]) {
+              storedLoans[idx].period = newDateStr;
+            }
+          });
+          
+          localStorage.setItem('loans', JSON.stringify(storedLoans));
+          alert('선택한 도서의 대출 기간이 7일 연장되었습니다.');
+          
+          // 체크박스 해제 및 배경색 원래대로
+          checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+            const loanInfo = checkbox.closest('li').querySelector('.loan-info');
+            if (loanInfo) loanInfo.style.background = '';
+          });
+        });
+      }
+
+      
+      // 대출관리 체크박스 선택 후 대출완료 버튼 클릭시 해당 리스트 삭제
+      const endButton = document.querySelector('.loan-management .end');
+      if (endButton) {
+        endButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          const checkboxes = document.querySelectorAll('.loan-management ul li input[type="checkbox"]:checked');
+          if (checkboxes.length === 0) {
+            alert('대출 완료할 항목을 선택해주세요.');
+            return;
+          }
+          if (!confirm('선택한 대출 내역을 완료 처리하시겠습니까?')) {
+            return;
+          }
+          // localStorage에서 체크된 항목들 삭제
+          let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+          const checkedIndices = [];
+          checkboxes.forEach(checkbox => {
+            const li = checkbox.closest('li');
+            const idx = Array.from(li.parentElement.children).indexOf(li);
+            checkedIndices.push(idx);
+          });
+          // 역순으로 삭제 (인덱스 꼬임 방지)
+          checkedIndices.sort((a, b) => b - a).forEach(idx => {
+            storedLoans.splice(idx, 1);
+          });
+          localStorage.setItem('loans', JSON.stringify(storedLoans));
+          renderLoanList();
+          alert('선택한 도서의 대출이 완료되었습니다.');
+        });
+      }
+
+      
+
+      // 도서정보상세의 대출신청 버튼 클릭 시 신청자 정보 입력란 표시 및 두 번째 클릭 시 대출 처리
+      const loanAppBtn = document.querySelector('.book-editing .loan_application');
+      if (loanAppBtn) {
+        loanAppBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const loanAplInfo = document.querySelector('.book-editing .loan_apl_info');
+          // 입력란이 숨겨져 있으면 보이기만 하고 종료
+          if (!loanAplInfo.classList.contains('show')) {
+            loanAplInfo.classList.add('show');
+            return;
+          }
+          // 입력란이 이미 보이면 대출 처리
+          const applicantName = document.getElementById('applicant-name').value;
+          const applicantPhone = document.getElementById('applicant-phone').value;
+          if (!applicantName || !applicantPhone) {
+            alert('대출 신청자 정보를 입력해주세요.');
+            return;
+          }
+          const bookTitle = document.getElementById('edit-title').value;
+          const bookAuthor = document.getElementById('edit-author').value;
+          let storedLoans = JSON.parse(localStorage.getItem('loans')) || [];
+          const today = new Date();
+          const loanDateStr = today.toISOString().split('T')[0];
+          const dueDate = new Date();
+          dueDate.setDate(dueDate.getDate() + 30);
+          const dueDateStr = dueDate.toISOString().split('T')[0];
+          storedLoans.push({
+            title: bookTitle,
+            author: bookAuthor,
+            code: Math.floor(Math.random()*100000),
+            user: applicantName,
+            user_phone: applicantPhone,
+            date: loanDateStr,
+            period: dueDateStr,
+            checked: false
+          });
+          localStorage.setItem('loans', JSON.stringify(storedLoans));
+          renderLoanList();
+          alert('대출 신청이 완료되었습니다.');
+          document.getElementById('applicant-name').value = '';
+          document.getElementById('applicant-phone').value = '';
+          loanAplInfo.classList.remove('show');
+        });
+      }
+
+      // 회원관리 리스트 클릭 시 우측member-editing패널 표시 및 정보 채우기
+      const memberLinks = document.querySelectorAll('.member-management ul li a');
+      let selectedMemberIndex = null; // 현재 선택된 회원 인덱스
+
+      // book-editing 섹션이 열릴 때마다 신청자 정보 입력란을 항상 숨김 처리
+      const bookLinks2 = document.querySelectorAll('.book-listing ul li a');
+      if (bookLinks2.length) {
+        bookLinks2.forEach(link => {
+          link.addEventListener('click', function() {
+            const loanAplInfo = document.querySelector('.book-editing .loan_apl_info');
+            if (loanAplInfo) loanAplInfo.classList.remove('show');
+          });
+        });
+      }
+
+      // 도서 목록 클릭 시 도서정보상세 보이고 회원정보상세 숨기기
+      const bookLinks3 = document.querySelectorAll('.book-listing ul li a');
+      if (bookLinks3.length) {
+        bookLinks3.forEach(link => {
+          link.addEventListener('click', function() {
+            const bookEditing = document.querySelector('.right_box .book-editing');
+            const memberEditing = document.querySelector('.right_box .member-editing');
+            if (bookEditing) bookEditing.style.display = 'block';
+            if (memberEditing) memberEditing.style.display = 'none';
+          });
+        });
+      }
+
+      // 회원 추가 버튼 클릭 시 빈 회원정보상세 패널 표시
+      const memberAddBtn = document.querySelector('.member-management .member-add');
+      if (memberAddBtn) {
+        memberAddBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          // 우측 패널 보이기
+          openRightBox();
+          
+          // 도서정보상세는 숨기고 회원정보상세는 보이기
+          const bookEditing = document.querySelector('.right_box .book-editing');
+          const memberEditing = document.querySelector('.right_box .member-editing');
+          if (bookEditing) bookEditing.style.display = 'none';
+          if (memberEditing) memberEditing.style.display = 'block';
+          
+          // 회원정보 입력란 초기화 (빈 값)
+          memberEditing.querySelector('#name').value = '';
+          memberEditing.querySelector('#phone').value = '';
+          memberEditing.querySelector('#tel').value = '';
+          memberEditing.querySelector('#address').value = '';
+          
+          // 선택된 회원 인덱스 초기화
+          selectedMemberIndex = null;
+        });
+      }
+
+            // 회원정보 삭제 버튼 클릭 시 회원목록/로컬스토리지 동기화
+      const memDelBtn = document.querySelector('.member-editing .member_del');
+      if (memDelBtn) {
+        memDelBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (selectedMemberIndex === null) return;
+          
+          // 삭제 확인
+          if (!confirm('삭제하시겠습니까?')) {
+            return;
+          }
+          
+          // localStorage 갱신
+          let storedMembers = JSON.parse(localStorage.getItem('members')) || [];
+          storedMembers.splice(selectedMemberIndex, 1);
+          localStorage.setItem('members', JSON.stringify(storedMembers));
+          // 우측 패널 입력 초기화 및 숨김
+          document.getElementById('name').value = '';
+          document.getElementById('phone').value = '';
+          document.getElementById('tel').value = '';
+          document.getElementById('address').value = '';
+          closeRightBox();
+          selectedMemberIndex = null;
+          renderMemberList();
+          alert('삭제되었습니다.');
+        });
+      }
+
+      // 회원정보상세의 저장 버튼 클릭 시 회원목록/로컬스토리지 동기화
+      const memSaveBtn = document.querySelector('.member-editing .mem_save');
+      if (memSaveBtn) {
+        memSaveBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const name = document.getElementById('name').value;
+          const phone = document.getElementById('phone').value;
+          const tel = document.getElementById('tel').value;
+          const address = document.getElementById('address').value;
+          
+          let storedMembers = JSON.parse(localStorage.getItem('members')) || [];
+          
+          if (selectedMemberIndex === null) {
+            // 새로운 회원 추가
+            storedMembers.push({ name, phone, tel, address, date: new Date().toISOString().split('T')[0] });
+          } else {
+            // 기존 회원 정보 수정
+            if (storedMembers[selectedMemberIndex]) {
+              storedMembers[selectedMemberIndex] = { name, phone, tel, address, date: storedMembers[selectedMemberIndex].date };
+            }
+          }
+          
+          localStorage.setItem('members', JSON.stringify(storedMembers));
+          alert('회원 정보가 저장되었습니다.');
+          
+          // 회원목록 다시 렌더링
+          renderMemberList();
+        });
+      }
+    });
+
+
+  </script>
+</body>
+</html>

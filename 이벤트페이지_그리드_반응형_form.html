@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이벤트페이지용 그리드 반응형 템플릿</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+
+  <style>
+    /* 기본 폰트 */
+    body {
+      font-family: Pretendard, sans-serif;
+      margin: 0;
+      background:#fafafa;
+    }
+
+    /* 공통 컨테이너 */
+    .wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* 제목 */
+    .section-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    /* 배너 영역 */
+    .event-banner {
+      width: 100%;
+      height: 260px;
+      border-radius: 16px;
+      background: url('event-banner.jpg') center/cover no-repeat;
+      margin-bottom: 40px;
+    }
+
+    /* 그리드 카드 영역 */
+    .grid-area {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    /* 
+      1fr은 Grid에서 “남은 공간을 일정 비율로 나누는 단위”를 의미.
+      repeat(3, 1fr)은 전체 너비를 3칸으로 균등하게 나눠 배치하라는 의미.
+
+      3 → 한 줄(row)에 3개의 컬럼(칸)
+      1fr → 각 칸(column)이 전체 너비를 동일하게 1비율로 나누어 가져라.
+
+      fr = fraction(부분 비율, 조각)
+      CSS Grid에서만 쓰는 비율 단위로, 전체 남는 공간을 비율로 나눠 가지는 단위
+
+      **왜 이벤트 페이지에서 1fr을 쓰는가?
+      -> 반응형 레이아웃을 쉽게 구현할 수 있기 때문.
+      ex)
+      PC에서는 3칸
+      grid-template-columns: repeat(3, 1fr);
+
+      태블릿에서는 2칸
+      grid-template-columns: repeat(2, 1fr);
+
+      모바일에서는 1칸
+      grid-template-columns: 1fr;
+
+      **추가예시
+      grid-template-columns: 1fr 1fr 1fr;
+      -> 3칸을 동일한 비율로 나누기 (33.3333%씩)
+
+      grid-template-columns: 2fr 1fr;
+      -> 2:1 비율로 칸 나누기 (66.6666% : 33.3333%)
+
+      grid-template-columns: 200px 1fr 2fr;
+      -> 첫 칸은 200px 고정, 나머지 공간을 1:2 비율로 나누기
+
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      -> 최소 300px, 최대 1fr로 칸 자동 배치
+        카드 레이아웃 많이 쓰는 패턴
+        → 너비가 줄면 줄어드는 만큼 자동으로 줄 수 있는 컬럼 수가 변함(반응형)
+    */
+
+    /* 카드 */
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+    }
+
+    .card-desc {
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    /* 버튼 */
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 6px;
+      background: #4864f6;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* 🔥 반응형 */
+    @media (max-width: 1024px) {
+      .grid-area {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid-area {
+        grid-template-columns: 1fr;
+      }
+      .event-banner {
+        height: 180px;
+      }
+      .section-title {
+        font-size: 22px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- 배너 -->
+    <div class="event-banner"></div>
+
+    <!-- 제목 -->
+    <h2 class="section-title">이벤트 혜택 안내</h2>
+
+    <!-- 그리드 영역 -->
+    <div class="grid-area">
+
+      <!-- 카드 1 -->
+      <div class="card">
+        <img src="item1.jpg" alt="혜택 이미지 1">
+        <h3 class="card-title">혜택 1: 즉시할인</h3>
+        <p class="card-desc">구매 시 최대 10% 즉시할인이 제공됩니다.</p>
+        <a href="#" class="btn">자세히 보기</a>
+      </div>
+
+      <!-- 카드 2 -->
+      <div class="card">
+        <img src="item2.jpg" alt="혜택 이미지 2">
+        <h3 class="card-title">혜택 2: 사은품 지급</h3>
+        <p class="card-desc">특정 상품 구매 시 사은품을 드립니다.</p>
+        <a href="#" class="btn">이벤트 참여</a>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="card">
+        <img src="item3.jpg" alt="혜택 이미지 3">
+        <h3 class="card-title">혜택 3: 포인트 적립</h3>
+        <p class="card-desc">구매 금액의 5% 포인트 적립!</p>
+        <a href="#" class="btn">혜택 확인</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

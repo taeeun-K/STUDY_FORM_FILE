@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반응형 유틸리티 클래스 세트</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+
+  <style>
+    /* spacing */
+    .mt-10 { margin-top: 10px; }
+    .mt-20 { margin-top: 20px; }
+
+    /* text */
+    .text-center { text-align: center; }
+
+    /* display */
+    .flex { display: flex; }
+    .flex-center { display: flex; justify-content: center; align-items: center; }
+    .flex-col { display: flex; flex-direction: column; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .m-hidden { display: none; }
+    }
+    @media (min-width: 769px) {
+      .pc-hidden { display: none; }
+    }
+
+    /* 추가로 보기 좋게 스타일 조금만 */
+    .card {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      max-width: 300px;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <div class="wrap mt-20">
+
+    <!-- 섹션 제목 -->
+    <h2 class="text-center">반응형 유틸리티 클래스 데모</h2>
+
+    <!-- PC 전용 안내 -->
+    <p class="m-hidden mt-10" style="color:#555;">
+      👉 이 문장은 *PC에서만* 보입니다. (mobile hidden)
+    </p>
+
+    <!-- 모바일 전용 안내 -->
+    <p class="pc-hidden mt-10" style="color:#555;">
+      👉 이 문장은 *모바일에서만* 보입니다. (pc hidden)
+    </p>
+
+
+
+    <!-- 카드 목록 -->
+    <div class="flex flex-center mt-20" style="gap:20px; flex-wrap:wrap;">
+      
+      <div class="card flex-col flex-center text-center">
+        <h3>Card 1</h3>
+        <p class="mt-10">기본 유틸리티 클래스를 활용한 카드입니다.</p>
+      </div>
+
+      <div class="card flex-col flex-center text-center">
+        <h3>Card 2</h3>
+        <p class="mt-10">m-hidden, pc-hidden으로 반응형 제어 가능.</p>
+      </div>
+
+      <div class="card flex-col flex-center text-center m-hidden">
+        <h3>Card 3</h3>
+        <p class="mt-10">이 카드는 모바일에서 숨겨집니다(m-hidden).</p>
+      </div>
+
+    </div>
+
+
+    <!-- 버튼 영역 -->
+    <div class="flex-center mt-20">
+      <button style="padding:12px 20px; background:#4864f6; color:white; border:none; border-radius:6px;">
+        기본 버튼
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 
+    ✔ .m-hidden
+    모바일에서는 숨겨짐, PC에서만 표시
+    → 카드 3번, PC 전용 메시지에서 사용
+
+    ✔ .pc-hidden
+    PC에서는 숨겨짐, 모바일에서만 보임
+
+    ✔ .flex, .flex-center, .flex-col
+    카드 배치 정렬
+    세로방향 정렬
+
+    ✔ .mt-10, .mt-20
+    상단 간격 부여
+
+    ✔ .text-center
+    섹션 제목 정렬
+
+    ✔ .wrap
+    콘텐츠의 최대 폭을 잡는 컨테이너
+  -->
+
+  
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>탭에 맞는 텍스트 연결</title>
+
+
+  <style>
+    *{padding: 0; margin: 0; box-sizing: border-box;}
+    ul,ol,li {list-style: none; padding: 0; margin: 0;}
+
+    #wrap{width: 100%; max-width: 1440px; margin: 0 auto; padding: 60px 40px; background: #fff; border-radius: 12px;}
+    .tabBox { margin-bottom: 40px;}
+    .tabBox ul.tab {display: flex; flex-flow: row nowrap; justify-content: space-between;}
+    .tabBox ul.tab li {flex: 1; text-align: center; }
+    .tabBox ul.tab li a {display: block; padding: 14px 0; font-size: 18px; color: #222; background: #f5f5f5; border-radius: 6px; text-decoration: none;}
+    .tabBox ul.tab li a:hover,
+    .tabBox ul.tab li a.active {background: #1e90ff; color: #fff; font-weight: 700;}
+
+    .contentBox {width: 100%; height: 300px; padding: 20px; text-align: center; background: #eee;}
+    .contentBox p.txt {font-size: 20px;}
+    .contentBox p.txt strong {display: none; font-size: 24px;}
+    .tabBox ul.tab li a.active~.contentBox p.txt strong {display: block;} 
+  </style>
+</head>
+<body>
+
+  <div id="wrap">
+    <div class="tabBox">
+      <ul class="tab">
+        <li><a href="#">Galaxy F&F7</a></li>
+        <li><a href="#">Galaxy S25</a></li>
+        <li><a href="#">Galaxy FE</a></li>
+      </ul>
+    </div>
+
+    <div class="contentBox">
+      <div class="content">
+        <p class="txt">
+          구매모델은
+          <strong class="fl7">Galaxy F&F7</strong>
+          <strong class="s25">Galaxy S25</strong>
+          <strong class="fe">Galaxy FE</strong>
+          입니다.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function(){
+        $('.tabBox ul.tab li a').on('click', function(e){
+            e.preventDefault();
+            var index = $(this).parent().index();
+
+            // 탭 활성화
+            $('.tabBox ul.tab li a').removeClass('active');
+            $(this).addClass('active');
+
+            // strong on/off
+            $('.contentBox p.txt strong').removeClass('on').hide();
+            $('.contentBox p.txt strong').eq(index).addClass('on').show();
+        });
+
+        // 초기 탭 설정
+        $('.tabBox ul.tab li a').first().click();
+    });
+  </script>
+</body>
+</html>

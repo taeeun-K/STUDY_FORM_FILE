@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>탭섹션이동</title>
+</head>
+<body>
+  <style>
+    *       {margin: 0; padding: 0; box-sizing: border-box;}
+    ul,ol   {list-style: none;}
+    button  {cursor: pointer;  border: none; outline: none; }
+
+    main    {padding: 30px 0; width: 100%;  margin: 0 auto; text-align: center; box-sizing: border-box;}
+    .head-sec h1      { margin-bottom: 10px; font-size: 20px;}
+    .head-sec p       {margin-bottom: 20px; font-size: 14px; color: #555;}
+    .tab-box {margin-top: 20px; width: 100%;}
+    .tab-box ul {display: flex; justify-content: center; width: 100%; background-color: #000;}
+    .tab-box ul li {position: relative; padding: 0 20px; /*border-left: 1px solid #fff;*/}
+    .tab-box ul li:first-child::after {position: absolute; right: 0; top: 50%; transform: translateY(-50%); content: ''; display: block; width: 1px; height: 21px; background: #fff; margin: 0 auto;}
+    .tab-box ul li a {display: block; height: 80px; line-height: 80px; font-size: 30px; font-weight: 700; text-align: center; width: 100%; border-radius: 6px; text-decoration: none; color: #fff;}
+    /*.tab-box ul li:first-child {border-left: none; } */
+    /* .tab-box ul li a:hover {background-color: #ccc;} */
+    /* .tab-content {display: none;} */
+    /* .tab-content.active {display: block;} */
+    .tab-section {margin-top: 30px;}
+    #sec-1 {height: 1500px;background: #FFF;}
+    #sec-2 {height: 1500px;background: #DDD;}
+
+    .tab-content {}
+    .tab-content .btn-box {margin-top: 75px;}
+    .tab-content .btn-box button {width: 433px; height: 90px; font-size: 42px; font-weight: 600; color: #fff; line-height: 90px; text-align: center; background: #000; border-radius: 45px;}
+  </style>
+
+  <main>
+    <div class="head-sec">
+      <h1>Tab click Section move - Onepage</h1>
+      <p>탭클릭 원페이지 섹션이동 FORM</p>
+    </div>
+
+   <!-- s.tab section -->
+    <div class="tab-box">
+      <ul>
+        <li><a href="#">후기 이벤트</a></li>
+        <li><a href="#">공유 이벤트</a></li>
+      </ul>
+    </div>
+    <!-- e.tab section -->
+
+    <!-- s.section -->
+    <section class="tab-section">
+      <div class="tab-content" id="sec-1">
+        <h2>후기 이벤트</h2>
+        <p>후기 이벤트 내용이 여기에 표시됩니다.</p>
+        <div class="btn-box">
+          <button type="button" class="submit">응모하기</button>
+        </div>
+      </div>
+      <div class="tab-content" id="sec-2">
+        <h2>공유 이벤트</h2>
+        <p>공유 이벤트 내용이 여기에 표시됩니다.</p>
+        <div class="btn-box">
+          <button type="button" class="submit">응모하기</button>
+        </div>
+      </div>  
+    </section>
+    <!-- e.section -->
+  </main>
+  
+
+  <script>
+    // document.addEventListener('DOMContentLoaded', function() {
+    //   const tabLinks = document.querySelectorAll('.tab-box ul li a');
+    //   const tabContents = document.querySelectorAll('.tab-content');
+
+    //   tabLinks.forEach((link, index) => {
+    //     link.addEventListener('click', function(event) {
+    //       event.preventDefault();
+
+    //       // 모든 탭 콘텐츠 숨기기
+    //       tabContents.forEach(content => content.classList.remove('active'));
+
+    //       // 클릭한 탭에 해당하는 콘텐츠 표시
+    //       tabContents[index].classList.add('active');
+    //     });
+    //   });
+
+    //   // 초기 상태로 첫 번째 탭 콘텐츠 표시
+    //   if (tabContents.length > 0) {
+    //     tabContents[0].classList.add('active');
+    //   }
+    // });
+
+
+    // 탭 클릭시 해당 섹션 스크롤이동
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabLinks = document.querySelectorAll('.tab-box ul li a');
+      const sec1 = document.getElementById('sec-1');
+      const sec2 = document.getElementById('sec-2');
+      const tabBox = document.querySelector('.tab-box');
+
+      tabLinks[0].addEventListener('click', function(event) {
+        event.preventDefault();
+        const targetPosition = sec1.getBoundingClientRect().top + window.pageYOffset;
+        const offset = tabBox.offsetHeight;
+        const scrollValue = targetPosition - offset - 50; // 여유값 50px 추가
+        console.log('sec-1 스크롤 값:', scrollValue);
+        window.scrollTo({ top: scrollValue, behavior: 'smooth' });
+      });
+
+      tabLinks[1].addEventListener('click', function(event) {
+        event.preventDefault();
+        const targetPosition = sec2.getBoundingClientRect().top + window.pageYOffset;
+        const offset = tabBox.offsetHeight;
+        const scrollValue = targetPosition - offset - 50; // 여유값 50px 추가
+        console.log('sec-2 스크롤 값:', scrollValue);
+        window.scrollTo({ top: scrollValue, behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

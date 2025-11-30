@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fieldset + legend 사용예제</title>
+</head>
+<body>
+
+  <!-- 
+  fieldset + legend는 꼭 세트로 움직이고,
+  선택지가 있는 그룹!! 을 묶고, 해당 그룹에 대한 부가설명을 붙인다. 
+
+  번외로, 
+  label + input 묶음도 같이 사용하면 접근성에 더 좋다.
+  
+  -->
+
+  <div id="wrap">
+    <div class="radioBox">
+      <strong>라디오 버튼 그룹</strong>
+      <fieldset>
+        <legend>성별 선택</legend>
+        <label><input type="radio" name="gender" value="m"> 남성</label>
+        <label><input type="radio" name="gender" value="f"> 여성</label>
+      </fieldset>
+    </div>
+
+    <div class="checkWrap">
+      <strong>체크박스 그룹</strong>
+      <fieldset>
+        <legend>취미를 선택하세요</legend>
+        <label><input type="checkbox" name="hobby" value="sport"> 운동</label>
+        <label><input type="checkbox" name="hobby" value="music"> 음악</label>
+        <label><input type="checkbox" name="hobby" value="game"> 게임</label>
+      </fieldset>
+    </div>
+
+    <div class="addressBox">
+      <strong>주소 입력 중 “주소 타입 선택” 같은 유형의 라디오 그룹</strong>
+      <fieldset>
+        <legend>주소 유형</legend>
+        <label><input type="radio" name="addrType" value="home"> 자택</label>
+        <label><input type="radio" name="addrType" value="office"> 회사</label>
+      </fieldset>
+    </div>
+
+    <div class="doubleInputBox">
+      <strong>배송지 동일여부 체크(복수입력 판단)</strong>
+      <fieldset>
+        <legend>배송지 선택</legend>
+        <label><input type="radio" name="delivery" value="same"> 주문자 정보와 동일</label>
+        <label><input type="radio" name="delivery" value="new"> 새로운 배송지 입력</label>
+      </fieldset>
+    </div>
+
+    <div class="agreeBox">
+      <fieldset>
+        <legend>약관 동의</legend>
+
+        <!-- 전체동의 -->
+        <label class="all">
+          <input type="checkbox" id="agreeAll">
+          전체 약관에 동의합니다
+        </label>
+
+        <!-- 개별 동의 -->
+        <div class="terms-list">
+          <label>
+            <input type="checkbox" name="terms" value="term1">
+            서비스 이용약관 (필수)
+          </label>
+
+          <label>
+            <input type="checkbox" name="terms" value="term2">
+            개인정보 수집 이용동의 (필수)
+          </label>
+
+          <label>
+            <input type="checkbox" name="terms" value="term3">
+            마케팅 정보 수신 동의 (선택)
+          </label>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- 체크박스 단일 선택 그룹 -->
+    <div class="singleCheckGroup" style="padding-bottom:50px; border-bottom: 1px solid #000;">
+      <strong>체크박스 단일 선택 그룹</strong>
+      <fieldset>
+        <legend>하나만 선택 가능한 체크박스</legend>
+        <label><input type="checkbox" name="singleCheck" value="A"> 옵션 A</label>
+        <label><input type="checkbox" name="singleCheck" value="B"> 옵션 B</label>
+        <label><input type="checkbox" name="singleCheck" value="C"> 옵션 C</label>
+      </fieldset>
+    </div>
+
+
+    <!-- input,label 유형 -->
+    <div class="inputLabelBox" style="margin-top: 50px;">
+      <!-- input>label 유형 -->
+      <!-- 
+        label을 클릭하면 input이 자동으로 선택됨
+        input과 label이 명확하게 연결됨(접근성, 클릭 영역 확대)
+        가장 권장되는 방식
+      -->
+      <div class="type1">
+        <strong>label > input 의 경우</strong>
+        <label>
+          <input type="checkbox"> 블라블라
+        </label>
+      </div>
+
+      <!-- input + label 유형-->
+      <!-- 
+        label의 for 속성에 input의 id를 지정
+        label을 클릭해도 input이 선택됨(접근성 보장)
+        레이아웃상 input과 label을 분리해야 할 때 사용
+      -->
+      <div class="type2">
+        <strong>input + label 의 경우</strong>
+        <input type="checkbox" id="chk1">
+        <label for="chk1">블라블라</label>
+      </div>
+
+
+      <!-- 
+      둘 다 접근성(클릭 시 input 선택)에는 문제가 없음
+      label 내부에 input을 넣으면 코드가 더 간결하고, 여러 input을 그룹화할 때 편리
+      형제 요소 방식은 레이아웃 제어가 더 자유로움(특히 CSS로 input과 label을 분리할 때)
+      -->
+
+      <!-- 
+      label에 원하는 이미지를 background로 넣거나,
+      input은 display:none으로 숨기고 label만 보이게 할 수 있습니다.
+      즉, 커스텀 UI/디자인이 필요할 때는 형제 요소 방식이 더 좋습니다!
+      -->
+      <div class="type2Exam" style="margin-top:50px;">
+        <strong>checkbox 이미지처리</strong>
+        <input type="checkbox" id="custom1">
+        <label for="custom1" class="custom-checkbox"></label>
+      </div>
+      <style>
+        .type2Exam strong{vertical-align: middle;}
+        .custom-checkbox {
+          display: inline-block;
+          width: 32px;
+          height: 32px;
+          background: url('./images/check_empty.png') no-repeat center/cover;
+          cursor: pointer;
+          vertical-align: middle;
+        }
+        #custom1:checked + .custom-checkbox {
+          background-image: url('./images/check_fill.png');
+        }
+        /* input 숨기기 */
+        #custom1 {
+          position: absolute;
+          left: -9999px;
+        }
+      </style>
+    </div>
+  </div>
+  
+
+  
+  <script>
+    // 전체동의 & 개별동의 연동 스크립트
+    const agreeAll = document.querySelector('#agreeAll');
+    const items = document.querySelectorAll('input[name="terms"]');
+
+    // 전체동의 체크박스 클릭 시
+    agreeAll.addEventListener('change', () => {
+      items.forEach(i => i.checked = agreeAll.checked);
+    });
+
+    // 개별동의 체크박스 클릭 시
+    items.forEach(i => {
+      i.addEventListener('change', () => {
+        const allChecked = [...items].every(i => i.checked);
+        agreeAll.checked = allChecked;
+      });
+    });
+
+
+    // 체크박스 단일 선택 그룹 스크립트
+    const singleChecks = document.querySelectorAll('input[name="singleCheck"]');
+    singleChecks.forEach(chk => {
+      chk.addEventListener('change', function() {
+        if (this.checked) {
+          singleChecks.forEach(other => {
+            if (other !== this) other.checked = false;
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

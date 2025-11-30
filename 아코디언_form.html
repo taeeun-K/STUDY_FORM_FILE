@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아코디언 form</title>
+  <link rel="stylesheet" href="./CSS변수세트form.css">
+
+  <style>
+    .acc-btn {
+      width: 100%;
+      padding: 16px;
+      text-align: left;
+      background: #f5f5f5;
+      border: none;
+      cursor: pointer;
+    }
+
+    .acc-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+      background: #fafafa;
+      padding: 0 16px;
+    }
+    .acc-content.open {
+      padding: 16px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="accordion">
+    <button class="acc-btn" aria-expanded="false">제목</button>
+    <div class="acc-content">
+      <p>내용이 들어갑니다.</p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll(".acc-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const content = btn.nextElementSibling;
+        const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+        btn.setAttribute("aria-expanded", !isOpen);
+        content.classList.toggle("open");
+        content.style.maxHeight = isOpen ? "0" : content.scrollHeight + "px";
+      });
+    });
+
+  </script>
+  
+</body>
+</html>

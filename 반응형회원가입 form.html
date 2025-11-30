@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반응형 FORM</title>
+
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {font-family: "Pretendard", sans-serif; background: #f5f5f5;}
+
+    #wrap {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .form-title {font-size: 32px; margin-bottom: 40px; font-weight: 700;}
+
+    .form-box {margin-bottom: 24px; display: flex; flex-direction: column;}
+    .form-box label {font-size: 16px; margin-bottom: 8px; display: block;}
+
+    .required {color: #d00;}
+
+    .form-box input[type="text"],
+    .form-box input[type="email"],
+    .form-box input[type="password"] {
+      height: 48px;
+      padding: 0 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .form-box input:focus {
+      outline: 2px solid #1e90ff;
+    }
+
+    .check-area {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .err-msg {
+      font-size: 14px;
+      color: #d00;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      font-size: 18px;
+      color: #fff;
+      background: #1e90ff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .result-msg {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c7;
+    }
+
+    /* ================================
+      반응형
+    ================================ */
+
+    /* 1024px 이하 (Tablet) */
+    @media (max-width: 1024px) {
+      #wrap {padding: 40px 24px;}
+
+      .form-title {font-size: 28px;}
+    }
+
+    /* 760px 이하 (Small Tablet / Large Phone) */
+    @media (max-width: 760px) {
+      .form-title {font-size: 24px;}
+
+      .btn-submit {
+        height: 48px;
+        font-size: 16px;
+      }
+    }
+
+    /* 480px 이하 (Mobile) */
+    @media (max-width: 480px) {
+      #wrap {padding: 30px 18px;}
+
+      .form-box input {
+        height: 44px;
+        font-size: 15px;
+      }
+
+      .form-title {font-size: 22px;}
+    }
+
+  </style>
+</head>
+<body>
+  <div id="wrap">
+  <section class="form-section">
+    <h2 class="form-title">회원 가입</h2>
+
+    <form id="joinForm" novalidate>
+      <!-- 이름 -->
+      <div class="form-box">
+        <label for="userName">이름 <span class="required">*</span></label>
+        <input type="text" id="userName" aria-required="true">
+        <p class="err-msg" id="errName"></p>
+      </div>
+
+      <!-- 이메일 -->
+      <div class="form-box">
+        <label for="userEmail">이메일 <span class="required">*</span></label>
+        <input type="email" id="userEmail" aria-required="true">
+        <p class="err-msg" id="errEmail"></p>
+      </div>
+
+      <!-- 비밀번호 -->
+      <div class="form-box">
+        <label for="userPw">비밀번호 (6자 이상) <span class="required">*</span></label>
+        <input type="password" id="userPw" aria-required="true">
+        <p class="err-msg" id="errPw"></p>
+      </div>
+
+      <!-- 이용약관 -->
+      <div class="form-box check-area">
+        <input type="checkbox" id="agree" aria-required="true">
+        <label for="agree">개인정보 처리방침에 동의합니다.</label>
+        <p class="err-msg" id="errAgree"></p>
+      </div>
+
+      <button type="submit" class="btn-submit">가입하기</button>
+    </form>
+
+    <p class="result-msg" id="resultMsg"></p>
+  </section>
+</div>
+
+  
+<script>
+  document.getElementById("joinForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    // 요소
+    const name = userName.value.trim();
+    const email = userEmail.value.trim();
+    const pw = userPw.value.trim();
+    const agree = document.getElementById("agree").checked;
+
+    let valid = true;
+
+    // 초기화
+    errName.textContent = "";
+    errEmail.textContent = "";
+    errPw.textContent = "";
+    errAgree.textContent = "";
+    resultMsg.textContent = "";
+
+    // 이름 검사
+    if(!name){
+      errName.textContent = "이름을 입력해주세요.";
+      valid = false;
+    }
+
+    // 이메일 검사
+    if(!email){
+      errEmail.textContent = "이메일을 입력해주세요.";
+      valid = false;
+    } else if(!email.includes("@")){
+      errEmail.textContent = "올바른 이메일 형식이 아닙니다.";
+      valid = false;
+    }
+
+    // 비밀번호 검사
+    if(pw.length < 6){
+      errPw.textContent = "비밀번호는 6자 이상 입력해주세요.";
+      valid = false;
+    }
+
+    // 약관 체크
+    if(!agree){
+      errAgree.textContent = "약관에 동의해주세요.";
+      valid = false;
+    }
+
+    if(!valid) return;
+
+    // 성공 메시지
+    resultMsg.textContent = "가입 완료! 🎉";
+});
+
+</script>
+</body>
+</html>

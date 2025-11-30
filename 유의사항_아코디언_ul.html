@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유의사항 아코디언 ul,li</title>
+
+  <style>
+    #notice {
+      width: 100%;
+      max-width: 1440px;
+      margin: 40px auto;
+      padding: 0 24px;
+      font-family: "Pretendard", sans-serif;
+    }
+
+    .acc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .acc-item {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .acc-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px;
+      font-size: 18px;
+      border: none;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .acc-btn:focus {
+      outline: 2px solid #1e90ff;
+    }
+
+    .acc-content {
+      padding: 16px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* 반응형 */
+    @media (max-width: 760px) {
+      .acc-btn { font-size: 16px; padding: 14px; }
+      .acc-content { font-size: 15px; padding: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .acc-btn { font-size: 15px; padding: 12px; }
+      .acc-content { font-size: 14px; padding: 12px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <ul class="acc-list">
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont1">
+        유의사항 1
+      </button>
+      <div class="acc-content" id="accCont1" hidden>
+        <p>이 이벤트는 특정 모델에 한해 적용됩니다.</p>
+      </div>
+    </li>
+
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont2">
+        유의사항 2
+      </button>
+      <div class="acc-content" id="accCont2" hidden>
+        <p>혜택은 중복 적용되지 않습니다.</p>
+      </div>
+    </li>
+
+    <li class="acc-item">
+      <button class="acc-btn" aria-expanded="false" aria-controls="accCont3">
+        유의사항 3
+      </button>
+      <div class="acc-content" id="accCont3" hidden>
+        <p>내용은 사전 예고 없이 변경될 수 있습니다.</p>
+      </div>
+    </li>
+  </ul>
+
+  
+  <script>
+    const accBtns = document.querySelectorAll(".acc-btn");
+
+    accBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        const content = document.getElementById(btn.getAttribute("aria-controls"));
+
+        btn.setAttribute("aria-expanded", !expanded);
+        content.hidden = expanded ? true : false;
+      });
+    });
+
+  </script>
+</body>
+</html>

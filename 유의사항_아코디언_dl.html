@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유의사항 아코디언 dl dt dd</title>
+
+  <style>
+    .acc-dl {
+      width: 100%;
+      max-width: 1440px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .acc-dl dt {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .acc-dl dt .acc-btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .acc-dl dd {
+      margin: 0;
+      padding: 16px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* 반응형 */
+    @media (max-width: 760px) {
+      .acc-dl dt .acc-btn { font-size: 16px; padding: 14px; }
+      .acc-dl dd { font-size: 15px; padding: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .acc-dl dt .acc-btn { font-size: 15px; padding: 12px; }
+      .acc-dl dd { font-size: 14px; padding: 12px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <dl class="acc-dl">
+    <dt>
+      <button class="acc-btn" aria-expanded="false" aria-controls="faq1">
+        Q. 제품 반납 기준가는 어떻게 산정되나요?
+      </button>
+    </dt>
+    <dd id="faq1" class="acc-content" hidden>
+      제품 상태와 사용 기간에 따라 기준가가 산정됩니다.
+    </dd>
+
+    <dt>
+      <button class="acc-btn" aria-expanded="false" aria-controls="faq2">
+        Q. 가입 조건은 어떻게 되나요?
+      </button>
+    </dt>
+    <dd id="faq2" class="acc-content" hidden>
+      만 19세 이상 본인 인증 가능 고객만 가입할 수 있습니다.
+    </dd>
+
+    <dt>
+      <button class="acc-btn" aria-expanded="false" aria-controls="faq3">
+        Q. 혜택 중복 적용이 가능한가요?
+      </button>
+    </dt>
+    <dd id="faq3" class="acc-content" hidden>
+      본 이벤트 혜택은 다른 혜택과 중복 적용되지 않습니다.
+    </dd>
+  </dl>
+
+
+  
+  <script>
+    const faqBtns = document.querySelectorAll(".acc-dl .acc-btn");
+
+    faqBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        const content = document.getElementById(btn.getAttribute("aria-controls"));
+
+        btn.setAttribute("aria-expanded", !expanded);
+        content.hidden = expanded ? true : false;
+      });
+    });
+
+
+  </script>
+</body>
+</html>
