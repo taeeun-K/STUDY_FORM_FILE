@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>디바이스 그룹 감지 고급 예제(버튼 Grid)</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body {
+      background:#ececec;
+      font-family:Arial, sans-serif;
+    }
+
+    #container {
+      max-width:1440px;
+      margin:0 auto;
+      padding:20px;
+    }
+
+    /* =========================================================
+        A CONTENT AREA (지원 기기)
+    ==========================================================*/
+    #contentA {
+      background:#d3e7ff;
+      padding:20px;
+      margin-bottom:20px;
+      border:3px solid #5a9cff;
+
+      /* fade 효과 */
+      opacity:0;
+      transition:opacity .4s ease;
+      display:none;
+    }
+
+    /* fade-in 클래스 부여시 자연스럽게 나타남 */
+    #contentA.show {
+      display:block;
+      opacity:1;
+    }
+
+    /* 버튼 Grid */
+    .button-wrap {
+      background:#e8f2ff;
+      border:2px dashed #85bfff;
+      padding:16px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+      gap:12px;
+
+      /* 등장 애니메이션 */
+      opacity:0;
+      transition:opacity .4s ease;
+    }
+    .button-wrap.show {
+      opacity:1;
+    }
+
+    .button-wrap .a-btn {
+      padding:12px 16px;
+      font-size:16px;
+      background:#ffffff;
+      border:1px solid #aaa;
+      border-radius:6px;
+      cursor:pointer;
+      opacity:0;
+      transition:opacity .3s ease, transform .3s ease;
+      transform:translateY(10px);
+    }
+    .button-wrap .a-btn.show {
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* =========================================================
+        B CONTENT AREA (미지원 기기)
+    ==========================================================*/
+    #contentB {
+      background:#ffdede;
+      padding:20px;
+      border:3px solid #ff6b6b;
+
+      opacity:0;
+      transition:opacity .4s ease;
+      display:none;
+    }
+    #contentB.show {
+      display:block;
+      opacity:1;
+    }
+
+    /* =========================================================
+        디버그 박스 (현재 그룹 / 모델 표시)
+    ==========================================================*/
+    #debug-box {
+      margin-top:20px;
+      padding:12px;
+      background:#222;
+      color:#fff;
+      font-size:14px;
+      border-radius:6px;
+      line-height:1.4;
+      opacity:.8;
+      white-space:pre-line; /* 줄바꿈 유지 */
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="container">
+
+    <!-- A 컨텐츠 -->
+    <div id="contentA">
+      <h1>지원되는 기기 → 메인 컨텐츠</h1>
+
+      <div class="button-wrap">
+        <button type="button" class="a-btn btn1">Button 1</button>
+        <button type="button" class="a-btn btn2">Button 2</button>
+        <button type="button" class="a-btn btn3">Button 3</button>
+        <button type="button" class="a-btn btn4">Button 4</button>
+        <button type="button" class="a-btn btn5">Button 5</button>
+      </div>
+    </div>
+
+    <!-- B 컨텐츠 -->
+    <div id="contentB">
+      <h1>미지원 기기 → B 영역</h1>
+      <p>이 기기는 지원되지 않아 대체 컨텐츠가 보입니다.</p>
+    </div>
+
+    <!-- 디버그 박스 -->
+    <div id="debug-box"></div>
+
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* =========================================================
+      1) UA 가져오기
+  ==========================================================*/
+  const ua = navigator.userAgent.toLowerCase();
+
+
+  /* =========================================================
+      2) 모델 그룹 정의 (원하면 수정 가능)
+  ==========================================================*/
+  const deviceGroups = {
+    tabletGroup1: ["sm-x736n", "sm-x730"],
+    tabletGroup2: ["sm-x936n", "sm-x930"],
+    phoneGroup1:  ["sm-s928n", "sm-s926n"],
+    foldGroup:    ["sm-f946n", "sm-f941n"],
+  };
+
+
+  /* =========================================================
+      3) 그룹 → 버튼 매핑 (원하면 수정 가능)
+  ==========================================================*/
+  const groupBtnMap = {
+    tabletGroup1: ["1"],        // btn1
+    tabletGroup2: ["2"],        // btn2
+    phoneGroup1:  ["3","5"],    // btn3 + btn5
+    foldGroup:    ["4"],        // btn4
+  };
+
+  //그룹핑 참고사항!!!
+  /**
+   * 하나의 모델이 버튼 여러개에 노출될 경우,
+   * 예: phoneGroup1 에서 btn3, btn5 모두 노출
+   * 디바이스 그룹 정의시 같은 모델을 여러 그룹에 중복사용할 수 없음. 
+   * 왜냐하면 첫번째 매칭된 그룹으로만 인식되기 때문.
+   * 따라서   버튼을 기준으로 그룹핑 해야함!
+   * 예: sm-s928n 모델이 btn3, btn5 모두 노출되어야 한다면 아래처럼!!
+   * const deviceButtonMap = {
+      btn1: ["a", "c", "e"],
+      btn2: ["a", "b", "f"],
+      btn3: ["c", "g"],
+      btn4: ["d"],
+      btn5: ["b", "e"],
+      btn6: ["b", "h"]
+    };
+
+  */
+
+  /* =========================================================
+      4) 그룹 감지 함수
+  ==========================================================*/
+  function detectDeviceGroup(ua, groups){
+    for(const groupName in groups){
+      const modelList = groups[groupName];
+      if(modelList.some(model => ua.includes(model))){
+        return groupName;
+      }
+    }
+    return "unsupported";
+  }
+
+  const deviceGroup = detectDeviceGroup(ua, deviceGroups);
+
+
+  /* =========================================================
+      5) DOM 요소 캐싱
+  ==========================================================*/
+  const contentA = document.getElementById("contentA");
+  const contentB = document.getElementById("contentB");
+  const buttonWrap = document.querySelector(".button-wrap");
+  const buttons = document.querySelectorAll(".button-wrap .a-btn");
+  const debugBox = document.getElementById("debug-box");
+
+
+  /* =========================================================
+      6) 디버그 정보 표시
+  ==========================================================*/
+  debugBox.textContent =
+    `UA: ${ua}
+현재 감지된 그룹: ${deviceGroup}
+Allowed Groups: ${Object.keys(deviceGroups).join(", ")}`;
+
+
+  /* =========================================================
+      7) 미지원 기기 → contentB 페이드인
+  ==========================================================*/
+  if(deviceGroup === "unsupported"){
+    contentA.classList.remove("show");
+    contentB.classList.add("show");
+    return;
+  }
+
+
+  /* =========================================================
+      8) 지원 기기 → contentA 페이드인
+  ==========================================================*/
+  contentB.classList.remove("show");
+  contentA.classList.add("show");
+  buttonWrap.classList.add("show");
+
+
+  /* =========================================================
+      9) 그룹별 버튼 노출 + 애니메이션
+  ==========================================================*/
+  const targetButtons = groupBtnMap[deviceGroup];
+
+  buttons.forEach(btn => {
+    const btnNum = btn.className.match(/btn(\d)/)?.[1]; // btn3 → "3"
+
+    if(targetButtons.includes(btnNum)){
+      btn.classList.add("show");   // fade-in
+      btn.style.display = "block"; // Grid에서 정상 배치
+    } else {
+      btn.classList.remove("show"); 
+      btn.style.display = "none";  // 흐름에서 제거
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

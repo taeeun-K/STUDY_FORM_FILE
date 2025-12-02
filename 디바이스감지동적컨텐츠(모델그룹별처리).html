@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>디바이스 감지 컨텐츠 동적변화</title>
+  <style>
+    *{padding: 0; margin: 0 ; box-sizing: border-box;}
+    #container {
+      font-family: Arial, sans-serif;
+      background: #fff;
+    }
+    
+    #contentA, #contentB {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #contentA{ background: #ccc;}
+    #contentB{ background: #d9dd;}
+
+    #contentA button{display: block; margin: 10px auto; padding: 10px 20px; font-size: 24px; font-weight: 500; cursor: pointer; box-sizing: border-box;}
+    #contentA button:hover{font-weight: 700;padding: 10px 16px; box-sizing: border-box;}
+  </style>
+</head>
+<body>
+  
+  <div id="container">
+    <div id="contentA">
+      <h1>메인 컨텐츠 영역</h1>
+      <button type="button" class="a-btn btn1">Button 1</button>
+      <button type="button" class="a-btn btn2">Button 2</button>
+      <button type="button" class="a-btn btn3">Button 3</button>
+      <button type="button" class="a-btn btn4">Button 4</button>
+      <button type="button" class="a-btn btn5">Button 5</button>
+    </div>
+
+    <div id="contentB">
+        <h1>대체 콘텐츠 영역</h1>
+    </div>
+
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+  
+      const ua = navigator.userAgent.toLowerCase();
+
+      // ✔ 모델 그룹 정의 (이 부분만 수정하면 됨)
+      const deviceGroups = {
+        tabletGroup1: [ 'sm-x736n', 'sm-x730' ],
+        tabletGroup2: [ 'sm-x936n', 'sm-x930' ],
+        phoneGroup1:  [ 'sm-s928n', 'sm-s926n' ],
+        foldGroup:    [ 'sm-f946n', 'sm-f941n' ]
+      };
+
+      // ✔ 그룹별 버튼 매핑
+      const groupBtnMap = {
+        tabletGroup1: ["1"],          // btn1
+        tabletGroup2: ["2"],          // btn2
+        phoneGroup1:  ["3","5"],      // btn3 + btn5
+        foldGroup:    ["4"]           // btn4
+      };
+
+      // ✔ 그룹 탐지 함수
+      function detectDeviceGroup(ua, groups){
+        for(const groupName in groups){
+          const modelList = groups[groupName];
+          if(modelList.some(m => ua.includes(m))){
+            return groupName; // 해당 그룹명 반환
+          }
+        }
+        return 'unsupported';
+      }
+
+      const deviceGroup = detectDeviceGroup(ua, deviceGroups);
+
+      // DOM 요소
+      const contA = document.getElementById('contentA');
+      const contB = document.getElementById('contentB');
+      const btns = document.querySelectorAll('#contentA button.a-btn');
+
+      // ✔ 지원되지 않는 경우 → contentB 표시
+      if(deviceGroup === 'unsupported'){
+        contA.style.display = 'none';
+        contB.style.display = 'block';
+        return;
+      }
+
+      // ✔ 지원되는 기기 → contentA 표시
+      contA.style.display = 'block';
+      contB.style.display = 'none';
+
+      // ✔ 그룹에 해당하는 버튼 번호 가져오기
+      const targetBtnNums = groupBtnMap[deviceGroup];
+
+      // ✔ 버튼 show/hide
+      btns.forEach(btn => {
+        const show = targetBtnNums.some(n => btn.classList.contains('btn' + n));
+        btn.style.display = show ? 'block' : 'none';
+      });
+
+    });
+  </script>
+</body>
+</html>
