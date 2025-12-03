@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>indexOf, includes</title>
+</head>
+<body>
+  
+
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    //indexOf 사용예제
+      var ua = navigator.userAgent.toLowerCase();
+    
+      // userAgent에 keyword 포함 여부 확인
+      var isSecApp = ua.indexOf("keyword") != -1;
+    
+      /** 
+       * ✅ 윗줄 최종 정리 (완전히 정답)
+        ✔ keyword이 userAgent 안에 포함되어 있다면
+        indexOf("keyword") 는 0 또는 1,2,3 같은 양수
+        즉, -1이 아니다
+        → true
+    
+        ✔ keyword이 userAgent 안에 포함되지 않았다면
+        indexOf("keyword") 는 -1
+        → false
+    
+        한줄요약
+        “indexOf('keyword') ≥ 0 → true,   indexOf('keyword') = -1 → false”
+       */
+
+    //includes 사용예제
+      const ua = navigator.userAgent.toLowerCase();
+      
+      // userAgent에 keyword 포함 여부 확인  // userAgent에 keyword 이 포함되어있는지. true/false 반환
+      const isSecApp = ua.includes("keyword");
+      /** 
+       * keyword이 userAgent 안에 포함되어 있으면 → true
+       * keyword이 userAgent 안에 포함되어 있지 않으면 → false
+       */
+
+
+
+  });
+  </script>
+</body>
+</html>
