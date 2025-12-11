@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clip-path이용한 정오각형</title>
+
+  <style>
+    #wrap{width: 100%; margin: 0 auto;}
+    .pentagon {
+      width: 150px;
+      height: 150px;
+      background: #5c8ef2;
+
+      /* 정오각형 모양 */
+      clip-path: polygon(
+        50% 0%,
+        100% 38%,
+        82% 100%,
+        18% 100%,
+        0% 38%
+      );
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div class="pentagon"></div>
+  </div>
+  
+</body>
+</html>
