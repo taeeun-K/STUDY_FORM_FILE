@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clamp 속성</title>
+</head>
+<body>
+
+  고정값 px, 미디어쿼리vw 로 조정하던것을
+  clamp 속성을 통해 한번에 조정할 수 있음.
+  ex) padding: clamp(최소값, 비율값, 최대값);      // padding: 최대120px, 최소20px 기준 padding: clamp(20px, 3.8vw, 120px);
+  위 예시의 vw 비율은 브라우저 최댓값 1440px 기준으로 산출된 값임.
+
+  padding뿐만아니라 margin, font-size 등에도 적용 가능함.
+
+  ex2) padding: 20px 50px 20px 100px;
+      =>방법1. padding: clamp(20px, 1.38vw, 50px) clamp(50px, 3.47vw, 100px) clamp(20px, 1.38vw, 50px) clamp(100px, 6.94vw, 200px);  
+      =>방법2. padding-block: 20px; padding: clamp(50px, 3.47vw, 100px) clamp(100px, 6.94vw, 200px); // block속성 활용  
+          * padding-block  :  위아래 패딩 지정 (동일한 값일때)
+          * padding-inline :  좌우 패딩 지정  (동일한 값일때)
+  
+  
+</body>
+</html>
