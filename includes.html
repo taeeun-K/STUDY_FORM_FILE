@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>includes</title>
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+  $(document).ready(function(){
+
+    //includes 메소드
+    // 문자열 내에 특정 문자열이 포함되어 있는지 확인 후 true/false 반환
+    //ex) 'Hello, world!'.includes('world')  => true
+    //ex) 'JavaScript is fun'.includes('java') => false (대소문자 구분)
+    //대소문자 구분 없이 확인하려면 toLowerCase() 또는 toUpperCase() 메소드와 함께 사용.
+
+    //배열에서도 사용가능
+    //배열에 해당 값이 있는지 확인함
+    //ex) ['apple', 'banana', 'grape'].includes('banana') => true
+    //ex) [1,2,3,4,5].includes(6) => false
+    //배열의 경우 아래처럼 배열 자체를 변수로 선언해서 사용도 가능함
+    //const arr = ['apple', 'banana', 'grape'];
+    //arr.includes('banana') => true
+    //arr.includes('strawberry') => false
+
+  });
+</script>
+</body>
+</html>
