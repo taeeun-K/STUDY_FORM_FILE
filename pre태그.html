@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pre태그 예제</title>
+</head>
+<body>
+
+  <div id="wrap">
+    <h1>pre태그 예제</h1>
+    <p>pre태그는 공백과 줄바꿈을 그대로 유지한다.</p>
+    <p>특수문자를 조합한 문자이미지도 표현 가능</p>
+    
+    <ul class="preList">
+      <li>
+        <pre>
+    This is a preformatted text block.
+        It preserves both spaces
+            and line breaks.  
+        Useful for displaying code snippets.
+        </pre>
+      </li>
+
+      <li>
+        <pre>
+   /\_/\
+  ( o.o )
+   > ^ <
+        </pre>
+      </li>
+
+      <li>
+        <p>pre태그 미사용 시</p>
+        <p>
+   /\_/\
+  ( o.o )
+   > ^ <
+        </p>
+      </li>
+
+      <li>
+        <!-- wbr 태그 : 화면이 좁아져서 컨텐츠가 넘칠때만 줄바꿈 시킴 -->
+        <!-- 줄어드는데로 줄바꿈이 되지 않게 word-break: keep-all; 필수사용!! 안하면 wbr태그 적용안됨~ -->
+        <p style="word-break: keep-all;">동해물과백두산이마르고닳도록하느님이보우<wbr/>하사우리나라만세</p>
+      </li>
+    </ul>
+  </div>
+  
+</body>
+</html>
